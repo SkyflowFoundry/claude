@@ -6,7 +6,7 @@ description: integrate Skyflow's deidentification and reidentification capabilit
 
 # Skyflow Chat Message Anonymization Integration
 
-This document outlines the steps to integrate Skyflow's deidentification and reidentification capabilities into a Next.js AI chatbot application.
+This document outlines the steps to integrate Skyflow's deidentification and reidentification capabilities into a Next.js AI chatbot application. Specifically, this document outlines a process used with the 'Vercel AI Chatbot' sample Next.js app (https://github.com/vercel/ai-chatbot) though it can be used as guidance for any web app. If you do not already have an app, clone the ai-chatbot repo as a starting point.
 
 ## Overview
 

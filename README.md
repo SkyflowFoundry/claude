@@ -2,6 +2,30 @@
 
 A collection of skills, commands, subagents, prompts, etc for use with Claude Code when developing with Skyflow.
 
+## Using this Plugin
+
+### Add the Marketplace
+
+In Claude Code, add this marketplace:
+
+```
+/plugin marketplace add SkyflowFoundry/claude
+```
+
+### Browse and Install Plugins
+
+Browse available plugins from this marketplace:
+
+```
+/plugin
+```
+
+Select and install the plugins you want to use.
+
+### Learn More
+
+For complete documentation on Claude Code plugins, see [https://code.claude.com/docs/en/plugins](https://code.claude.com/docs/en/plugins)
+
 ## Structure
 
 This repository is organized as a Claude Code plugin marketplace:
@@ -10,14 +34,16 @@ This repository is organized as a Claude Code plugin marketplace:
 /
 ├── .claude-plugin/
 │   └── marketplace.json      # Marketplace configuration
-├── skyflow-plugin/            # Main Skyflow plugin
-│   ├── .claude-plugin/
-│   │   └── plugin.json       # Plugin metadata
-│   ├── commands/              # Custom slash commands
-│   ├── agents/                # Custom agents (optional)
-│   ├── skills/                # Agent skills (optional)
-│   └── hooks/                 # Event handlers (optional)
-└── skills/                    # Legacy skills directory
+└── skyflow-plugin/            # Main Skyflow plugin
+    ├── .claude-plugin/
+    │   └── plugin.json       # Plugin metadata
+    ├── commands/              # Custom slash commands
+    │   └── hello.md
+    ├── skills/                # Agent skills
+    │   └── chat-message-anonymization-v0/
+    │       └── skill.md
+    ├── agents/                # Custom agents (optional)
+    └── hooks/                 # Event handlers (optional)
 ```
 
 ### Marketplace Configuration

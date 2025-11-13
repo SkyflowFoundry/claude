@@ -1,0 +1,13 @@
+{
+  "name": "skyflow-marketplace",
+  "owner": {
+    "name": "Test User"
+  },
+  "plugins": [
+    {
+      "name": "skyflow-plugin",
+      "source": "./skyflow-plugin",
+      "description": "Skyflow plugin for Claude Code"
+    }
+  ]
+}

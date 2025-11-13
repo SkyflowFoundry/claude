@@ -1,11 +1,9 @@
 {
-  "mcpServers": {
-    "sky-dev-mcp": {
-      "type": "http",
-      "url": "https://sky-dev-mcp.vercel.app/mcp?accountId=${SKYFLOW_ACCOUNT_ID}",
-      "headers": {
-        "Authorization": "Bearer ${SKYFLOW_BEARER_TOKEN}"
-      }
+  "sky-dev-mcp": {
+    "type": "http",
+    "url": "https://sky-dev-mcp.vercel.app/mcp?accountId=${SKYFLOW_ACCOUNT_ID}",
+    "headers": {
+      "Authorization": "Bearer ${SKYFLOW_BEARER_TOKEN}"
     }
   }
 }

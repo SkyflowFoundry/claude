@@ -34,7 +34,6 @@ pnpm install skyflow-node
 Add the following to your `.env.local` and `.env.example` files:
 
 ```bash
-# Skyflow Configuration
 VAULT_ID="your-vault-id"
 VAULT_URL="https://your-cluster-id.vault.skyflowapis.com"
 VAULT_BEARER_TOKEN="your-bearer-token"

@@ -1,11 +1,11 @@
 {
   "name": "skyflow-marketplace",
   "owner": {
-    "name": "Test User"
+    "name": "Joseph McCarron"
   },
   "plugins": [
     {
-      "name": "skyflow-plugin",
+      "name": "skyflow",
       "source": "./skyflow-plugin",
       "description": "Skyflow plugin for Claude Code"
     }

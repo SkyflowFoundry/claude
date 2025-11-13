@@ -22,6 +22,41 @@ Browse available plugins from this marketplace:
 
 Select and install the plugins you want to use.
 
+### Configure Environment Variables
+
+The Skyflow plugin includes an MCP server that requires two environment variables to be set:
+
+**macOS/Linux:**
+
+Add these to your shell profile (`~/.bashrc`, `~/.zshrc`, or `~/.bash_profile`):
+
+```bash
+export SKYFLOW_BEARER_TOKEN="your-token-here"
+export SKYFLOW_ACCOUNT_ID="your-account-id-here"
+```
+
+Then reload your shell:
+
+```bash
+source ~/.zshrc  # or ~/.bashrc, ~/.bash_profile
+```
+
+**Windows (PowerShell):**
+
+```powershell
+$env:SKYFLOW_BEARER_TOKEN="your-token-here"
+$env:SKYFLOW_ACCOUNT_ID="your-account-id-here"
+```
+
+To make these permanent, add them to your PowerShell profile or use System Environment Variables.
+
+**Windows (Command Prompt):**
+
+```cmd
+set SKYFLOW_BEARER_TOKEN=your-token-here
+set SKYFLOW_ACCOUNT_ID=your-account-id-here
+```
+
 ### Learn More
 
 For complete documentation on Claude Code plugins, see [https://code.claude.com/docs/en/plugins](https://code.claude.com/docs/en/plugins)

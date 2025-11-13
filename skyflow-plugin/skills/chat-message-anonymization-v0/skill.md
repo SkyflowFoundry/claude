@@ -1,22 +1,21 @@
 ---
 name: chat-message-anonymization-v0
-description: integrate Skyflow's deidentification and reidentification capabilities into a Next.js AI chatbot application.
+description: integrate Skyflow's anonymization (de-identification and re-identification) capabilities into a Next.js AI chatbot application.
 ---
-
 
 # Skyflow Chat Message Anonymization Integration
 
-This document outlines the steps to integrate Skyflow's deidentification and reidentification capabilities into a Next.js AI chatbot application.
+This document outlines the steps to integrate Skyflow's de-identification and re-identification capabilities into a Next.js AI chatbot application.
 
 ## Overview
 
 The Skyflow integration provides automatic PII (Personally Identifiable Information) protection for chat messages:
 
-- **User messages** are deidentified before database persistence and LLM processing
-- **Assistant responses** are automatically reidentified after streaming completes
+- **User messages** are de-identified before database persistence and LLM processing
+- **Assistant responses** are automatically re-identified after streaming completes
 - **Manual toggle controls** allow users to reveal/hide PII in any message with a lock/unlock button
-- **Visual feedback** shows tokens as blue badges and reidentified values as green badges to emphasize PII protection
-- **Layout stability** prevents jarring size changes when toggling between tokenized and reidentified states
+- **Visual feedback** shows tokens as blue badges and re-identified values as green badges to emphasize PII protection
+- **Layout stability** prevents jarring size changes when toggling between tokenized and re-identified states
 
 ## Prerequisites
 
@@ -35,7 +34,6 @@ pnpm install skyflow-node
 Add the following to your `.env.local` and `.env.example` files:
 
 ```bash
-# Skyflow Configuration
 VAULT_ID="your-vault-id"
 VAULT_URL="https://your-cluster-id.vault.skyflowapis.com"
 VAULT_BEARER_TOKEN="your-bearer-token"
@@ -125,7 +123,7 @@ export function findEntityDifferences(
 
 ## Step 4: Add Deidentification to Chat API
 
-Modify [app/(chat)/api/chat/route.ts](app/(chat)/api/chat/route.ts):
+Modify [app/(chat)/api/chat/route.ts](<app/(chat)/api/chat/route.ts>):
 
 ```typescript
 import { deidentifyText } from "@/lib/skyflow/client";
@@ -172,7 +170,7 @@ export async function POST(request: Request) {
 
 ## Step 5: Create Reidentification API Endpoint
 
-Create [app/(chat)/api/reidentify/route.ts](app/(chat)/api/reidentify/route.ts):
+Create [app/(chat)/api/reidentify/route.ts](<app/(chat)/api/reidentify/route.ts>):
 
 ```typescript
 import { reidentifyText, findEntityDifferences } from "@/lib/skyflow/client";
@@ -219,7 +217,7 @@ export function ReidentifiableText({
   text,
   role,
   isLoading,
-  onToggleButton  // Callback to provide toggle button to parent
+  onToggleButton, // Callback to provide toggle button to parent
 }) {
   const [reidentifiedText, setReidentifiedText] = useState<string | null>(null);
   const [entities, setEntities] = useState<Entity[]>([]);
@@ -238,7 +236,7 @@ export function ReidentifiableText({
         const data = await response.json();
         setReidentifiedText(data.text);
         setEntities(data.entities);
-        setShowOriginal(true);  // Auto-show for assistant messages
+        setShowOriginal(true); // Auto-show for assistant messages
       };
       reidentify();
     }
@@ -277,12 +275,16 @@ export function ReidentifiableText({
   }, [showOriginal, handleToggle]);
 
   // Render tokens as blue badges or reidentified values as green badges
-  const content = showOriginal && reidentifiedText
-    ? renderTextWithEntityHighlights(reidentifiedText, entities)
-    : renderTextWithTokenStyling(text);
+  const content =
+    showOriginal && reidentifiedText
+      ? renderTextWithEntityHighlights(reidentifiedText, entities)
+      : renderTextWithTokenStyling(text);
 
   return (
-    <div ref={contentRef} style={minHeight ? { minHeight: `${minHeight}px` } : undefined}>
+    <div
+      ref={contentRef}
+      style={minHeight ? { minHeight: `${minHeight}px` } : undefined}
+    >
       {content}
     </div>
   );
@@ -293,7 +295,11 @@ function renderTextWithTokenStyling(text: string) {
   // with shadow, border, and high contrast
 }
 
-function renderTextWithEntityHighlights(text: string, entities: Entity[], shouldAnimate = false) {
+function renderTextWithEntityHighlights(
+  text: string,
+  entities: Entity[],
+  shouldAnimate = false
+) {
   // Display reidentified values as prominent green badges
   // with shadow, border, and high contrast
   // Auto-reidentified assistant messages get pulse animation
@@ -346,16 +352,14 @@ export function PureMessageActions({
   vote,
   isLoading,
   setMode,
-  reidentifyButton  // Accept button from parent
+  reidentifyButton, // Accept button from parent
 }) {
   // ...
 
   return (
     <Actions>
       {reidentifyButton && (
-        <div className="relative size-9 p-1.5">
-          {reidentifyButton}
-        </div>
+        <div className="relative size-9 p-1.5">{reidentifyButton}</div>
       )}
       <Action onClick={handleCopy} tooltip="Copy">
         <CopyIcon />
@@ -441,14 +445,17 @@ Hello John Smith!  ← Prominent green badge with shadow and border
 ### Critical Configuration Issues Solved
 
 1. **Bearer Token Authentication:**
+
    - ❌ Wrong: `apiKey: process.env.VAULT_BEARER_TOKEN`
    - ✅ Correct: `token: process.env.VAULT_BEARER_TOKEN`
 
 2. **Vault Token Storage:**
+
    - ❌ Wrong: No token format specified (PII not stored in vault)
    - ✅ Correct: `tokenFormat.setDefault(TokenType.VAULT_TOKEN)`
 
 3. **Render Logic:**
+
    - ❌ Wrong: `if (!reidentifiedText || entities.length === 0)` (shows old text even when reidentified)
    - ✅ Correct: `if (!reidentifiedText)` then `if (entities.length > 0)` then fallback
 
@@ -467,8 +474,8 @@ Hello John Smith!  ← Prominent green badge with shadow and border
 ## Files Modified
 
 - [lib/skyflow/client.ts](lib/skyflow/client.ts) - Core Skyflow integration
-- [app/(chat)/api/chat/route.ts](app/(chat)/api/chat/route.ts) - Deidentification on user messages
-- [app/(chat)/api/reidentify/route.ts](app/(chat)/api/reidentify/route.ts) - Reidentification API
+- [app/(chat)/api/chat/route.ts](<app/(chat)/api/chat/route.ts>) - Deidentification on user messages
+- [app/(chat)/api/reidentify/route.ts](<app/(chat)/api/reidentify/route.ts>) - Reidentification API
 - [components/reidentifiable-text.tsx](components/reidentifiable-text.tsx) - Auto-reidentification and manual toggle UI
 - [components/message.tsx](components/message.tsx) - Integration point and button state management
 - [components/message-actions.tsx](components/message-actions.tsx) - Lock/unlock button rendering
@@ -495,6 +502,7 @@ Hello John Smith!  ← Prominent green badge with shadow and border
 ### Manual Toggle (All Messages)
 
 1. **User messages:**
+
    - Reload the page
    - User messages display with blue token badges and lock icon 🔒
    - Click lock icon → original values appear as green badges, button becomes unlock icon 🔓
@@ -537,7 +545,6 @@ Hello John Smith!  ← Prominent green badge with shadow and border
 - [Skyflow Documentation](https://docs.skyflow.com/)
 - [Vercel AI SDK](https://sdk.vercel.ai/docs)
 
-
 ## Author notes
 
 We can flesh this out with additional resources, e.g.:
@@ -547,6 +554,6 @@ my-skill/
 ├── reference.md (optional documentation)
 ├── examples.md (optional examples)
 ├── scripts/
-│   └── helper.py (optional utility)
+│ └── helper.py (optional utility)
 └── templates/
-    └── template.txt (optional template)
+└── template.txt (optional template)

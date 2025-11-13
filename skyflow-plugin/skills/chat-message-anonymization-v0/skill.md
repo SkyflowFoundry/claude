@@ -1,22 +1,22 @@
 ---
 name: chat-message-anonymization-v0
-description: integrate Skyflow's deidentification and reidentification capabilities into a Next.js AI chatbot application.
+description: integrate Skyflow's anonymization (de-identification and re-identification) capabilities into a Next.js AI chatbot application.
 ---
 
 
 # Skyflow Chat Message Anonymization Integration
 
-This document outlines the steps to integrate Skyflow's deidentification and reidentification capabilities into a Next.js AI chatbot application.
+This document outlines the steps to integrate Skyflow's de-identification and re-identification capabilities into a Next.js AI chatbot application.
 
 ## Overview
 
 The Skyflow integration provides automatic PII (Personally Identifiable Information) protection for chat messages:
 
-- **User messages** are deidentified before database persistence and LLM processing
-- **Assistant responses** are automatically reidentified after streaming completes
+- **User messages** are de-identified before database persistence and LLM processing
+- **Assistant responses** are automatically re-identified after streaming completes
 - **Manual toggle controls** allow users to reveal/hide PII in any message with a lock/unlock button
-- **Visual feedback** shows tokens as blue badges and reidentified values as green badges to emphasize PII protection
-- **Layout stability** prevents jarring size changes when toggling between tokenized and reidentified states
+- **Visual feedback** shows tokens as blue badges and re-identified values as green badges to emphasize PII protection
+- **Layout stability** prevents jarring size changes when toggling between tokenized and re-identified states
 
 ## Prerequisites
 

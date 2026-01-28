@@ -1,7 +1,14 @@
 {
-  "sky-dev-mcp": {
+  "skyflow-developer-mcp": {
     "type": "http",
-    "url": "https://sky-dev-mcp.vercel.app/mcp?accountId=${SKYFLOW_ACCOUNT_ID}",
+    "url": "https://skyflow-mcp.dev/mcp?accountId=${SKYFLOW_ACCOUNT_ID}",
+    "headers": {
+      "Authorization": "Bearer ${SKYFLOW_BEARER_TOKEN}"
+    }
+  },
+  "skyflow-runtime-mcp": {
+    "type": "http",
+    "url": "https://www.pii-mcp.dev/mcp?vaultId=${SKYFLOW_VAULT_ID}&vaultUrl=${SKYFLOW_VAULT_URL}",
     "headers": {
       "Authorization": "Bearer ${SKYFLOW_BEARER_TOKEN}"
     }

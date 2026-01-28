@@ -7,7 +7,7 @@
     {
       "name": "skyflow",
       "source": "./skyflow-plugin",
-      "description": "Skyflow plugin for Claude Code"
+      "description": "Skyflow developer plugin for Claude Code"
     }
   ]
 }

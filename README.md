@@ -1,98 +1,134 @@
 # Claude for Skyflow
 
-A collection of skills, commands, subagents, prompts, etc for use with Claude Code when developing with Skyflow.
+A plugin for Claude Code that enables Skyflow's data privacy and protection capabilities.
 
-## Using this Plugin
+## Quick Start
 
-### Add the Marketplace
+### Step 1: Add the Marketplace
 
-In Claude Code, add this marketplace:
+> **Note:** You must have Claude Code installed first. If you haven't installed it yet, see the [Claude Code installation guide](https://code.claude.com/docs/en/overview).
 
-```
+Open Claude Code and run:
+
+```sh
 /plugin marketplace add SkyflowFoundry/claude
 ```
 
-### Browse and Install Plugins
+### Step 2: Install the Plugin
 
-Browse available plugins from this marketplace:
+Browse and install the Skyflow plugin:
 
-```
+```sh
 /plugin
 ```
 
-Select and install the plugins you want to use.
+Select "skyflow" from the list and install it.
 
-### Configure Environment Variables
+### Step 3: Set Up Environment Variables
 
-The Skyflow plugin includes an MCP server that requires two environment variables to be set:
+The Skyflow plugin connects to two MCP servers. You can start with just the Developer MCP server—the Runtime MCP server is optional.
 
-**macOS/Linux:**
+**Developer MCP Server** - Provides access to Skyflow developer documentation, skills, and helpful resources for people integrating or implementing Skyflow. This is all most users need to get started.
 
-Add these to your shell profile (`~/.bashrc`, `~/.zshrc`, or `~/.bash_profile`):
+**Runtime MCP Server** (optional) - Wraps the Skyflow Detect APIs for removing, redacting, tokenizing, and de-identifying (as well as re-identifying) PII in unstructured text on demand.
+
+#### Open your shell configuration file
+
+1. Open Terminal
+2. Run this command to edit your configuration file:
+
+   ```bash
+   nano ~/.zshrc
+   ```
+
+   (This opens the nano text editor. If the file doesn't exist, it will be created.)
+
+#### Add the environment variables
+
+3. Use the arrow keys to scroll to the bottom of the file
+4. Copy and paste these lines:
+
+   ```bash
+   # Skyflow Configuration (required for Developer MCP)
+   export SKYFLOW_BEARER_TOKEN="your-token-here"
+   export SKYFLOW_ACCOUNT_ID="your-account-id-here"
+
+   # Optional: Only needed for Runtime MCP server
+   # export SKYFLOW_VAULT_ID="your-vault-id-here"
+   # export SKYFLOW_VAULT_URL="your-vault-url-here"
+   ```
+
+5. Replace each `"your-...-here"` value with your actual Skyflow credentials. To obtain your bearer token, account ID, vault ID, and vault URL, see the [Skyflow API Authentication documentation](https://docs.skyflow.com/docs/fundamentals/api-authentication).
+
+**Note:** The bearer token can be a Skyflow personal access token, a generated bearer token, or a Skyflow API key.
+
+#### Save and exit
+
+6. Press `Ctrl + O` (the letter O) to save the file
+7. Press `Enter` to confirm the filename
+8. Press `Ctrl + X` to exit nano
+
+#### Apply the changes
+
+9. **Quit Terminal completely** (Cmd + Q), then reopen it
+10. **Restart Claude Code** to pick up the new environment variables
+
+## Environment Variables Reference
+
+### Required (for Developer MCP)
+
+| Variable                 | Description                                                                 |
+| ------------------------ | --------------------------------------------------------------------------- |
+| `SKYFLOW_BEARER_TOKEN`   | A Skyflow personal access token, generated bearer token, or API key         |
+| `SKYFLOW_ACCOUNT_ID`     | Your Skyflow account identifier                                             |
+
+### Optional (for Runtime MCP)
+
+| Variable                 | Description                                                                 |
+| ------------------------ | --------------------------------------------------------------------------- |
+| `SKYFLOW_VAULT_ID`       | Your detect vault identifier                                                |
+| `SKYFLOW_VAULT_URL`      | Your vault URL endpoint                                                     |
+
+**Note:** The Runtime MCP server requires that your bearer token has 'Vault Owner' access to a Detect vault (a vault created with the detect template).
+
+## About the MCP Servers
+
+- **Developer MCP** (`https://skyflow-mcp.dev`) - Access to Skyflow developer documentation, skills, and resources for integrating and implementing Skyflow.
+
+- **Runtime MCP** (`https://www.pii-mcp.dev`) - Wraps the Skyflow Detect APIs for de-identifying and re-identifying PII in unstructured text. Use this when you need to remove, redact, or tokenize sensitive data on demand.
+
+## Troubleshooting
+
+**"Environment variable not set" errors:**
+
+- Make sure you saved the `~/.zshrc` file after adding the variables
+- Make sure you quit and reopened Terminal (not just opened a new tab)
+- Make sure you restarted Claude Code
+
+**Verify your variables are set:**
+
+Run this in Terminal to check:
 
 ```bash
-export SKYFLOW_BEARER_TOKEN="your-token-here"
-export SKYFLOW_ACCOUNT_ID="your-account-id-here"
+echo $SKYFLOW_BEARER_TOKEN
 ```
 
-Then reload your shell:
+If it prints your token, the variable is set correctly. If it prints nothing, the variable is not set.
+
+**File doesn't exist error:**
+
+If you get an error that `~/.zshrc` doesn't exist, create it first:
 
 ```bash
-source ~/.zshrc  # or ~/.bashrc, ~/.bash_profile
+touch ~/.zshrc
 ```
 
-**Windows (PowerShell):**
+Then run `nano ~/.zshrc` again.
 
-```powershell
-$env:SKYFLOW_BEARER_TOKEN="your-token-here"
-$env:SKYFLOW_ACCOUNT_ID="your-account-id-here"
-```
+## Learn More
 
-To make these permanent, add them to your PowerShell profile or use System Environment Variables.
+For complete documentation on Claude Code plugins, see the [Claude Code Plugins documentation](https://code.claude.com/docs/en/plugins).
 
-**Windows (Command Prompt):**
+## Contributing
 
-```cmd
-set SKYFLOW_BEARER_TOKEN=your-token-here
-set SKYFLOW_ACCOUNT_ID=your-account-id-here
-```
-
-### Learn More
-
-For complete documentation on Claude Code plugins, see [https://code.claude.com/docs/en/plugins](https://code.claude.com/docs/en/plugins)
-
-## Structure
-
-This repository is organized as a Claude Code plugin marketplace:
-
-```
-/
-├── .claude-plugin/
-│   └── marketplace.json      # Marketplace configuration
-└── skyflow-plugin/            # Main Skyflow plugin
-    ├── .claude-plugin/
-    │   └── plugin.json       # Plugin metadata
-    ├── commands/              # Custom slash commands
-    │   └── hello.md
-    ├── skills/                # Agent skills
-    │   └── chat-message-anonymization-v0/
-    │       └── skill.md
-    ├── agents/                # Custom agents (optional)
-    └── hooks/                 # Event handlers (optional)
-```
-
-### Marketplace Configuration
-
-The `.claude-plugin/marketplace.json` file at the root defines the marketplace and lists available plugins:
-- `name`: The marketplace identifier
-- `owner`: Marketplace owner information
-- `plugins`: Array of plugin definitions with name, source path, and description
-
-### Plugin Structure
-
-Each plugin (e.g., `skyflow-plugin/`) contains:
-- `.claude-plugin/plugin.json`: Plugin metadata (name, version, author, description)
-- `commands/`: Markdown files defining custom slash commands
-- `agents/`: Custom agent definitions (optional)
-- `skills/`: Agent skills with `SKILL.md` files (optional)
-- `hooks/`: Event handlers via `hooks.json` (optional)
+For developers who want to contribute to this plugin, see [CONTRIBUTING.md](CONTRIBUTING.md).

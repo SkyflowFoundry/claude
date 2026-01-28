@@ -1,17 +1,8 @@
 {
   "name": "skyflow",
-  "description": "Skyflow plugin for Claude Code",
-  "version": "0.2.0",
+  "description": "Skyflow developer plugin for Claude Code",
+  "version": "0.2.1",
   "author": {
     "name": "Joseph McCarron"
-  },
-  "mcpServers": {
-    "sky-dev": {
-      "type": "http",
-      "url": "https://sky-dev-mcp.vercel.app/mcp?accountId=${SKYFLOW_ACCOUNT_ID}",
-      "headers": {
-        "Authorization": "Bearer ${SKYFLOW_BEARER_TOKEN}"
-      }
-    }
   }
 }

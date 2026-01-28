@@ -6,6 +6,8 @@ A plugin for Claude Code that enables Skyflow's data privacy and protection capa
 
 ### Step 1: Add the Marketplace
 
+> **Note:** You must have Claude Code installed first. If you haven't installed it yet, see the [Claude Code installation guide](https://code.claude.com/docs/en/overview).
+
 Open Claude Code and run:
 
 ```

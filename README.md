@@ -17,15 +17,23 @@ Open Claude Code and run:
 /plugin marketplace add SkyflowFoundry/claude
 ```
 
+You should see `Successfully added marketplace: skyflow-marketplace`.
+
 ### Step 2: Install the Plugin
 
-Browse and install the Skyflow plugin:
+1. Browse and install the Skyflow plugin by opening the Plugins menu with `/plugin`
 
-```sh
-/plugin
-```
+2. Use the arrow key to navigate right to 'Marketplaces'.
 
-Select "skyflow" from the list and install it.
+3. Select `skyflow-marketplace`.
+
+4. Select `Browse plugins (1)`.
+
+5. Select `skyflow` and press enter.
+
+6. Choose a scope for the installation. Default to 'Install for you'. Press enter.
+
+7. On completion you should be returned back to the claude prompt box.
 
 ### Step 3: Set Up Environment Variables
 
@@ -78,19 +86,19 @@ The Skyflow plugin connects to two MCP servers. You can start with just the Deve
 
 ## Environment Variables Reference
 
-### Required (for Developer MCP)
+### Required for Developer MCP
 
-| Variable                 | Description                                                                 |
-| ------------------------ | --------------------------------------------------------------------------- |
-| `SKYFLOW_BEARER_TOKEN`   | A Skyflow personal access token, generated bearer token, or API key         |
-| `SKYFLOW_ACCOUNT_ID`     | Your Skyflow account identifier                                             |
+| Variable               | Description                                                         |
+| ---------------------- | ------------------------------------------------------------------- |
+| `SKYFLOW_BEARER_TOKEN` | A Skyflow personal access token, generated bearer token, or API key |
+| `SKYFLOW_ACCOUNT_ID`   | Your Skyflow account identifier                                     |
 
-### Optional (for Runtime MCP)
+### Optional: only required for Runtime MCP
 
-| Variable                 | Description                                                                 |
-| ------------------------ | --------------------------------------------------------------------------- |
-| `SKYFLOW_VAULT_ID`       | Your detect vault identifier                                                |
-| `SKYFLOW_VAULT_URL`      | Your vault URL endpoint                                                     |
+| Variable            | Description                  |
+| ------------------- | ---------------------------- |
+| `SKYFLOW_VAULT_ID`  | Your detect vault identifier |
+| `SKYFLOW_VAULT_URL` | Your vault URL endpoint      |
 
 **Note:** The Runtime MCP server requires that your bearer token has 'Vault Owner' access to a Detect vault (a vault created with the detect template).
 

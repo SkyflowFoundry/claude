@@ -7,10 +7,10 @@
     }
   },
   "skyflow-runtime-mcp": {
-      "type": "http",
-      "url": "https://www.pii-mcp.dev/mcp?vaultId=${SKYFLOW_VAULT_ID}&vaultUrl=${SKYFLOW_VAULT_URL}",
-      "headers": 	{
-        "Authorization": "Bearer ${SKYFLOW_BEARER_TOKEN}"
-      }
+    "type": "http",
+    "url": "https://www.pii-mcp.dev/mcp?vaultId=${SKYFLOW_VAULT_ID}&vaultUrl=${SKYFLOW_VAULT_URL}",
+    "headers": {
+      "Authorization": "Bearer ${SKYFLOW_BEARER_TOKEN}"
     }
+  }
 }

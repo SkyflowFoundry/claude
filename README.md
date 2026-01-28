@@ -1,4 +1,7 @@
-# Claude for Skyflow
+# Claude Code Plugin for Skyflow
+
+> [!WARNING]
+> This is an experimental project in development. This project is not supported and offered under an MIT license.
 
 A plugin for Claude Code that enables Skyflow's data privacy and protection capabilities.
 

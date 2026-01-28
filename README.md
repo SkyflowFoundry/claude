@@ -10,7 +10,7 @@ A plugin for Claude Code that enables Skyflow's data privacy and protection capa
 
 Open Claude Code and run:
 
-```
+```sh
 /plugin marketplace add SkyflowFoundry/claude
 ```
 
@@ -18,7 +18,7 @@ Open Claude Code and run:
 
 Browse and install the Skyflow plugin:
 
-```
+```sh
 /plugin
 ```
 
@@ -30,7 +30,7 @@ The Skyflow plugin connects to two MCP servers. You can start with just the Deve
 
 **Developer MCP Server** - Provides access to Skyflow developer documentation, skills, and helpful resources for people integrating or implementing Skyflow. This is all most users need to get started.
 
-**Runtime MCP Server** (optional) - Wraps the Skyflow Detect APIs for removing, redacting, tokenizing, and deidentifying (as well as reidentifying) PII in unstructured text on demand.
+**Runtime MCP Server** (optional) - Wraps the Skyflow Detect APIs for removing, redacting, tokenizing, and de-identifying (as well as re-identifying) PII in unstructured text on demand.
 
 #### Open your shell configuration file
 
@@ -58,9 +58,9 @@ The Skyflow plugin connects to two MCP servers. You can start with just the Deve
    # export SKYFLOW_VAULT_URL="your-vault-url-here"
    ```
 
-5. Replace each `"your-...-here"` value with your actual Skyflow credentials
+5. Replace each `"your-...-here"` value with your actual Skyflow credentials. To obtain your bearer token, account ID, vault ID, and vault URL, see the [Skyflow API Authentication documentation](https://docs.skyflow.com/docs/fundamentals/api-authentication).
 
-**Note:** The bearer token can be a Skyflow personal access token, a generated bearer token, or a Skyflow API key—all work the same way.
+**Note:** The bearer token can be a Skyflow personal access token, a generated bearer token, or a Skyflow API key.
 
 #### Save and exit
 
@@ -72,10 +72,6 @@ The Skyflow plugin connects to two MCP servers. You can start with just the Deve
 
 9. **Quit Terminal completely** (Cmd + Q), then reopen it
 10. **Restart Claude Code** to pick up the new environment variables
-
-## Getting Your Skyflow Credentials
-
-To obtain your bearer token, account ID, vault ID, and vault URL, see the [Skyflow API Authentication documentation](https://docs.skyflow.com/docs/fundamentals/api-authentication).
 
 ## Environment Variables Reference
 
@@ -93,13 +89,13 @@ To obtain your bearer token, account ID, vault ID, and vault URL, see the [Skyfl
 | `SKYFLOW_VAULT_ID`       | Your detect vault identifier                                                |
 | `SKYFLOW_VAULT_URL`      | Your vault URL endpoint                                                     |
 
-**Note:** The Runtime MCP server requires that your bearer token has "Vault Owner" access to a detect vault (a vault created with the detect template).
+**Note:** The Runtime MCP server requires that your bearer token has 'Vault Owner' access to a Detect vault (a vault created with the detect template).
 
 ## About the MCP Servers
 
 - **Developer MCP** (`https://skyflow-mcp.dev`) - Access to Skyflow developer documentation, skills, and resources for integrating and implementing Skyflow.
 
-- **Runtime MCP** (`https://www.pii-mcp.dev`) - Wraps the Skyflow Detect APIs for deidentifying and reidentifying PII in unstructured text. Use this when you need to remove, redact, or tokenize sensitive data on demand.
+- **Runtime MCP** (`https://www.pii-mcp.dev`) - Wraps the Skyflow Detect APIs for de-identifying and re-identifying PII in unstructured text. Use this when you need to remove, redact, or tokenize sensitive data on demand.
 
 ## Troubleshooting
 

@@ -24,7 +24,11 @@ Select "skyflow" from the list and install it.
 
 ### Step 3: Set Up Environment Variables
 
-The Skyflow plugin connects to two MCP servers that require environment variables.
+The Skyflow plugin connects to two MCP servers. You can start with just the Developer MCP server—the Runtime MCP server is optional.
+
+**Developer MCP Server** - Provides access to Skyflow developer documentation, skills, and helpful resources for people integrating or implementing Skyflow. This is all most users need to get started.
+
+**Runtime MCP Server** (optional) - Wraps the Skyflow Detect APIs for removing, redacting, tokenizing, and deidentifying (as well as reidentifying) PII in unstructured text on demand.
 
 #### Open your shell configuration file
 
@@ -43,14 +47,18 @@ The Skyflow plugin connects to two MCP servers that require environment variable
 4. Copy and paste these lines:
 
    ```bash
-   # Skyflow Configuration
+   # Skyflow Configuration (required for Developer MCP)
    export SKYFLOW_BEARER_TOKEN="your-token-here"
    export SKYFLOW_ACCOUNT_ID="your-account-id-here"
-   export SKYFLOW_VAULT_ID="your-vault-id-here"
-   export SKYFLOW_VAULT_URL="your-vault-url-here"
+
+   # Optional: Only needed for Runtime MCP server
+   # export SKYFLOW_VAULT_ID="your-vault-id-here"
+   # export SKYFLOW_VAULT_URL="your-vault-url-here"
    ```
 
 5. Replace each `"your-...-here"` value with your actual Skyflow credentials
+
+**Note:** The bearer token can be a Skyflow personal access token, a generated bearer token, or a Skyflow API key—all work the same way.
 
 #### Save and exit
 
@@ -69,17 +77,27 @@ To obtain your bearer token, account ID, vault ID, and vault URL, see the [Skyfl
 
 ## Environment Variables Reference
 
-| Variable                 | Description                            |
-| ------------------------ | -------------------------------------- |
-| `SKYFLOW_BEARER_TOKEN`   | Your Skyflow API authentication token  |
-| `SKYFLOW_ACCOUNT_ID`     | Your Skyflow account identifier        |
-| `SKYFLOW_VAULT_ID`       | Your vault identifier                  |
-| `SKYFLOW_VAULT_URL`      | Your vault URL endpoint                |
+### Required (for Developer MCP)
 
-These connect to:
+| Variable                 | Description                                                                 |
+| ------------------------ | --------------------------------------------------------------------------- |
+| `SKYFLOW_BEARER_TOKEN`   | A Skyflow personal access token, generated bearer token, or API key         |
+| `SKYFLOW_ACCOUNT_ID`     | Your Skyflow account identifier                                             |
 
-- **Developer MCP** (`https://skyflow-mcp.dev`) - Uses account ID for development operations
-- **Runtime MCP** (`https://www.pii-mcp.dev`) - Uses vault ID and URL for data operations
+### Optional (for Runtime MCP)
+
+| Variable                 | Description                                                                 |
+| ------------------------ | --------------------------------------------------------------------------- |
+| `SKYFLOW_VAULT_ID`       | Your detect vault identifier                                                |
+| `SKYFLOW_VAULT_URL`      | Your vault URL endpoint                                                     |
+
+**Note:** The Runtime MCP server requires that your bearer token has "Vault Owner" access to a detect vault (a vault created with the detect template).
+
+## About the MCP Servers
+
+- **Developer MCP** (`https://skyflow-mcp.dev`) - Access to Skyflow developer documentation, skills, and resources for integrating and implementing Skyflow.
+
+- **Runtime MCP** (`https://www.pii-mcp.dev`) - Wraps the Skyflow Detect APIs for deidentifying and reidentifying PII in unstructured text. Use this when you need to remove, redact, or tokenize sensitive data on demand.
 
 ## Troubleshooting
 

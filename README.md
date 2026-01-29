@@ -18,6 +18,7 @@ A plugin for Claude Code that enables Skyflow's data privacy and protection capa
     - [Optional: only required for Runtime MCP](#optional-only-required-for-runtime-mcp)
   - [About the MCP Servers](#about-the-mcp-servers)
   - [Skills](#skills)
+    - [Create Vault](#create-vault)
   - [Troubleshooting](#troubleshooting)
   - [Learn More](#learn-more)
   - [Contributing](#contributing)

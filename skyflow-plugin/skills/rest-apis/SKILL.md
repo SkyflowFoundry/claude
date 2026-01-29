@@ -1,4 +1,9 @@
-# Skyflow API Reference
+---
+name: skyflow-rest-apis
+description: Expertise on the Skyflow REST APIs including management APIs, data APIs, and detect APIs.
+---
+
+# Skyflow REST APIs
 
 You are an expert on Skyflow's REST APIs. Your role is to provide quick, accurate API reference information including endpoints, request/response formats, authentication, and code examples.
 
@@ -19,6 +24,7 @@ You are an expert on Skyflow's REST APIs. Your role is to provide quick, accurat
 **Authentication**: Bearer token (required in all requests)
 
 **Common Headers**:
+
 ```
 Authorization: Bearer {token}
 Content-Type: application/json
@@ -30,6 +36,7 @@ X-Skyflow-Account-ID: {accountID} (optional, for audit logs)
 **Endpoint**: `POST /v1/vaults/{vaultID}/{tableName}`
 
 **Request Body**:
+
 ```json
 {
   "records": [
@@ -46,6 +53,7 @@ X-Skyflow-Account-ID: {accountID} (optional, for audit logs)
 ```
 
 **Response**:
+
 ```json
 {
   "records": [
@@ -61,6 +69,7 @@ X-Skyflow-Account-ID: {accountID} (optional, for audit logs)
 ```
 
 **Curl Example**:
+
 ```bash
 curl -X POST https://example.vault.skyflowapis.com/v1/vaults/vault123/users \
   -H "Authorization: Bearer eyJhbGc..." \
@@ -77,16 +86,19 @@ curl -X POST https://example.vault.skyflowapis.com/v1/vaults/vault123/users \
 ```
 
 **Node.js SDK Example**:
+
 ```javascript
 const response = await skyflowClient.insert({
-  records: [{
-    table: 'users',
-    fields: {
-      email: 'user@example.com',
-      ssn: '123-45-6789'
-    }
-  }],
-  options: { tokens: true }
+  records: [
+    {
+      table: "users",
+      fields: {
+        email: "user@example.com",
+        ssn: "123-45-6789",
+      },
+    },
+  ],
+  options: { tokens: true },
 });
 ```
 
@@ -95,16 +107,19 @@ const response = await skyflowClient.insert({
 **Endpoint**: `GET /v1/vaults/{vaultID}/{tableName}`
 
 **Query Parameters**:
+
 - `skyflow_ids`: Comma-separated Skyflow IDs
 - `redaction`: Redaction level (PLAIN_TEXT, MASKED, REDACTED, DEFAULT)
 - `fields`: Comma-separated field names to retrieve
 
 **Example**:
+
 ```
 GET /v1/vaults/vault123/users?skyflow_ids=id1,id2&redaction=PLAIN_TEXT
 ```
 
 **Response**:
+
 ```json
 {
   "records": [
@@ -120,6 +135,7 @@ GET /v1/vaults/vault123/users?skyflow_ids=id1,id2&redaction=PLAIN_TEXT
 ```
 
 **Curl Example**:
+
 ```bash
 curl -X GET "https://example.vault.skyflowapis.com/v1/vaults/vault123/users?skyflow_ids=id1&redaction=MASKED" \
   -H "Authorization: Bearer eyJhbGc..."
@@ -130,6 +146,7 @@ curl -X GET "https://example.vault.skyflowapis.com/v1/vaults/vault123/users?skyf
 **Endpoint**: `POST /v1/vaults/{vaultID}/detokenize`
 
 **Request Body**:
+
 ```json
 {
   "detokenizationParameters": [
@@ -142,6 +159,7 @@ curl -X GET "https://example.vault.skyflowapis.com/v1/vaults/vault123/users?skyf
 ```
 
 **Response**:
+
 ```json
 {
   "records": [
@@ -154,6 +172,7 @@ curl -X GET "https://example.vault.skyflowapis.com/v1/vaults/vault123/users?skyf
 ```
 
 **Curl Example**:
+
 ```bash
 curl -X POST https://example.vault.skyflowapis.com/v1/vaults/vault123/detokenize \
   -H "Authorization: Bearer eyJhbGc..." \
@@ -170,6 +189,7 @@ curl -X POST https://example.vault.skyflowapis.com/v1/vaults/vault123/detokenize
 **Endpoint**: `PUT /v1/vaults/{vaultID}/{tableName}`
 
 **Request Body**:
+
 ```json
 {
   "records": [
@@ -188,6 +208,7 @@ curl -X POST https://example.vault.skyflowapis.com/v1/vaults/vault123/detokenize
 **Endpoint**: `DELETE /v1/vaults/{vaultID}/{tableName}`
 
 **Request Body**:
+
 ```json
 {
   "records": [
@@ -213,6 +234,7 @@ curl -X POST https://example.vault.skyflowapis.com/v1/vaults/vault123/detokenize
 **Endpoint**: `POST /v1/detect/deidentify`
 
 **Request Body**:
+
 ```json
 {
   "text": "My email is john@example.com and SSN is 123-45-6789",
@@ -222,6 +244,7 @@ curl -X POST https://example.vault.skyflowapis.com/v1/vaults/vault123/detokenize
 ```
 
 **Response**:
+
 ```json
 {
   "processed_text": "My email is <EMAIL> and SSN is <SSN>",
@@ -229,14 +252,14 @@ curl -X POST https://example.vault.skyflowapis.com/v1/vaults/vault123/detokenize
     {
       "type": "EMAIL",
       "value": "john@example.com",
-      "location": {"start": 12, "end": 29},
+      "location": { "start": 12, "end": 29 },
       "confidence": 0.99,
       "token": "<EMAIL>"
     },
     {
       "type": "SSN",
       "value": "123-45-6789",
-      "location": {"start": 41, "end": 52},
+      "location": { "start": 41, "end": 52 },
       "confidence": 0.99,
       "token": "<SSN>"
     }
@@ -245,11 +268,13 @@ curl -X POST https://example.vault.skyflowapis.com/v1/vaults/vault123/detokenize
 ```
 
 **Token Types**:
+
 - `ENTITY_ONLY`: Simple replacement (e.g., `<EMAIL>`)
 - `ENTITY_UNIQUE_COUNTER`: With counter (e.g., `<EMAIL_1>`, `<EMAIL_2>`)
 - `VAULT_TOKEN`: Stores in vault and returns Skyflow tokens
 
 **Curl Example**:
+
 ```bash
 curl -X POST https://ebfc9bee4242.vault.skyflowapis.com/v1/detect/deidentify \
   -H "Authorization: Bearer eyJhbGc..." \
@@ -268,6 +293,7 @@ curl -X POST https://ebfc9bee4242.vault.skyflowapis.com/v1/detect/deidentify \
 **Endpoint**: `POST /v1/detect/reidentify`
 
 **Request Body**:
+
 ```json
 {
   "processed_text": "My email is <EMAIL> and SSN is <SSN>",
@@ -287,6 +313,7 @@ curl -X POST https://ebfc9bee4242.vault.skyflowapis.com/v1/detect/deidentify \
 ```
 
 **Response**:
+
 ```json
 {
   "text": "My email is john@example.com and SSN is 123-45-6789"
@@ -300,6 +327,7 @@ curl -X POST https://ebfc9bee4242.vault.skyflowapis.com/v1/detect/deidentify \
 **Request**: Multipart form-data
 
 **Form Fields**:
+
 - `file`: Binary file content
 - `entity_types`: JSON array of entity types (optional)
 - `masking_method`: REDACT, MASK, REPLACE (default: REDACT)
@@ -307,6 +335,7 @@ curl -X POST https://ebfc9bee4242.vault.skyflowapis.com/v1/detect/deidentify \
 - `output_ocr_text`: true/false (default: false)
 
 **Response**:
+
 ```json
 {
   "request_id": "abc-123-def-456",
@@ -315,11 +344,13 @@ curl -X POST https://ebfc9bee4242.vault.skyflowapis.com/v1/detect/deidentify \
 ```
 
 **Get Status**:
+
 ```
 GET /v1/detect/file/deidentify/{request_id}
 ```
 
 **Status Response**:
+
 ```json
 {
   "request_id": "abc-123-def-456",
@@ -338,6 +369,7 @@ GET /v1/detect/file/deidentify/{request_id}
 ```
 
 **Curl Example**:
+
 ```bash
 # Submit file
 curl -X POST https://ebfc9bee4242.vault.skyflowapis.com/v1/detect/file/deidentify \
@@ -354,6 +386,7 @@ curl -X GET https://ebfc9bee4242.vault.skyflowapis.com/v1/detect/file/deidentify
 ```
 
 **Supported Entity Types**:
+
 - `NAME`, `PERSON`
 - `EMAIL`, `EMAIL_ADDRESS`
 - `PHONE`, `PHONE_NUMBER`
@@ -381,10 +414,12 @@ curl -X GET https://ebfc9bee4242.vault.skyflowapis.com/v1/detect/file/deidentify
 **Endpoint**: `GET /v1/vaults`
 
 **Query Parameters**:
+
 - `limit`: Results per page (default: 25, max: 50)
 - `offset`: Pagination offset
 
 **Response**:
+
 ```json
 {
   "vaults": [
@@ -404,6 +439,7 @@ curl -X GET https://ebfc9bee4242.vault.skyflowapis.com/v1/detect/file/deidentify
 **Endpoint**: `POST /v1/vaults/{vaultID}/schemas/{schemaName}/tables`
 
 **Request Body**:
+
 ```json
 {
   "name": "users",
@@ -427,6 +463,7 @@ curl -X GET https://ebfc9bee4242.vault.skyflowapis.com/v1/detect/file/deidentify
 **Endpoint**: `POST /v1/vaults/{vaultID}/policies`
 
 **Request Body**:
+
 ```json
 {
   "name": "read_pii_policy",
@@ -446,12 +483,14 @@ curl -X GET https://ebfc9bee4242.vault.skyflowapis.com/v1/detect/file/deidentify
 **Endpoint**: `GET /v1/audit/logs`
 
 **Query Parameters**:
+
 - `start_time`: ISO 8601 timestamp
 - `end_time`: ISO 8601 timestamp
 - `limit`: Results per page
 - `offset`: Pagination offset
 
 **Response**:
+
 ```json
 {
   "logs": [
@@ -477,6 +516,7 @@ curl -X GET https://ebfc9bee4242.vault.skyflowapis.com/v1/detect/file/deidentify
 **Endpoint**: `POST /v1/vaults/{vaultID}/connections/{connectionID}/query`
 
 **Request Body**:
+
 ```json
 {
   "query": "SELECT * FROM users WHERE user_id = ?",
@@ -485,6 +525,7 @@ curl -X GET https://ebfc9bee4242.vault.skyflowapis.com/v1/detect/file/deidentify
 ```
 
 **Response**:
+
 ```json
 {
   "records": [
@@ -506,6 +547,7 @@ curl -X GET https://ebfc9bee4242.vault.skyflowapis.com/v1/detect/file/deidentify
 Service accounts are used to generate bearer tokens.
 
 **Service Account Format**:
+
 ```json
 {
   "clientID": "your_client_id",
@@ -517,15 +559,17 @@ Service accounts are used to generate bearer tokens.
 ```
 
 **Generating Bearer Token** (using SDK):
+
 ```javascript
 // Node.js
 const token = await skyflowClient.generateBearerToken();
 
 // Python
-token = client.generate_bearer_token()
+token = client.generate_bearer_token();
 ```
 
 **Generating Bearer Token** (using API):
+
 ```bash
 curl -X POST https://manage.skyflowapis.com/v1/auth/token \
   -H "Content-Type: application/json" \
@@ -538,6 +582,7 @@ curl -X POST https://manage.skyflowapis.com/v1/auth/token \
 ```
 
 **Response**:
+
 ```json
 {
   "accessToken": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...",
@@ -562,6 +607,7 @@ curl -X POST https://example.vault.skyflowapis.com/v1/vaults/vault123/users \
 ## Error Responses
 
 **Standard Error Format**:
+
 ```json
 {
   "error": {
@@ -576,6 +622,7 @@ curl -X POST https://example.vault.skyflowapis.com/v1/vaults/vault123/users \
 ```
 
 **Common Error Codes**:
+
 - `UNAUTHORIZED` (401): Invalid or expired token
 - `FORBIDDEN` (403): Insufficient permissions
 - `NOT_FOUND` (404): Resource not found
@@ -584,6 +631,7 @@ curl -X POST https://example.vault.skyflowapis.com/v1/vaults/vault123/users \
 - `INTERNAL_SERVER_ERROR` (500): Server error
 
 **Rate Limiting**:
+
 - Default: 100 requests per minute per token
 - Header: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`
 - Retry with exponential backoff on 429 errors
@@ -600,14 +648,15 @@ When retrieving data, you can specify redaction levels:
 - **DEFAULT**: Use default redaction policy for the field
 
 **Example**:
+
 ```javascript
 // Get with different redaction levels
 const plainText = await skyflowClient.getById({
-  records: [{ table: 'users', ids: ['id1'], redaction: 'PLAIN_TEXT' }]
+  records: [{ table: "users", ids: ["id1"], redaction: "PLAIN_TEXT" }],
 });
 
 const masked = await skyflowClient.getById({
-  records: [{ table: 'users', ids: ['id1'], redaction: 'MASKED' }]
+  records: [{ table: "users", ids: ["id1"], redaction: "MASKED" }],
 });
 ```
 
@@ -618,23 +667,23 @@ const masked = await skyflowClient.getById({
 ### Node.js (skyflow-node)
 
 ```javascript
-import Skyflow from 'skyflow-node';
+import Skyflow from "skyflow-node";
 
 const client = Skyflow.init({
   vaultID: process.env.SKYFLOW_VAULT_ID,
   vaultURL: process.env.SKYFLOW_VAULT_URL,
-  credentials: JSON.parse(process.env.SKYFLOW_SERVICE_ACCOUNT)
+  credentials: JSON.parse(process.env.SKYFLOW_SERVICE_ACCOUNT),
 });
 
 // Insert
 const insertResponse = await client.insert({
-  records: [{ table: 'users', fields: { email: 'user@example.com' } }],
-  options: { tokens: true }
+  records: [{ table: "users", fields: { email: "user@example.com" } }],
+  options: { tokens: true },
 });
 
 // Detokenize
 const detokenizeResponse = await client.detokenize({
-  records: [{ token: 'token_123' }]
+  records: [{ token: "token_123" }],
 });
 ```
 
@@ -708,17 +757,17 @@ When a user asks about API operations:
 
 ## Quick Reference Table
 
-| Operation | API | Method | Endpoint |
-|-----------|-----|--------|----------|
-| Insert data | Vault | POST | `/v1/vaults/{id}/{table}` |
-| Get by ID | Vault | GET | `/v1/vaults/{id}/{table}` |
-| Detokenize | Vault | POST | `/v1/vaults/{id}/detokenize` |
-| Update | Vault | PUT | `/v1/vaults/{id}/{table}` |
-| Delete | Vault | DELETE | `/v1/vaults/{id}/{table}` |
-| Deidentify text | Detect | POST | `/v1/detect/deidentify` |
-| Reidentify text | Detect | POST | `/v1/detect/reidentify` |
-| Deidentify file | Detect | POST | `/v1/detect/file/deidentify` |
-| List vaults | Management | GET | `/v1/vaults` |
-| Create table | Management | POST | `/v1/vaults/{id}/schemas/{schema}/tables` |
-| Get audit logs | Management | GET | `/v1/audit/logs` |
-| Query connection | Connections | POST | `/v1/vaults/{id}/connections/{conn}/query` |
+| Operation        | API         | Method | Endpoint                                   |
+| ---------------- | ----------- | ------ | ------------------------------------------ |
+| Insert data      | Vault       | POST   | `/v1/vaults/{id}/{table}`                  |
+| Get by ID        | Vault       | GET    | `/v1/vaults/{id}/{table}`                  |
+| Detokenize       | Vault       | POST   | `/v1/vaults/{id}/detokenize`               |
+| Update           | Vault       | PUT    | `/v1/vaults/{id}/{table}`                  |
+| Delete           | Vault       | DELETE | `/v1/vaults/{id}/{table}`                  |
+| Deidentify text  | Detect      | POST   | `/v1/detect/deidentify`                    |
+| Reidentify text  | Detect      | POST   | `/v1/detect/reidentify`                    |
+| Deidentify file  | Detect      | POST   | `/v1/detect/file/deidentify`               |
+| List vaults      | Management  | GET    | `/v1/vaults`                               |
+| Create table     | Management  | POST   | `/v1/vaults/{id}/schemas/{schema}/tables`  |
+| Get audit logs   | Management  | GET    | `/v1/audit/logs`                           |
+| Query connection | Connections | POST   | `/v1/vaults/{id}/connections/{conn}/query` |

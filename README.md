@@ -17,6 +17,7 @@ A plugin for Claude Code that enables Skyflow's data privacy and protection capa
     - [Required for Developer MCP](#required-for-developer-mcp)
     - [Optional: only required for Runtime MCP](#optional-only-required-for-runtime-mcp)
   - [About the MCP Servers](#about-the-mcp-servers)
+  - [Skills](#skills)
   - [Troubleshooting](#troubleshooting)
   - [Learn More](#learn-more)
   - [Contributing](#contributing)
@@ -118,6 +119,14 @@ The Skyflow plugin connects to two MCP servers. You can start with just the Deve
 - **Developer MCP** (`https://skyflow-mcp.dev`) - Access to Skyflow developer documentation, skills, and resources for integrating and implementing Skyflow.
 
 - **Runtime MCP** (`https://www.pii-mcp.dev`) - Wraps the Skyflow Detect APIs for de-identifying and re-identifying PII in unstructured text. Use this when you need to remove, redact, or tokenize sensitive data on demand.
+
+## Skills
+
+Skills are guided workflows that help Claude assist you with common Skyflow tasks. They provide structured documentation, sample schemas, and API examples that Claude can reference when helping you implement Skyflow features.
+
+### Create Vault
+
+The **create-vault** skill guides you through creating Skyflow vaults programmatically using the Management API. It covers three approaches: using pre-built templates (Quickstart, Payment, PIIData, CustomerIdentity, Plaid), uploading a custom schema, or starting from scratch. The skill includes complete API examples for listing templates, creating vaults, and updating schemas, along with comprehensive documentation on configuring field tags for tokenization policies, redaction/DLP settings, validation rules, and compliance classifications (GDPR, CCPA, HIPAA, etc.). Sample vault schemas are provided for common use cases like payment processing, customer identity management, and PII storage.
 
 ## Troubleshooting
 

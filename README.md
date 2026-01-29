@@ -5,6 +5,22 @@
 
 A plugin for Claude Code that enables Skyflow's data privacy and protection capabilities.
 
+- [Claude Code Plugin for Skyflow](#claude-code-plugin-for-skyflow)
+  - [Quick Start](#quick-start)
+    - [Step 1: Install the Plugin](#step-1-install-the-plugin)
+    - [Step 2: Set Up Environment Variables](#step-2-set-up-environment-variables)
+      - [Open your shell configuration file](#open-your-shell-configuration-file)
+      - [Add the environment variables](#add-the-environment-variables)
+      - [Save and exit](#save-and-exit)
+      - [Apply the changes](#apply-the-changes)
+  - [Environment Variables Reference](#environment-variables-reference)
+    - [Required for Developer MCP](#required-for-developer-mcp)
+    - [Optional: only required for Runtime MCP](#optional-only-required-for-runtime-mcp)
+  - [About the MCP Servers](#about-the-mcp-servers)
+  - [Troubleshooting](#troubleshooting)
+  - [Learn More](#learn-more)
+  - [Contributing](#contributing)
+
 ## Quick Start
 
 ### Step 1: Install the Plugin

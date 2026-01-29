@@ -7,45 +7,40 @@ A plugin for Claude Code that enables Skyflow's data privacy and protection capa
 
 ## Quick Start
 
-### Step 1: Add the Marketplace
+### Step 1: Install the Plugin
 
 > **Note:** You must have Claude Code installed first. If you haven't installed it yet, see the [Claude Code installation guide](https://code.claude.com/docs/en/overview).
 
-Open Claude Code and run:
+1. Open Claude Code:
 
-```sh
-/plugin marketplace add SkyflowFoundry/claude
-```
+   ```sh
+   claude
+   ```
 
-You should see `Successfully added marketplace: skyflow-marketplace`.
+2. Install the marketplace and plugin:
 
-### Step 2: Install the Plugin
+   ```sh
+   /plugin marketplace add SkyflowFoundry/claude
+   /plugin install skyflow@skyflow-marketplace
+   ```
 
-1. Browse and install the Skyflow plugin by opening the Plugins menu with `/plugin`
+3. Exit Claude Code:
 
-2. Use the arrow key to navigate right to 'Marketplaces'.
+   ```sh
+   /exit
+   ```
 
-3. Select `skyflow-marketplace`.
-
-4. Select `Browse plugins (1)`.
-
-5. Select `skyflow` and press enter.
-
-6. Choose a scope for the installation. Default to 'Install for you'. Press enter.
-
-7. On completion you should be returned back to the claude prompt box.
-
-### Step 3: Set Up Environment Variables
+### Step 2: Set Up Environment Variables
 
 The Skyflow plugin connects to two MCP servers. You can start with just the Developer MCP server—the Runtime MCP server is optional.
 
 **Developer MCP Server** - Provides access to Skyflow developer documentation, skills, and helpful resources for people integrating or implementing Skyflow. This is all most users need to get started.
 
-**Runtime MCP Server** (optional) - Wraps the Skyflow Detect APIs for removing, redacting, tokenizing, and de-identifying (as well as re-identifying) PII in unstructured text on demand.
+**Runtime MCP Server** (optional) - Wraps the Skyflow Detect APIs for removing, redacting, tokenizing, and de-identifying (as well as re-identifying) PII in unstructured text on demand. If you do not set `SKYFLOW_VAULT_ID` and `SKYFLOW_VAULT_URL`, this server will fail to initialize and Claude will display an error on startup.
 
 #### Open your shell configuration file
 
-1. Open Terminal
+1. Open Terminal.
 2. Run this command to edit your configuration file:
 
    ```bash
@@ -56,8 +51,8 @@ The Skyflow plugin connects to two MCP servers. You can start with just the Deve
 
 #### Add the environment variables
 
-3. Use the arrow keys to scroll to the bottom of the file
-4. Copy and paste these lines:
+1. Use the arrow keys to scroll to the bottom of the file.
+2. Copy and paste these lines:
 
    ```bash
    # Skyflow Configuration (required for Developer MCP)
@@ -69,29 +64,29 @@ The Skyflow plugin connects to two MCP servers. You can start with just the Deve
    # export SKYFLOW_VAULT_URL="your-vault-url-here"
    ```
 
-5. Replace each `"your-...-here"` value with your actual Skyflow credentials. To obtain your bearer token, account ID, vault ID, and vault URL, see the [Skyflow API Authentication documentation](https://docs.skyflow.com/docs/fundamentals/api-authentication).
+3. Replace each `"your-...-here"` value with your actual Skyflow credentials. To obtain your bearer token, account ID, vault ID, and vault URL, see the [Skyflow API Authentication documentation](https://docs.skyflow.com/docs/fundamentals/api-authentication).
 
-**Note:** The bearer token can be a Skyflow personal access token, a generated bearer token, or a Skyflow API key.
+**Note:** The bearer token can be a Skyflow API key (recommended for long-lived access), personal access token, or generated bearer token.
 
 #### Save and exit
 
-6. Press `Ctrl + O` (the letter O) to save the file
-7. Press `Enter` to confirm the filename
-8. Press `Ctrl + X` to exit nano
+1. Press `Ctrl + O` (the letter O) to save the file.
+2. Press `Enter` to confirm the filename.
+3. Press `Ctrl + X` to exit nano.
 
 #### Apply the changes
 
-9. **Quit Terminal completely** (Cmd + Q), then reopen it
-10. **Restart Claude Code** to pick up the new environment variables
+1. **Quit Terminal completely** (Cmd + Q), then reopen it.
+2. **Restart Claude Code** to pick up the new environment variables.
 
 ## Environment Variables Reference
 
 ### Required for Developer MCP
 
-| Variable               | Description                                                         |
-| ---------------------- | ------------------------------------------------------------------- |
-| `SKYFLOW_BEARER_TOKEN` | A Skyflow personal access token, generated bearer token, or API key |
-| `SKYFLOW_ACCOUNT_ID`   | Your Skyflow account identifier                                     |
+| Variable               | Description                                                                       |
+| ---------------------- | --------------------------------------------------------------------------------- |
+| `SKYFLOW_BEARER_TOKEN` | A Skyflow API key (recommended), personal access token, or generated bearer token |
+| `SKYFLOW_ACCOUNT_ID`   | Your Skyflow account identifier                                                   |
 
 ### Optional: only required for Runtime MCP
 
@@ -112,9 +107,9 @@ The Skyflow plugin connects to two MCP servers. You can start with just the Deve
 
 **"Environment variable not set" errors:**
 
-- Make sure you saved the `~/.zshrc` file after adding the variables
-- Make sure you quit and reopened Terminal (not just opened a new tab)
-- Make sure you restarted Claude Code
+- Make sure you saved the `~/.zshrc` file after adding the variables.
+- Make sure you quit and reopened Terminal (not just opened a new tab).
+- Make sure you restarted Claude Code.
 
 **Verify your variables are set:**
 

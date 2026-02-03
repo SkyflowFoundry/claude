@@ -39,6 +39,9 @@ A plugin for Claude Code that enables Skyflow's data privacy and protection capa
 
    ```sh
    /plugin marketplace add SkyflowFoundry/claude
+   ```
+
+   ```sh
    /plugin install skyflow@skyflow-marketplace
    ```
 
@@ -60,6 +63,7 @@ The Skyflow plugin connects to two MCP servers. You can start with just the Deve
 
 1. Open Terminal.
 2. Run this command to edit your configuration file:
+<!-- note change this to echo statements to be copied and run -->
 
    ```bash
    nano ~/.zshrc

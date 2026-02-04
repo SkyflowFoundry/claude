@@ -13,6 +13,7 @@ The Detect API automatically identifies and redacts PII in text and documents us
 ## DEIDENTIFY TEXT - Detect and Replace PII
 
 **Endpoint**: `POST /v1/detect/deidentify`
+**Operation**: `deidentify_string`
 
 Scans text for PII and replaces with tokens or placeholders.
 
@@ -63,6 +64,7 @@ curl -X POST "https://$CLUSTER_ID.vault.skyflowapis.com/v1/detect/deidentify" \
 ## REIDENTIFY TEXT - Restore Original PII
 
 **Endpoint**: `POST /v1/detect/reidentify`
+**Operation**: `reidentify_string`
 
 Restores original values from de-identified text using entity mappings.
 
@@ -91,6 +93,7 @@ curl -X POST "https://$CLUSTER_ID.vault.skyflowapis.com/v1/detect/reidentify" \
 ## DEIDENTIFY FILE - Process Documents
 
 **Endpoint**: `POST /v1/detect/file/deidentify`
+**Operation**: `deidentify_file`
 
 Processes documents (PDF, images) to detect and redact PII. Returns async job ID.
 

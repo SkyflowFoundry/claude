@@ -1,6 +1,6 @@
-# Vault API (Data Operations)
+# Data API
 
-The Vault API handles all data operations: inserting, retrieving, updating, and deleting sensitive data with automatic tokenization.
+The Data API handles all data operations: inserting, retrieving, updating, and deleting sensitive data with automatic tokenization.
 
 **Base URL**: `https://{vaultURL}/v1/vaults/{vaultID}`
 
@@ -21,6 +21,7 @@ X-Skyflow-Account-ID: {accountID}  # optional, for audit logs
 ## INSERT - Store and Tokenize Data
 
 **Endpoint**: `POST /v1/vaults/{vaultID}/{tableName}`
+**Operation**: `insert_records`
 
 Inserts records and returns tokens for sensitive fields.
 
@@ -61,6 +62,7 @@ curl -X POST "https://$VAULT_URL/v1/vaults/$VAULT_ID/users" \
 ## GET BY ID - Retrieve Data
 
 **Endpoint**: `GET /v1/vaults/{vaultID}/{tableName}`
+**Operation**: `get_records`
 
 Retrieves records by Skyflow ID with configurable redaction.
 
@@ -92,6 +94,7 @@ curl -X GET "https://$VAULT_URL/v1/vaults/$VAULT_ID/users?skyflow_ids=id1,id2&re
 ## DETOKENIZE - Retrieve Original Values
 
 **Endpoint**: `POST /v1/vaults/{vaultID}/detokenize`
+**Operation**: `detokenize`
 
 Converts tokens back to original values (requires permissions).
 
@@ -120,29 +123,47 @@ curl -X POST "https://$VAULT_URL/v1/vaults/$VAULT_ID/detokenize" \
 
 ## UPDATE - Modify Existing Records
 
-**Endpoint**: `PUT /v1/vaults/{vaultID}/{tableName}`
+**Endpoint**: `PUT /v1/vaults/{vaultID}/{tableName}/{skyflow_id}`
+**Operation**: `update_record`
 
-Updates specific fields in existing records.
+Updates specific fields in an existing record. The record ID is specified in the URL path.
 
 ```bash
-curl -X PUT "https://$VAULT_URL/v1/vaults/$VAULT_ID/users" \
+curl -X PUT "https://$VAULT_URL/v1/vaults/$VAULT_ID/users/f8d8c7e4-63c7-4361-a89e-4e9a07e1ae9d" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "records": [{
-      "skyflow_id": "f8d8c7e4-63c7-4361-a89e-4e9a07e1ae9d",
+    "record": {
       "fields": {
         "email": "newemail@example.com"
       }
-    }]
+    },
+    "tokenization": true
   }'
 ```
+
+**Response**:
+
+```json
+{
+  "skyflow_id": "f8d8c7e4-63c7-4361-a89e-4e9a07e1ae9d",
+  "tokens": {
+    "email": "token_newabcd1234"
+  }
+}
+```
+
+**Request Body**:
+
+- `record.fields` (object): Field values to update
+- `tokenization` (boolean): Return tokens for updated fields
 
 ---
 
 ## DELETE - Remove Records
 
 **Endpoint**: `DELETE /v1/vaults/{vaultID}/{tableName}`
+**Operation**: `delete_records`
 
 Permanently removes records from the vault.
 
@@ -151,29 +172,72 @@ curl -X DELETE "https://$VAULT_URL/v1/vaults/$VAULT_ID/users" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "records": [{
-      "skyflow_id": "f8d8c7e4-63c7-4361-a89e-4e9a07e1ae9d"
-    }]
+    "skyflow_ids": [
+      "f8d8c7e4-63c7-4361-a89e-4e9a07e1ae9d",
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab"
+    ]
   }'
 ```
+
+**Response**:
+
+```json
+{
+  "RecordIDResponse": [
+    "f8d8c7e4-63c7-4361-a89e-4e9a07e1ae9d",
+    "a1b2c3d4-5678-90ab-cdef-1234567890ab"
+  ]
+}
+```
+
+**Request Body**:
+
+- `skyflow_ids` (array): Skyflow IDs of records to delete. Use `["*"]` to delete all records in the table.
 
 ---
 
-## QUERY CONNECTION - Database Integrations
+## QUERY - SQL Queries
 
-**Endpoint**: `POST /v1/vaults/{vaultID}/connections/{connectionID}/query`
+**Endpoint**: `POST /v1/vaults/{vaultID}/query`
+**Operation**: `execute_query`
 
-Executes queries through configured database connections.
+Executes SQL SELECT queries against vault data. Returns up to 25 records per query.
 
 ```bash
-curl -X POST "https://$VAULT_URL/v1/vaults/$VAULT_ID/connections/$CONNECTION_ID/query" \
+curl -X POST "https://$VAULT_URL/v1/vaults/$VAULT_ID/query" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "query": "SELECT * FROM users WHERE user_id = ?",
-    "parameters": ["user123"]
+    "query": "SELECT * FROM users WHERE skyflow_id = \"f8d8c7e4-63c7-4361-a89e-4e9a07e1ae9d\""
   }'
 ```
+
+**Response**:
+
+```json
+{
+  "records": [
+    {
+      "fields": {
+        "skyflow_id": "f8d8c7e4-63c7-4361-a89e-4e9a07e1ae9d",
+        "email": "user@example.com",
+        "ssn": "XXX-XX-6789"
+      }
+    }
+  ]
+}
+```
+
+**Request Body**:
+
+- `query` (string): SQL SELECT query with inline values
+
+**Supported SQL**:
+
+- Commands: `SELECT`
+- Operators: `>`, `<`, `=`, `AND`, `OR`, `NOT`, `LIKE`, `ILIKE`, `NULL`, `NOT NULL`
+- Keywords: `FROM`, `JOIN`, `LEFT JOIN`, `RIGHT JOIN`, `FULL JOIN`, `WHERE`, `OFFSET`, `LIMIT`
+- Functions: `AVG()`, `SUM()`, `COUNT()`, `MIN()`, `MAX()`, `REDACTION()`
 
 ---
 

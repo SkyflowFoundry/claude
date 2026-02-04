@@ -1,5 +1,5 @@
 ---
-name: plan-implementation
+name: plan-skyflow-implementation
 description: Guide users through planning a complete Skyflow implementation, from requirements assessment through production launch, using the Define-Build-Go Live framework.
 ---
 

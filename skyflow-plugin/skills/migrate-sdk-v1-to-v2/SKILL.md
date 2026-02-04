@@ -1,5 +1,5 @@
 ---
-name: migrate-v1-to-v2
+name: migrate-sdk-v1-to-v2
 description: Guide migration from Skyflow V1 SDKs to V2, covering authentication changes, client initialization, request/response structures, and SDK-specific patterns.
 ---
 

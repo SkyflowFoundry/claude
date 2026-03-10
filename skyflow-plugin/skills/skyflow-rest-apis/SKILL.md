@@ -1,5 +1,5 @@
 ---
-name: call-rest-apis
+name: skyflow-rest-apis
 description: Call the Skyflow REST APIs - including management APIs, data APIs, and detect APIs.
 ---
 

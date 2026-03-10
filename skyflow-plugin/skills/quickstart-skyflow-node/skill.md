@@ -1,3 +1,8 @@
+---
+name: quickstart-skyflow-node
+description: A quickstart guide for setting up a Node.js project with the skyflow-node SDK.
+---
+
 # Skill: Create a TypeScript Node Project with skyflow-node
 
 This guide describes a standard setup for a new Node.js project using TypeScript with ES modules and the skyflow-node SDK. ESLint and Prettier are optional.

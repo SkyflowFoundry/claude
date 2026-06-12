@@ -6,8 +6,15 @@ Part of the [Skyflow marketplace](../README.md).
 
 ## Install
 
+Add the Skyflow marketplace:
+
 ```sh
 /plugin marketplace add SkyflowFoundry/claude
+```
+
+Install the plugin:
+
+```sh
 /plugin install skyflow-developer-mcp@skyflow-marketplace
 ```
 
@@ -41,13 +48,13 @@ echo 'export SKYFLOW_ACCOUNT_ID="your-account-id-here"' >> ~/.zshrc
 
 ### Verify your setup
 
-Run this command to confirm your environment variables are set:
+Run this command to confirm your environment variables are set (it checks that the value is present without printing the secret):
 
 ```bash
-echo $SKYFLOW_BEARER_TOKEN
+[ -n "$SKYFLOW_BEARER_TOKEN" ] && echo "SKYFLOW_BEARER_TOKEN is set" || echo "SKYFLOW_BEARER_TOKEN is not set"
 ```
 
-If it prints your token, you're ready to restart Claude Code. If it prints nothing, revisit the steps above.
+If it prints `SKYFLOW_BEARER_TOKEN is set`, you're ready to restart Claude Code. If it prints `SKYFLOW_BEARER_TOKEN is not set`, revisit the steps above.
 
 ## Troubleshooting
 

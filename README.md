@@ -19,7 +19,7 @@ A Claude Code plugin marketplace that enables Skyflow's data privacy and protect
 | ------ | ------------ | --------------------- | ---- |
 | `skyflow-skills` | Guided Skyflow workflows (vault creation, REST API guidance, SDK migration, implementation planning) | None | [README](skyflow-skills-plugin/README.md) |
 | `skyflow-developer-mcp` | Developer MCP server — access to Skyflow documentation, skills, and integration resources | `SKYFLOW_BEARER_TOKEN`, `SKYFLOW_ACCOUNT_ID` | [README](skyflow-developer-mcp-plugin/README.md) |
-| `skyflow-runtime-mcp` | Runtime MCP server (optional) — on-demand de-identification of PII in text via the Detect APIs | + `SKYFLOW_VAULT_ID`, `SKYFLOW_VAULT_URL` | [README](skyflow-runtime-mcp-plugin/README.md) |
+| `skyflow-runtime-mcp` | Runtime MCP server (optional) — on-demand de-identification of PII in text via the Detect APIs | `SKYFLOW_BEARER_TOKEN`, `SKYFLOW_ACCOUNT_ID`, `SKYFLOW_VAULT_ID`, `SKYFLOW_VAULT_URL` | [README](skyflow-runtime-mcp-plugin/README.md) |
 
 Most users want `skyflow-skills` plus `skyflow-developer-mcp`. Add `skyflow-runtime-mcp` only if you need on-demand de-identification.
 
@@ -39,12 +39,24 @@ Most users want `skyflow-skills` plus `skyflow-developer-mcp`. Add `skyflow-runt
    /plugin marketplace add SkyflowFoundry/claude
    ```
 
-3. Install the plugins you want:
+3. Install the plugins you want.
+
+   Install the skills plugin:
 
    ```sh
    /plugin install skyflow-skills@skyflow-marketplace
+   ```
+
+   Install the Developer MCP plugin:
+
+   ```sh
    /plugin install skyflow-developer-mcp@skyflow-marketplace
-   /plugin install skyflow-runtime-mcp@skyflow-marketplace   # optional
+   ```
+
+   Optionally, install the Runtime MCP plugin:
+
+   ```sh
+   /plugin install skyflow-runtime-mcp@skyflow-marketplace
    ```
 
 4. Set up environment variables for the MCP plugins, then restart Claude Code. The `skyflow-skills` plugin needs none; the MCP plugins read the `SKYFLOW_*` variables described in their READMEs:

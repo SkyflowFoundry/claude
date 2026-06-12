@@ -8,8 +8,15 @@ Part of the [Skyflow marketplace](../README.md).
 
 ## Install
 
+Add the Skyflow marketplace:
+
 ```sh
 /plugin marketplace add SkyflowFoundry/claude
+```
+
+Install the plugin:
+
+```sh
 /plugin install skyflow-runtime-mcp@skyflow-marketplace
 ```
 
@@ -53,13 +60,13 @@ To obtain your bearer token and account ID, see the [Skyflow API Authentication 
 
 ### Verify your setup
 
-Run this command to confirm your environment variables are set:
+Run this command to confirm your environment variables are set (it checks that the value is present without printing it):
 
 ```bash
-echo $SKYFLOW_VAULT_ID
+[ -n "$SKYFLOW_VAULT_ID" ] && echo "SKYFLOW_VAULT_ID is set" || echo "SKYFLOW_VAULT_ID is not set"
 ```
 
-If it prints your vault ID, you're ready to restart Claude Code. If it prints nothing, revisit the steps above.
+If it prints `SKYFLOW_VAULT_ID is set`, you're ready to restart Claude Code. If it prints `SKYFLOW_VAULT_ID is not set`, revisit the steps above.
 
 ## Troubleshooting
 

@@ -7,7 +7,7 @@
       "name": "Proprietary",
       "url": "https://docs.skyflow.com"
     },
-    "version": "2026.01"
+    "version": "2026.04"
   },
   "servers": [
     {
@@ -84,6 +84,9 @@
           {
             "Bearer": []
           }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     },
@@ -135,6 +138,9 @@
           {
             "Bearer": []
           }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     },
@@ -186,6 +192,9 @@
           {
             "Bearer": []
           }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     },
@@ -237,6 +246,9 @@
           {
             "Bearer": []
           }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     },
@@ -288,6 +300,9 @@
           {
             "Bearer": []
           }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     },
@@ -339,6 +354,9 @@
           {
             "Bearer": []
           }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     },
@@ -390,6 +408,9 @@
           {
             "Bearer": []
           }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     },
@@ -441,6 +462,9 @@
           {
             "Bearer": []
           }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     },
@@ -492,6 +516,9 @@
           {
             "Bearer": []
           }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     },
@@ -543,6 +570,9 @@
           {
             "Bearer": []
           }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     },
@@ -641,6 +671,9 @@
               }
             }
           }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     },
@@ -692,6 +725,9 @@
           {
             "Bearer": []
           }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     },
@@ -743,6 +779,9 @@
           {
             "Bearer": []
           }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     },
@@ -808,6 +847,9 @@
         ],
         "x-required-query-parameters": [
           "vault_id"
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     }
@@ -857,7 +899,9 @@
               "pptx",
               "xml",
               "dcm",
-              "jsonl"
+              "jsonl",
+              "zip",
+              "gif"
             ],
             "type": "string",
             "description": "Extension of the processed file.",
@@ -1411,7 +1455,8 @@
               "xml",
               "dcm",
               "jsonl",
-              "zip"
+              "zip",
+              "gif"
             ],
             "type": "string",
             "description": "Format of the file.",
@@ -1762,7 +1807,8 @@
               "pptx",
               "xml",
               "dcm",
-              "jsonl"
+              "jsonl",
+              "gif"
             ],
             "type": "string",
             "description": "Extension of the processed file.",
@@ -2314,7 +2360,9 @@
               "tif",
               "tiff",
               "png",
-              "bmp"
+              "bmp",
+              "dcm",
+              "gif"
             ],
             "type": "string",
             "description": "Format of the file.",
@@ -2434,7 +2482,8 @@
           "data_format": {
             "enum": [
               "json",
-              "xml"
+              "xml",
+              "jsonl"
             ],
             "type": "string",
             "description": "Format of the file.",
@@ -2495,11 +2544,8 @@
               "txt",
               "csv",
               "json",
-              "xls",
-              "xlsx",
-              "doc",
-              "docx",
-              "xml"
+              "xml",
+              "jsonl"
             ],
             "type": "string",
             "description": "Format of the file.",
@@ -3497,7 +3543,7 @@
               "format": "enum",
               "maxLength": 70
             },
-            "description": "Entity types to replace with vault tokens."
+            "description": "Entity types to replace with vault tokens. Only supported for CSV file types."
           },
           "entity_only": {
             "type": "array",
@@ -3759,7 +3805,7 @@
               "format": "enum",
               "maxLength": 70
             },
-            "description": "Entity types to replace with vault tokens."
+            "description": "Entity types to replace with vault tokens. Not supported for audio, document, image, presentation, or most spreadsheet file types."
           },
           "entity_only": {
             "type": "array",
@@ -3938,128 +3984,6 @@
         "x-visibility": [
           "external"
         ]
-      },
-      "DeidentifyFileRequest_deidentify_file": {
-        "required": [
-          "file",
-          "vault_id"
-        ],
-        "type": "object",
-        "properties": {
-          "file": {
-            "$ref": "#/components/schemas/FileData"
-          },
-          "vault_id": {
-            "type": "string",
-            "description": "ID of a vault that you have Detect Invoker or Vault Owner permissions for."
-          },
-          "entity_types": {
-            "type": "array",
-            "items": {
-              "enum": [
-                "age",
-                "bank_account",
-                "credit_card",
-                "credit_card_expiration",
-                "cvv",
-                "date",
-                "date_interval",
-                "dob",
-                "driver_license",
-                "email_address",
-                "healthcare_number",
-                "ip_address",
-                "location",
-                "name",
-                "numerical_pii",
-                "phone_number",
-                "ssn",
-                "url",
-                "vehicle_id",
-                "medical_code",
-                "name_family",
-                "name_given",
-                "account_number",
-                "event",
-                "filename",
-                "gender",
-                "language",
-                "location_address",
-                "location_city",
-                "location_coordinate",
-                "location_country",
-                "location_state",
-                "location_zip",
-                "marital_status",
-                "money",
-                "name_medical_professional",
-                "occupation",
-                "organization",
-                "organization_medical_facility",
-                "origin",
-                "passport_number",
-                "password",
-                "physical_attribute",
-                "political_affiliation",
-                "religion",
-                "time",
-                "username",
-                "zodiac_sign",
-                "blood_type",
-                "condition",
-                "dose",
-                "drug",
-                "injury",
-                "medical_process",
-                "statistics",
-                "routing_number",
-                "corporate_action",
-                "financial_metric",
-                "product",
-                "trend",
-                "duration",
-                "location_address_street",
-                "all",
-                "sexuality",
-                "effect",
-                "project",
-                "organization_id",
-                "day",
-                "month",
-                "year"
-              ],
-              "type": "string",
-              "format": "enum",
-              "maxLength": 70
-            },
-            "description": "Entities to detect and de-identify."
-          },
-          "token_type": {
-            "$ref": "#/components/schemas/TokenTypeMapping_deidentify_file"
-          },
-          "allow_regex": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Regular expressions to display in plaintext. Entities appear in plaintext if an expression matches either the entirety of a detected entity or a substring of it. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext."
-          },
-          "restrict_regex": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict_regex` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict_regex` pattern only matches a substring of it, the `restrict_regex` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings."
-          },
-          "transformations": {
-            "$ref": "#/components/schemas/Transformations"
-          },
-          "configuration_id": {
-            "type": "string",
-            "description": "ID of the Detect configuration to use for de-identification. Can't be specified with fields other than `vault_id`, `text`, and `file`."
-          }
-        },
-        "description": "Request to deidentify a file."
       },
       "DeidentifyFileAudioRequest_deidentify_audio": {
         "required": [
@@ -4350,143 +4274,6 @@
         },
         "description": "Request to deidentify a file."
       },
-      "DeidentifyFileDocumentPdfRequest_deidentify_pdf": {
-        "required": [
-          "file",
-          "vault_id"
-        ],
-        "type": "object",
-        "properties": {
-          "file": {
-            "$ref": "#/components/schemas/FileData_deidentify_pdf"
-          },
-          "vault_id": {
-            "type": "string",
-            "description": "ID of a vault that you have Detect Invoker or Vault Owner permissions for."
-          },
-          "density": {
-            "maximum": 1000,
-            "type": "integer",
-            "default": 200,
-            "description": "Pixel density at which to process the PDF file.",
-            "format": "int32"
-          },
-          "max_resolution": {
-            "maximum": 3000,
-            "minimum": 72,
-            "type": "integer",
-            "default": 3000,
-            "description": "Max resolution at which to process the PDF file.",
-            "format": "int32"
-          },
-          "entity_types": {
-            "type": "array",
-            "items": {
-              "enum": [
-                "age",
-                "bank_account",
-                "credit_card",
-                "credit_card_expiration",
-                "cvv",
-                "date",
-                "date_interval",
-                "dob",
-                "driver_license",
-                "email_address",
-                "healthcare_number",
-                "ip_address",
-                "location",
-                "name",
-                "numerical_pii",
-                "phone_number",
-                "ssn",
-                "url",
-                "vehicle_id",
-                "medical_code",
-                "name_family",
-                "name_given",
-                "account_number",
-                "event",
-                "filename",
-                "gender",
-                "language",
-                "location_address",
-                "location_city",
-                "location_coordinate",
-                "location_country",
-                "location_state",
-                "location_zip",
-                "marital_status",
-                "money",
-                "name_medical_professional",
-                "occupation",
-                "organization",
-                "organization_medical_facility",
-                "origin",
-                "passport_number",
-                "password",
-                "physical_attribute",
-                "political_affiliation",
-                "religion",
-                "time",
-                "username",
-                "zodiac_sign",
-                "blood_type",
-                "condition",
-                "dose",
-                "drug",
-                "injury",
-                "medical_process",
-                "statistics",
-                "routing_number",
-                "corporate_action",
-                "financial_metric",
-                "product",
-                "trend",
-                "duration",
-                "location_address_street",
-                "all",
-                "sexuality",
-                "effect",
-                "project",
-                "organization_id",
-                "day",
-                "month",
-                "year"
-              ],
-              "type": "string",
-              "format": "enum",
-              "maxLength": 70
-            },
-            "description": "Entities to detect and de-identify."
-          },
-          "token_type": {
-            "$ref": "#/components/schemas/TokenTypeMapping_deidentify_pdf"
-          },
-          "allow_regex": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Regular expressions to display in plaintext. Entities appear in plaintext if an expression matches either the entirety of a detected entity or a substring of it. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext."
-          },
-          "restrict_regex": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict_regex` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict_regex` pattern only matches a substring of it, the `restrict_regex` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings."
-          },
-          "transformations": {
-            "$ref": "#/components/schemas/Transformations"
-          },
-          "configuration_id": {
-            "type": "string",
-            "description": "ID of the Detect configuration to use for de-identification. Can't be specified with fields other than `vault_id`, `text`, and `file`."
-          }
-        },
-        "description": "Request to deidentify a pdf file."
-      },
       "DeidentifyFileImageRequest_deidentify_image": {
         "required": [
           "file",
@@ -4625,6 +4412,143 @@
           }
         },
         "description": "Request to deidentify a image file."
+      },
+      "DeidentifyFileDocumentPdfRequest_deidentify_pdf": {
+        "required": [
+          "file",
+          "vault_id"
+        ],
+        "type": "object",
+        "properties": {
+          "file": {
+            "$ref": "#/components/schemas/FileData_deidentify_pdf"
+          },
+          "vault_id": {
+            "type": "string",
+            "description": "ID of a vault that you have Detect Invoker or Vault Owner permissions for."
+          },
+          "density": {
+            "maximum": 1000,
+            "type": "integer",
+            "default": 200,
+            "description": "Pixel density at which to process the PDF file.",
+            "format": "int32"
+          },
+          "max_resolution": {
+            "maximum": 3000,
+            "minimum": 72,
+            "type": "integer",
+            "default": 3000,
+            "description": "Max resolution at which to process the PDF file.",
+            "format": "int32"
+          },
+          "entity_types": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "age",
+                "bank_account",
+                "credit_card",
+                "credit_card_expiration",
+                "cvv",
+                "date",
+                "date_interval",
+                "dob",
+                "driver_license",
+                "email_address",
+                "healthcare_number",
+                "ip_address",
+                "location",
+                "name",
+                "numerical_pii",
+                "phone_number",
+                "ssn",
+                "url",
+                "vehicle_id",
+                "medical_code",
+                "name_family",
+                "name_given",
+                "account_number",
+                "event",
+                "filename",
+                "gender",
+                "language",
+                "location_address",
+                "location_city",
+                "location_coordinate",
+                "location_country",
+                "location_state",
+                "location_zip",
+                "marital_status",
+                "money",
+                "name_medical_professional",
+                "occupation",
+                "organization",
+                "organization_medical_facility",
+                "origin",
+                "passport_number",
+                "password",
+                "physical_attribute",
+                "political_affiliation",
+                "religion",
+                "time",
+                "username",
+                "zodiac_sign",
+                "blood_type",
+                "condition",
+                "dose",
+                "drug",
+                "injury",
+                "medical_process",
+                "statistics",
+                "routing_number",
+                "corporate_action",
+                "financial_metric",
+                "product",
+                "trend",
+                "duration",
+                "location_address_street",
+                "all",
+                "sexuality",
+                "effect",
+                "project",
+                "organization_id",
+                "day",
+                "month",
+                "year"
+              ],
+              "type": "string",
+              "format": "enum",
+              "maxLength": 70
+            },
+            "description": "Entities to detect and de-identify."
+          },
+          "token_type": {
+            "$ref": "#/components/schemas/TokenTypeMapping_deidentify_pdf"
+          },
+          "allow_regex": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Regular expressions to display in plaintext. Entities appear in plaintext if an expression matches either the entirety of a detected entity or a substring of it. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext."
+          },
+          "restrict_regex": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict_regex` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict_regex` pattern only matches a substring of it, the `restrict_regex` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings."
+          },
+          "transformations": {
+            "$ref": "#/components/schemas/Transformations"
+          },
+          "configuration_id": {
+            "type": "string",
+            "description": "ID of the Detect configuration to use for de-identification. Can't be specified with fields other than `vault_id`, `text`, and `file`."
+          }
+        },
+        "description": "Request to deidentify a pdf file."
       },
       "DeidentifyFileRequest_deidentify_presentation": {
         "required": [
@@ -5133,6 +5057,128 @@
           }
         },
         "description": "Request to re-identify file."
+      },
+      "DeidentifyFileRequest_deidentify_file": {
+        "required": [
+          "file",
+          "vault_id"
+        ],
+        "type": "object",
+        "properties": {
+          "file": {
+            "$ref": "#/components/schemas/FileData"
+          },
+          "vault_id": {
+            "type": "string",
+            "description": "ID of a vault that you have Detect Invoker or Vault Owner permissions for."
+          },
+          "entity_types": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "age",
+                "bank_account",
+                "credit_card",
+                "credit_card_expiration",
+                "cvv",
+                "date",
+                "date_interval",
+                "dob",
+                "driver_license",
+                "email_address",
+                "healthcare_number",
+                "ip_address",
+                "location",
+                "name",
+                "numerical_pii",
+                "phone_number",
+                "ssn",
+                "url",
+                "vehicle_id",
+                "medical_code",
+                "name_family",
+                "name_given",
+                "account_number",
+                "event",
+                "filename",
+                "gender",
+                "language",
+                "location_address",
+                "location_city",
+                "location_coordinate",
+                "location_country",
+                "location_state",
+                "location_zip",
+                "marital_status",
+                "money",
+                "name_medical_professional",
+                "occupation",
+                "organization",
+                "organization_medical_facility",
+                "origin",
+                "passport_number",
+                "password",
+                "physical_attribute",
+                "political_affiliation",
+                "religion",
+                "time",
+                "username",
+                "zodiac_sign",
+                "blood_type",
+                "condition",
+                "dose",
+                "drug",
+                "injury",
+                "medical_process",
+                "statistics",
+                "routing_number",
+                "corporate_action",
+                "financial_metric",
+                "product",
+                "trend",
+                "duration",
+                "location_address_street",
+                "all",
+                "sexuality",
+                "effect",
+                "project",
+                "organization_id",
+                "day",
+                "month",
+                "year"
+              ],
+              "type": "string",
+              "format": "enum",
+              "maxLength": 70
+            },
+            "description": "Entities to detect and de-identify."
+          },
+          "token_type": {
+            "$ref": "#/components/schemas/TokenTypeMapping_deidentify_file"
+          },
+          "allow_regex": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Regular expressions to display in plaintext. Entities appear in plaintext if an expression matches either the entirety of a detected entity or a substring of it. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext."
+          },
+          "restrict_regex": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict_regex` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict_regex` pattern only matches a substring of it, the `restrict_regex` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings."
+          },
+          "transformations": {
+            "$ref": "#/components/schemas/Transformations"
+          },
+          "configuration_id": {
+            "type": "string",
+            "description": "ID of the Detect configuration to use for de-identification. Can't be specified with fields other than `vault_id`, `text`, and `file`."
+          }
+        },
+        "description": "Request to deidentify a file."
       }
     },
     "securitySchemes": {

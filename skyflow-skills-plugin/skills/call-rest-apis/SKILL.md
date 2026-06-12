@@ -26,13 +26,13 @@ You are an expert on Skyflow's REST APIs. Your role is to provide quick, accurat
 | Update           | Data       | PUT    | `/v1/vaults/{id}/{table}/{skyflow_id}`     | [data-api.md](data-api.md)             |
 | Delete           | Data       | DELETE | `/v1/vaults/{id}/{table}`                  | [data-api.md](data-api.md)             |
 | Query            | Data       | POST   | `/v1/vaults/{id}/query`                    | [data-api.md](data-api.md)             |
-| Deidentify text  | Detect     | POST   | `/v1/detect/deidentify`                    | [detect-api.md](detect-api.md)         |
-| Reidentify text  | Detect     | POST   | `/v1/detect/reidentify`                    | [detect-api.md](detect-api.md)         |
-| Deidentify file  | Detect     | POST   | `/v1/detect/file/deidentify`               | [detect-api.md](detect-api.md)         |
+| Deidentify text  | Detect     | POST   | `/v1/detect/deidentify/string`             | [detect-api.md](detect-api.md)         |
+| Reidentify text  | Detect     | POST   | `/v1/detect/reidentify/string`             | [detect-api.md](detect-api.md)         |
+| Deidentify file  | Detect     | POST   | `/v1/detect/deidentify/file`               | [detect-api.md](detect-api.md)         |
 | List vaults      | Management | GET    | `/v1/vaults`                               | [management-api.md](management-api.md) |
-| Create table     | Management | POST   | `/v1/vaults/{id}/schemas/{schema}/tables`  | [management-api.md](management-api.md) |
-| Create policy    | Management | POST   | `/v1/vaults/{id}/policies`                 | [management-api.md](management-api.md) |
-| Get audit logs   | Management | GET    | `/v1/audit/logs`                           | [management-api.md](management-api.md) |
+| Update vault/schema | Management | PATCH | `/v1/vaults/{id}`                         | [management-api.md](management-api.md) |
+| Create policy    | Management | POST   | `/v1/policies`                             | [management-api.md](management-api.md) |
+| Get audit events | Management | GET    | `/v1/audit/events`                         | [management-api.md](management-api.md) |
 
 ## OpenAPI Specifications
 
@@ -48,16 +48,14 @@ All Skyflow APIs require bearer token authentication.
 
 ### Generating a Bearer Token
 
-**Using service account credentials**:
+Exchange a signed JWT assertion (built from your service account credentials) for a bearer token. See [management-api.md](management-api.md) for how to construct the assertion.
 
 ```bash
-curl -X POST https://manage.skyflowapis.com/v1/auth/token \
+curl -X POST https://manage.skyflowapis.com/v1/auth/sa/oauth/token \
   -H "Content-Type: application/json" \
   -d '{
-    "clientID": "your_client_id",
-    "clientSecret": "your_client_secret",
-    "keyID": "your_key_id",
-    "privateKey": "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"
+    "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+    "assertion": "<your-signed-jwt>"
   }'
 ```
 
@@ -66,8 +64,7 @@ curl -X POST https://manage.skyflowapis.com/v1/auth/token \
 ```json
 {
   "accessToken": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "tokenType": "Bearer",
-  "expiresIn": 3600
+  "tokenType": "Bearer"
 }
 ```
 

@@ -1,0 +1,10 @@
+{
+  "name": "skyflow-developer-mcp",
+  "description": "Skyflow Developer MCP server for Claude Code: access to Skyflow developer documentation, skills, and integration resources.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Joseph McCarron",
+    "email": "joe@skyflow.com",
+    "url": "https://github.com/jstjoe"
+  }
+}

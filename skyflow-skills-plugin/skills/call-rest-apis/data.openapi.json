@@ -7,7 +7,7 @@
       "name": "Proprietary",
       "url": "https://docs.skyflow.com"
     },
-    "version": "2025.10"
+    "version": "2026.04"
   },
   "servers": [
     {
@@ -48,7 +48,7 @@
           {
             "name": "filterOps.context.changeID",
             "in": "query",
-            "description": "ID for the audit event.",
+            "description": "ID for the audit event. Use this to uniquely identify a specific audit record.",
             "schema": {
               "type": "string"
             }
@@ -56,7 +56,7 @@
           {
             "name": "filterOps.context.requestID",
             "in": "query",
-            "description": "ID for the request that caused the event.",
+            "description": "ID for the request that caused the event. Use to correlate multiple audit events triggered by a single API request.",
             "schema": {
               "type": "string"
             }
@@ -64,7 +64,7 @@
           {
             "name": "filterOps.context.sessionID",
             "in": "query",
-            "description": "ID for the session in which the request was sent.",
+            "description": "ID for the session in which the request was sent. Present when a session context is available.",
             "schema": {
               "type": "string"
             }
@@ -72,7 +72,7 @@
           {
             "name": "filterOps.context.actor",
             "in": "query",
-            "description": "Member who sent the request. Depending on `actorType`, this may be a user ID or a service account ID.",
+            "description": "Member who sent the request. Depending on `actorType`, this may be a user ID or a service account ID. For users this is their email address.",
             "schema": {
               "type": "string"
             }
@@ -80,7 +80,7 @@
           {
             "name": "filterOps.context.actorType",
             "in": "query",
-            "description": "undocumented_enums:['GROUP','SQL_SERVICE_ACCOUNT'];Type of member who sent the request.",
+            "description": "Type of member who sent the request.",
             "schema": {
               "enum": [
                 "NONE",
@@ -119,7 +119,7 @@
           {
             "name": "filterOps.context.origin",
             "in": "query",
-            "description": "HTTP Origin request header (including scheme, hostname, and port) of the request.",
+            "description": "HTTP Origin request header (including scheme, hostname, and port) of the request. Present only for browser-originated requests. Absent for server-to-server API calls.",
             "schema": {
               "type": "string"
             }
@@ -127,13 +127,15 @@
           {
             "name": "filterOps.context.authMode",
             "in": "query",
+            "description": "Authentication mode the `actor` used. `OKTA_JWT`: Federated identity via Okta SSO. `SERVICE_ACCOUNT_JWT`: Service account JWT (machine-to-machine). `PAT_JWT`: Personal Access Token issued as a JWT. `API_KEY`: Static API key.",
             "schema": {
               "enum": [
                 "AUTH_NONE",
                 "OKTA_JWT",
                 "SERVICE_ACCOUNT_JWT",
                 "PAT_JWT",
-                "API_KEY"
+                "API_KEY",
+                "STS"
               ],
               "type": "string",
               "format": "enum"
@@ -142,7 +144,7 @@
           {
             "name": "filterOps.context.jwtID",
             "in": "query",
-            "description": "ID of the JWT token.",
+            "description": "ID of the JWT token (the `jti` claim). Identifies the specific token used for this request.",
             "schema": {
               "type": "string"
             }
@@ -150,7 +152,7 @@
           {
             "name": "filterOps.context.bearerTokenContextID",
             "in": "query",
-            "description": "Embedded User Context.",
+            "description": "User context embedded in the bearer token. Present when a bearer token encodes additional user context.",
             "schema": {
               "type": "string"
             }
@@ -250,6 +252,9 @@
         ],
         "x-required-query-parameters": [
           "filterOps.accountID"
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     },
@@ -315,6 +320,9 @@
           {
             "Bearer": []
           }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     },
@@ -379,6 +387,9 @@
           {
             "Bearer": []
           }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     },
@@ -441,6 +452,9 @@
           {
             "Bearer": []
           }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     },
@@ -506,6 +520,9 @@
           {
             "Bearer": []
           }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     },
@@ -680,6 +697,9 @@
           "column_name",
           "column_values",
           "order_by"
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       },
       "post": {
@@ -747,6 +767,9 @@
           {
             "Bearer": []
           }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       },
       "delete": {
@@ -819,6 +842,9 @@
           {
             "Bearer": []
           }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     },
@@ -853,6 +879,51 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "redaction",
+            "in": "query",
+            "schema": {
+              "enum": [
+                "DEFAULT",
+                "REDACTED",
+                "MASKED",
+                "PLAIN_TEXT"
+              ],
+              "type": "string",
+              "format": "enum"
+            }
+          },
+          {
+            "name": "tokenization",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "downloadURL",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "returnFileMetadata",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
             }
           }
         ],
@@ -889,6 +960,16 @@
           {
             "Bearer": []
           }
+        ],
+        "x-external-query-parameters": [
+          "redaction",
+          "tokenization",
+          "returnFileMetadata",
+          "downloadURL",
+          "fields"
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       },
       "put": {
@@ -967,6 +1048,9 @@
           {
             "Bearer": []
           }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       },
       "delete": {
@@ -1038,6 +1122,9 @@
           {
             "Bearer": []
           }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     },
@@ -1046,7 +1133,7 @@
         "tags": [
           "Files"
         ],
-        "summary": "Upload File (Deprecated)",
+        "summary": "Upload File",
         "description": "Uploads a file to the specified record.",
         "operationId": "upload_file",
         "parameters": [
@@ -1122,10 +1209,14 @@
             "$ref": "#/components/responses/500"
           }
         },
+        "deprecated": true,
         "security": [
           {
             "Bearer": []
           }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     },
@@ -1204,6 +1295,9 @@
           {
             "Bearer": []
           }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     },
@@ -1275,10 +1369,14 @@
             "$ref": "#/components/responses/500"
           }
         },
+        "deprecated": true,
         "security": [
           {
             "Bearer": []
           }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     },
@@ -1302,7 +1400,7 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "$ref": "#/components/schemas/UploadFileRequestV2"
               }
@@ -1343,6 +1441,76 @@
           {
             "Bearer": []
           }
+        ],
+        "x-fern-audiences": [
+          "external"
+        ]
+      }
+    },
+    "/v2/vaults/{vaultID}/files/uploadStatus": {
+      "post": {
+        "tags": [
+          "Files"
+        ],
+        "summary": "Get Files Upload Status",
+        "description": "Returns the upload and scan status for the specified file columns across multiple records.",
+        "operationId": "get_files_upload_status",
+        "parameters": [
+          {
+            "name": "vaultID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetFilesUploadStatusRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetFilesUploadStatusResponse"
+                }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/x-request-id"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-fern-audiences": [
+          "external"
         ]
       }
     }
@@ -1366,27 +1534,39 @@
         ]
       },
       "AuditEvent_Context": {
+        "required": [
+          "changeID",
+          "requestID",
+          "traceID",
+          "actor",
+          "actorType",
+          "accessType",
+          "ipAddress",
+          "authMode",
+          "jwtID"
+        ],
         "type": "object",
         "properties": {
           "changeID": {
             "type": "string",
-            "description": "ID for the audit event."
+            "description": "ID for the audit event. Use this to uniquely identify a specific audit record."
           },
           "requestID": {
             "type": "string",
-            "description": "ID for the request that caused the event."
+            "description": "ID for the request that caused the event. Use to correlate multiple audit events triggered by a single API request."
           },
           "traceID": {
             "type": "string",
-            "description": "ID for the request set by the service that received the request."
+            "description": "ID for the request set by the service that received the request. Use with your distributed tracing tool to follow a request across Skyflow services."
           },
           "sessionID": {
+            "deprecated": true,
             "type": "string",
-            "description": "ID for the session in which the request was sent."
+            "description": "ID for the session in which the request was sent. Present when a session context is available."
           },
           "actor": {
             "type": "string",
-            "description": "Member who sent the request. Depending on `actorType`, this may be a user ID or a service account ID."
+            "description": "Member who sent the request. Depending on `actorType`, this may be a user ID or a service account ID. For users this is their email address."
           },
           "actorType": {
             "enum": [
@@ -1412,25 +1592,35 @@
           },
           "origin": {
             "type": "string",
-            "description": "HTTP Origin request header (including scheme, hostname, and port) of the request."
+            "description": "HTTP Origin request header (including scheme, hostname, and port) of the request. Present only for browser-originated requests. Absent for server-to-server API calls."
           },
           "authMode": {
             "enum": [
               "OKTA_JWT",
               "SERVICE_ACCOUNT_JWT",
-              "PAT_JWT"
+              "PAT_JWT",
+              "API_KEY",
+              "STS"
             ],
             "type": "string",
-            "description": "Authentication mode the `actor` used.",
+            "description": "Authentication mode the `actor` used. `OKTA_JWT`: Federated identity via Okta SSO. `SERVICE_ACCOUNT_JWT`: Service account JWT (machine-to-machine). `PAT_JWT`: Personal Access Token issued as a JWT. `API_KEY`: Static API key.",
             "format": "enum"
           },
           "jwtID": {
             "type": "string",
-            "description": "ID of the JWT token."
+            "description": "ID of the JWT token (the `jti` claim). Identifies the specific token used for this request."
           },
           "bearerTokenContextID": {
             "type": "string",
-            "description": "User context embedded in the bearer token."
+            "description": "User context embedded in the bearer token. Present when a bearer token encodes additional user context."
+          },
+          "keyID": {
+            "type": "string",
+            "description": "Key ID of the API key used to make the request. Present when `authMode` is `SERVICE_ACCOUNT_JWT` or `API_KEY`. Absent for `PAT_JWT` and `OKTA_JWT`."
+          },
+          "subject": {
+            "type": "string",
+            "description": "This represents the user on whose behalf the request is made. It may differ from the actor (act) when delegation is involved."
           }
         },
         "description": "Context for an audit event.",
@@ -1443,15 +1633,20 @@
         "properties": {
           "content": {
             "type": "string",
-            "description": "The entire body of the data requested or the query fired."
+            "description": "The entire body of the request or response."
           }
         },
-        "description": "Sensitive data (if any).",
+        "description": "Data (if any).",
         "x-visibility": [
           "external"
         ]
       },
       "AuditEvent_NestedResponse": {
+        "required": [
+          "code",
+          "message",
+          "identifier"
+        ],
         "type": "object",
         "properties": {
           "code": {
@@ -1461,11 +1656,11 @@
           },
           "message": {
             "type": "string",
-            "description": "Status message for the operation."
+            "description": "Status message for the operation. Describes the failure reason for errored items. Empty string on success."
           },
           "identifier": {
             "type": "string",
-            "description": "ID for the resource that was modified."
+            "description": "ID for the resource that was modified, in `{resourceType}/{resourceID}` format. For example, `VAULT/cd1d815aa09b4cbfbb803bd20349f202`. May be empty if the item identifier couldn't be resolved."
           },
           "data": {
             "allOf": [
@@ -1473,7 +1668,7 @@
                 "$ref": "#/components/schemas/AuditEvent_Data"
               }
             ],
-            "description": "Sensitive data (if any) for the response."
+            "description": "Data (if any) for the response."
           }
         },
         "x-visibility": [
@@ -1481,11 +1676,16 @@
         ]
       },
       "AuditEvent_Response": {
+        "required": [
+          "code",
+          "message",
+          "timestamp"
+        ],
         "type": "object",
         "properties": {
           "code": {
             "type": "integer",
-            "description": "Status code for the overall operation.",
+            "description": "Status code for the overall operation. For batch operations, a 200 doesn't mean every item succeeded. Check `nestedResponse` for per-operation outcomes.",
             "format": "int32"
           },
           "message": {
@@ -1498,21 +1698,21 @@
                 "$ref": "#/components/schemas/AuditEvent_Data"
               }
             ],
-            "description": "Sensitive data (if any) for the response."
+            "description": "Data (if any) for the response."
           },
           "timestamp": {
             "type": "string",
-            "description": "Time when the response was created."
+            "description": "Time when the response was created. RFC 3339 format with nanosecond precision."
           },
           "nestedResponse": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/AuditEvent_NestedResponse"
             },
-            "description": "Details for nested operations, if any."
+            "description": "Details for nested operations, if any. An array of per-item results returned for batch operations. Absent for non-batch operations."
           }
         },
-        "description": "Contains fields for defining Response Properties.",
+        "description": "Response properties of the event.",
         "x-visibility": [
           "external"
         ]
@@ -1634,10 +1834,6 @@
         ],
         "type": "object",
         "properties": {
-          "vaultID": {
-            "type": "string",
-            "description": "ID of the vault."
-          },
           "records": {
             "type": "array",
             "items": {
@@ -1780,14 +1976,6 @@
         },
         "type": "object",
         "properties": {
-          "vaultID": {
-            "type": "string",
-            "description": "ID of the vault."
-          },
-          "objectName": {
-            "type": "string",
-            "description": "Name of the table."
-          },
           "skyflow_ids": {
             "type": "array",
             "items": {
@@ -2084,6 +2272,45 @@
           "external"
         ]
       },
+      "FileUploadStatusRecord": {
+        "required": [
+          "tableName",
+          "skyflowID",
+          "fileFields"
+        ],
+        "type": "object",
+        "properties": {
+          "tableName": {
+            "type": "string",
+            "description": "Name of the table to perform the operation on."
+          },
+          "skyflowID": {
+            "type": "string",
+            "description": "`skyflow_id` of the record."
+          },
+          "fileFields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Array of column names for the file upload status."
+          }
+        },
+        "additionalProperties": false
+      },
+      "FileUploadStatusResponseRecord": {
+        "type": "object",
+        "properties": {
+          "fields": {
+            "type": "object",
+            "description": "Fields containing skyflow_id and per-column file scan status."
+          },
+          "tableName": {
+            "type": "string",
+            "description": "Name of the table."
+          }
+        }
+      },
       "GetFieldRecords": {
         "example": {
           "fields": {
@@ -2123,6 +2350,12 @@
         },
         "type": "object",
         "properties": {
+          "file_status": {
+            "enum": [],
+            "type": "string",
+            "description": "Status of the file.",
+            "format": "enum"
+          },
           "av_scan_status": {
             "enum": [
               "SCAN_CLEAN",
@@ -2140,20 +2373,58 @@
           }
         }
       },
+      "GetFilesUploadStatusRequest": {
+        "required": [
+          "records"
+        ],
+        "type": "object",
+        "properties": {
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileUploadStatusRecord"
+            },
+            "description": "Array of record objects corresponding to the specified files."
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetFilesUploadStatusResponse": {
+        "example": {
+          "records": [
+            {
+              "fields": {
+                "skyflow_id": "2a62a1fd-0399-4338-bf05-e2877c6a7bd3",
+                "passport": {
+                  "file_status": "UPLOADED",
+                  "av_scan_status": "",
+                  "mimetype_status": ""
+                }
+              },
+              "tableName": "onboarding"
+            }
+          ]
+        },
+        "type": "object",
+        "properties": {
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileUploadStatusResponseRecord"
+            },
+            "description": "Array of record objects with file scan status for the specified files."
+          }
+        }
+      },
       "GetQueryRequest": {
         "example": {
           "query": "select * from opportunities where id=\"01010000ade21cded569d43944544ec6\""
         },
         "required": [
-          "vaultID",
           "query"
         ],
         "type": "object",
         "properties": {
-          "vaultID": {
-            "type": "string",
-            "description": "ID of the vault."
-          },
           "query": {
             "type": "string",
             "description": "The SQL query to execute.<br><br><b>Supported commands:</b> <ul> <li><code>SELECT</code></li> </ul> <b>Supported operators:</b> <ul> <li><code>&gt;</code></li> <li><code>&lt;</code></li> <li><code>=</code></li> <li><code>AND</code></li> <li><code>OR</code></li> <li><code>NOT</code></li> <li><code>LIKE</code></li> <li><code>ILIKE</code></li> <li><code>NULL</code></li> <li><code>NOT NULL</code></li> </ul> <b>Supported keywords:</b> <ul> <li><code>FROM</code></li> <li><code>JOIN</code></li> <li><code>INNER JOIN</code></li> <li><code>LEFT OUTER JOIN</code></li> <li><code>LEFT JOIN</code></li> <li><code>RIGHT OUTER JOIN</code></li> <li><code>RIGHT JOIN</code></li> <li><code>FULL OUTER JOIN</code></li> <li><code>FULL JOIN</code></li> <li><code>OFFSET</code></li> <li><code>LIMIT</code></li> <li><code>WHERE</code></li> </ul> <b>Supported functions:</b> <ul> <li><code>AVG()</code></li> <li><code>SUM()</code></li> <li><code>COUNT()</code></li> <li><code>MIN()</code></li> <li><code>MAX()</code></li> <li><code>REDACTION()</code></li> </ul>"
@@ -2234,14 +2505,6 @@
         ],
         "type": "object",
         "properties": {
-          "vaultID": {
-            "type": "string",
-            "description": "ID of the vault."
-          },
-          "objectName": {
-            "type": "string",
-            "description": "Name of the table."
-          },
           "records": {
             "type": "array",
             "items": {
@@ -2347,30 +2610,6 @@
           "value": "26/02/2001"
         },
         "type": "object",
-        "anyOf": [
-          {
-            "required": [
-              "table",
-              "column"
-            ],
-            "not": {
-              "required": [
-                "columnGroup"
-              ]
-            }
-          },
-          {
-            "required": [
-              "columnGroup"
-            ],
-            "not": {
-              "required": [
-                "table",
-                "column"
-              ]
-            }
-          }
-        ],
         "properties": {
           "value": {
             "type": "string",
@@ -2447,18 +2686,6 @@
         },
         "type": "object",
         "properties": {
-          "ID": {
-            "type": "string",
-            "description": "`skyflow_id` of the record."
-          },
-          "vaultID": {
-            "type": "string",
-            "description": "ID of the vault."
-          },
-          "objectName": {
-            "type": "string",
-            "description": "Name of the table."
-          },
           "record": {
             "$ref": "#/components/schemas/FieldRecords"
           },
@@ -2511,17 +2738,12 @@
       },
       "UploadFileRequestV2": {
         "required": [
-          "vaultID",
           "tableName",
           "columnName",
           "file"
         ],
         "type": "object",
         "properties": {
-          "vaultID": {
-            "type": "string",
-            "description": "ID of the vault."
-          },
           "tableName": {
             "type": "string",
             "description": "Name of the table."

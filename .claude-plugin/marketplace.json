@@ -5,9 +5,19 @@
   },
   "plugins": [
     {
-      "name": "skyflow",
-      "source": "./skyflow-plugin",
-      "description": "Skyflow developer plugin for Claude Code"
+      "name": "skyflow-skills",
+      "source": "./skyflow-skills-plugin",
+      "description": "Skyflow skills for Claude Code: vault creation, REST API guidance, SDK migration, and implementation planning."
+    },
+    {
+      "name": "skyflow-developer-mcp",
+      "source": "./skyflow-developer-mcp-plugin",
+      "description": "Skyflow Developer MCP server for Claude Code."
+    },
+    {
+      "name": "skyflow-runtime-mcp",
+      "source": "./skyflow-runtime-mcp-plugin",
+      "description": "Skyflow Runtime MCP server for Claude Code (optional)."
     }
   ]
 }

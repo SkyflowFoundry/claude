@@ -12,13 +12,13 @@ The Detect API automatically identifies and redacts PII in text and documents us
 
 ## DEIDENTIFY TEXT - Detect and Replace PII
 
-**Endpoint**: `POST /v1/detect/deidentify`
+**Endpoint**: `POST /v1/detect/deidentify/string`
 **Operation**: `deidentify_string`
 
 Scans text for PII and replaces with tokens or placeholders.
 
 ```bash
-curl -X POST "https://$CLUSTER_ID.vault.skyflowapis.com/v1/detect/deidentify" \
+curl -X POST "https://$CLUSTER_ID.vault.skyflowapis.com/v1/detect/deidentify/string" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -63,13 +63,13 @@ curl -X POST "https://$CLUSTER_ID.vault.skyflowapis.com/v1/detect/deidentify" \
 
 ## REIDENTIFY TEXT - Restore Original PII
 
-**Endpoint**: `POST /v1/detect/reidentify`
+**Endpoint**: `POST /v1/detect/reidentify/string`
 **Operation**: `reidentify_string`
 
 Restores original values from de-identified text using entity mappings.
 
 ```bash
-curl -X POST "https://$CLUSTER_ID.vault.skyflowapis.com/v1/detect/reidentify" \
+curl -X POST "https://$CLUSTER_ID.vault.skyflowapis.com/v1/detect/reidentify/string" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -92,14 +92,14 @@ curl -X POST "https://$CLUSTER_ID.vault.skyflowapis.com/v1/detect/reidentify" \
 
 ## DEIDENTIFY FILE - Process Documents
 
-**Endpoint**: `POST /v1/detect/file/deidentify`
+**Endpoint**: `POST /v1/detect/deidentify/file`
 **Operation**: `deidentify_file`
 
-Processes documents (PDF, images) to detect and redact PII. Returns async job ID.
+Processes documents (PDF, images) to detect and redact PII. Returns an async run ID; poll `GET /v1/detect/runs/{run_id}` for the result.
 
 ```bash
 # Submit file for processing
-curl -X POST "https://$CLUSTER_ID.vault.skyflowapis.com/v1/detect/file/deidentify" \
+curl -X POST "https://$CLUSTER_ID.vault.skyflowapis.com/v1/detect/deidentify/file" \
   -H "Authorization: Bearer $TOKEN" \
   -F "file=@document.pdf" \
   -F 'entity_types=["NAME","SSN","EMAIL"]' \
@@ -117,7 +117,7 @@ curl -X POST "https://$CLUSTER_ID.vault.skyflowapis.com/v1/detect/file/deidentif
 
 **Check Status**:
 ```bash
-curl -X GET "https://$CLUSTER_ID.vault.skyflowapis.com/v1/detect/file/deidentify/abc-123-def-456" \
+curl -X GET "https://$CLUSTER_ID.vault.skyflowapis.com/v1/detect/runs/abc-123-def-456" \
   -H "Authorization: Bearer $TOKEN"
 ```
 

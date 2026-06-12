@@ -1,5 +1,5 @@
 {
-  "name": "skyflow",
+  "name": "skyflow-skills",
   "description": "Skyflow skills for Claude Code: vault creation, REST API guidance, SDK migration, and implementation planning.",
   "version": "0.4.0",
   "author": {

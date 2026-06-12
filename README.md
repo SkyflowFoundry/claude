@@ -29,7 +29,7 @@ A plugin for Claude Code that enables Skyflow's data privacy and protection capa
 
 The marketplace publishes three plugins, so you can install only what you need:
 
-- **`skyflow`** — Skills (guided workflows). Useful on its own and has no environment variable requirements.
+- **`skyflow-skills`** — Skills (guided workflows). Useful on its own and has no environment variable requirements.
 - **`skyflow-developer-mcp`** — The Developer MCP server. Most users want this for live access to Skyflow documentation and resources.
 - **`skyflow-runtime-mcp`** — The Runtime MCP server (optional), for on-demand de-identification of PII in text.
 
@@ -48,7 +48,7 @@ The marketplace publishes three plugins, so you can install only what you need:
 3. Install the plugins you want:
 
    ```sh
-   /plugin install skyflow@skyflow-marketplace
+   /plugin install skyflow-skills@skyflow-marketplace
    /plugin install skyflow-developer-mcp@skyflow-marketplace
    /plugin install skyflow-runtime-mcp@skyflow-marketplace   # optional
    ```
@@ -63,7 +63,7 @@ The marketplace publishes three plugins, so you can install only what you need:
 
 > **Note:** These instructions are for macOS. Windows and Linux users may need to adjust the shell configuration file and commands accordingly.
 
-The MCP servers ship as two separate plugins so you only configure what you install. The `skyflow` skills plugin needs no environment variables.
+The MCP servers ship as two separate plugins so you only configure what you install. The `skyflow-skills` plugin needs no environment variables.
 
 **Developer MCP Server** (`skyflow-developer-mcp` plugin) - Provides access to Skyflow developer documentation, skills, and helpful resources for people integrating or implementing Skyflow. This is all most users need to get started, and it only requires `SKYFLOW_BEARER_TOKEN` and `SKYFLOW_ACCOUNT_ID`.
 
@@ -118,7 +118,7 @@ If it prints your token, you're ready to restart Claude Code. If it prints nothi
 
 ## About the MCP Servers
 
-Each MCP server is published as its own plugin, so you can install them independently of the `skyflow` skills.
+Each MCP server is published as its own plugin, so you can install them independently of the `skyflow-skills` plugin.
 
 - **Developer MCP** (`skyflow-developer-mcp` plugin, `https://skyflow-mcp.dev`) - Access to Skyflow developer documentation, skills, and resources for integrating and implementing Skyflow.
 
@@ -148,10 +148,12 @@ The **migrate-sdk-v1-to-v2** skill guides you through migrating from Skyflow V1 
 
 ## Upgrading
 
-Earlier versions bundled the MCP servers inside the `skyflow` plugin. They now ship as the separate `skyflow-developer-mcp` and `skyflow-runtime-mcp` plugins. If you installed `skyflow` before this change, updating it **removes** the MCP servers from your environment—you must install the MCP plugins separately to get those tools back:
+Earlier versions shipped a single `skyflow` plugin that bundled both the skills and the MCP servers. That plugin has been **renamed to `skyflow-skills`** and now contains skills only; the MCP servers moved to the separate `skyflow-developer-mcp` and `skyflow-runtime-mcp` plugins. If you installed the old `skyflow` plugin, uninstall it and install the new plugins:
 
 ```sh
 /plugin marketplace update skyflow-marketplace
+/plugin uninstall skyflow@skyflow-marketplace
+/plugin install skyflow-skills@skyflow-marketplace
 /plugin install skyflow-developer-mcp@skyflow-marketplace
 /plugin install skyflow-runtime-mcp@skyflow-marketplace   # optional
 ```

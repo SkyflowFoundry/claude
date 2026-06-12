@@ -5,8 +5,8 @@
   },
   "plugins": [
     {
-      "name": "skyflow",
-      "source": "./skyflow-plugin",
+      "name": "skyflow-skills",
+      "source": "./skyflow-skills-plugin",
       "description": "Skyflow skills for Claude Code: vault creation, REST API guidance, SDK migration, and implementation planning."
     },
     {

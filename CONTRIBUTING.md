@@ -10,7 +10,7 @@ This repository is organized as a Claude Code plugin marketplace:
 /
 ├── .claude-plugin/
 │   └── marketplace.json                  # Marketplace configuration (lists all plugins)
-├── skyflow-plugin/                       # Skills plugin (no MCP servers)
+├── skyflow-skills-plugin/                # Skills plugin (no MCP servers)
 │   ├── .claude-plugin/
 │   │   └── plugin.json                   # Plugin metadata
 │   └── skills/                           # Agent skills
@@ -40,7 +40,7 @@ The `.claude-plugin/marketplace.json` file at the root defines the marketplace a
 
 - `name`: The marketplace identifier
 - `owner`: Marketplace owner information
-- `plugins`: Array of plugin definitions with name, source path, and description. The marketplace currently lists three plugins: `skyflow` (skills), `skyflow-developer-mcp`, and `skyflow-runtime-mcp`.
+- `plugins`: Array of plugin definitions with name, source path, and description. The marketplace currently lists three plugins: `skyflow-skills`, `skyflow-developer-mcp`, and `skyflow-runtime-mcp`.
 
 A plugin's `name` must match the `name` in its own `.claude-plugin/plugin.json`, and `source` is a path relative to the repository root (e.g. `./skyflow-developer-mcp-plugin`).
 
@@ -48,7 +48,7 @@ A plugin's `name` must match the `name` in its own `.claude-plugin/plugin.json`,
 
 This marketplace uses two kinds of plugin:
 
-**Skills plugin (`skyflow-plugin/`):**
+**Skills plugin (`skyflow-skills-plugin/`):**
 
 - `.claude-plugin/plugin.json`: Plugin metadata (name, version, author, description)
 - `skills/`: Agent skills, each in its own directory with a `SKILL.md` file
@@ -98,10 +98,10 @@ Skills are guided workflows that help Claude assist users with Skyflow tasks. Th
 
 ### Skill Directory Structure
 
-Create a new directory in `skyflow-plugin/skills/` with the following structure:
+Create a new directory in `skyflow-skills-plugin/skills/` with the following structure:
 
 ```
-skyflow-plugin/skills/your-skill-name/
+skyflow-skills-plugin/skills/your-skill-name/
 ├── SKILL.md                    # Main skill file (required)
 ├── supporting-doc.md           # Additional documentation (optional)
 ├── samples/                    # Sample files (optional)

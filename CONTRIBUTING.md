@@ -8,11 +8,13 @@ This repository is organized as a Claude Code plugin marketplace:
 
 ```
 /
+├── README.md                             # Marketplace overview
 ├── .claude-plugin/
 │   └── marketplace.json                  # Marketplace configuration (lists all plugins)
 ├── skyflow-skills-plugin/                # Skills plugin (no MCP servers)
 │   ├── .claude-plugin/
 │   │   └── plugin.json                   # Plugin metadata
+│   ├── README.md                         # Plugin docs
 │   └── skills/                           # Agent skills
 │       ├── call-rest-apis/
 │       │   └── SKILL.md
@@ -25,10 +27,12 @@ This repository is organized as a Claude Code plugin marketplace:
 ├── skyflow-developer-mcp-plugin/         # Developer MCP server plugin
 │   ├── .claude-plugin/
 │   │   └── plugin.json
+│   ├── README.md                         # Plugin docs
 │   └── .mcp.json                         # Developer MCP server config
 └── skyflow-runtime-mcp-plugin/           # Runtime MCP server plugin (optional)
     ├── .claude-plugin/
     │   └── plugin.json
+    ├── README.md                         # Plugin docs
     └── .mcp.json                         # Runtime MCP server config
 ```
 
@@ -57,6 +61,8 @@ This marketplace uses two kinds of plugin:
 
 - `.claude-plugin/plugin.json`: Plugin metadata
 - `.mcp.json`: A single MCP server's configuration (endpoint and authentication)
+
+Each plugin also carries its own `README.md` at its root documenting installation and configuration; the root [README.md](README.md) is a marketplace overview that links to them.
 
 A plugin only requires `.claude-plugin/plugin.json`; a root-level `.mcp.json` is auto-discovered, so MCP-only plugins need no extra wiring. (`commands/`, `agents/`, and `hooks/` are also supported by Claude Code but are not currently used in this repo.)
 

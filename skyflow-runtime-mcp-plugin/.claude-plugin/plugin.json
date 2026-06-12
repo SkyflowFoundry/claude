@@ -1,0 +1,10 @@
+{
+  "name": "skyflow-runtime-mcp",
+  "description": "Skyflow Runtime MCP server for Claude Code (optional): wraps the Skyflow Detect APIs for de-identifying and re-identifying PII in unstructured text.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Joseph McCarron",
+    "email": "joe@skyflow.com",
+    "url": "https://github.com/jstjoe"
+  }
+}

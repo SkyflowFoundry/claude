@@ -7,7 +7,7 @@ A plugin for Claude Code that enables Skyflow's data privacy and protection capa
 
 - [Claude Code Plugin for Skyflow](#claude-code-plugin-for-skyflow)
   - [Quick Start](#quick-start)
-    - [Step 1: Install the Plugin](#step-1-install-the-plugin)
+    - [Step 1: Install the Plugins](#step-1-install-the-plugins)
     - [Step 2: Set Up Environment Variables](#step-2-set-up-environment-variables)
   - [Environment Variables Reference](#environment-variables-reference)
   - [About the MCP Servers](#about-the-mcp-servers)
@@ -16,15 +16,22 @@ A plugin for Claude Code that enables Skyflow's data privacy and protection capa
     - [Create Vault](#create-vault)
     - [Call REST APIs](#call-rest-apis)
     - [Migrate SDK V1 to V2](#migrate-sdk-v1-to-v2)
+  - [Upgrading](#upgrading)
   - [Troubleshooting](#troubleshooting)
   - [Learn More](#learn-more)
   - [Contributing](#contributing)
 
 ## Quick Start
 
-### Step 1: Install the Plugin
+### Step 1: Install the Plugins
 
 > **Note:** You must have Claude Code installed first. If you haven't installed it yet, see the [Claude Code installation guide](https://code.claude.com/docs/en/overview).
+
+The marketplace publishes three plugins, so you can install only what you need:
+
+- **`skyflow`** — Skills (guided workflows). Useful on its own and has no environment variable requirements.
+- **`skyflow-developer-mcp`** — The Developer MCP server. Most users want this for live access to Skyflow documentation and resources.
+- **`skyflow-runtime-mcp`** — The Runtime MCP server (optional), for on-demand de-identification of PII in text.
 
 1. Open Claude Code:
 
@@ -32,17 +39,21 @@ A plugin for Claude Code that enables Skyflow's data privacy and protection capa
    claude
    ```
 
-2. Install the marketplace and plugin:
+2. Add the marketplace:
 
    ```sh
    /plugin marketplace add SkyflowFoundry/claude
    ```
 
+3. Install the plugins you want:
+
    ```sh
    /plugin install skyflow@skyflow-marketplace
+   /plugin install skyflow-developer-mcp@skyflow-marketplace
+   /plugin install skyflow-runtime-mcp@skyflow-marketplace   # optional
    ```
 
-3. Exit Claude Code:
+4. Exit Claude Code:
 
    ```sh
    /exit
@@ -52,11 +63,11 @@ A plugin for Claude Code that enables Skyflow's data privacy and protection capa
 
 > **Note:** These instructions are for macOS. Windows and Linux users may need to adjust the shell configuration file and commands accordingly.
 
-The Skyflow plugin connects to two MCP servers. You can start with just the Developer MCP server—the Runtime MCP server is optional.
+The MCP servers ship as two separate plugins so you only configure what you install. The `skyflow` skills plugin needs no environment variables.
 
-**Developer MCP Server** - Provides access to Skyflow developer documentation, skills, and helpful resources for people integrating or implementing Skyflow. This is all most users need to get started.
+**Developer MCP Server** (`skyflow-developer-mcp` plugin) - Provides access to Skyflow developer documentation, skills, and helpful resources for people integrating or implementing Skyflow. This is all most users need to get started, and it only requires `SKYFLOW_BEARER_TOKEN` and `SKYFLOW_ACCOUNT_ID`.
 
-**Runtime MCP Server** (optional) - Wraps the Skyflow Detect APIs for removing, redacting, tokenizing, and de-identifying (as well as re-identifying) PII in unstructured text on demand. If you do not set `SKYFLOW_VAULT_ID` and `SKYFLOW_VAULT_URL`, this server will fail to initialize and Claude will display an error on startup.
+**Runtime MCP Server** (`skyflow-runtime-mcp` plugin, optional) - Wraps the Skyflow Detect APIs for removing, redacting, tokenizing, and de-identifying (as well as re-identifying) PII in unstructured text on demand. Install this plugin only if you need that capability; it additionally requires `SKYFLOW_VAULT_ID` and `SKYFLOW_VAULT_URL`. If you install it without setting those, the server will fail to initialize and Claude will display an error on startup.
 
 #### Add the environment variables
 
@@ -103,15 +114,17 @@ If it prints your token, you're ready to restart Claude Code. If it prints nothi
 | `SKYFLOW_VAULT_ID`     | Your detect vault identifier                                                      | No       |
 | `SKYFLOW_VAULT_URL`    | Your vault URL endpoint                                                           | No       |
 
-**Note:** The Runtime MCP server requires that your bearer token has 'Vault Owner' access to a Detect vault (a vault created with the detect template).
+**Note:** `SKYFLOW_VAULT_ID` and `SKYFLOW_VAULT_URL` are only needed if you install the `skyflow-runtime-mcp` plugin. The Runtime MCP server also requires that your bearer token has 'Vault Owner' access to a Detect vault (a vault created with the detect template).
 
 ## About the MCP Servers
 
-- **Developer MCP** (`https://skyflow-mcp.dev`) - Access to Skyflow developer documentation, skills, and resources for integrating and implementing Skyflow.
+Each MCP server is published as its own plugin, so you can install them independently of the `skyflow` skills.
 
-- **Runtime MCP** (`https://www.pii-mcp.dev`) - Wraps the Skyflow Detect APIs for de-identifying and re-identifying PII in unstructured text. Use this when you need to remove, redact, or tokenize sensitive data on demand.
+- **Developer MCP** (`skyflow-developer-mcp` plugin, `https://skyflow-mcp.dev`) - Access to Skyflow developer documentation, skills, and resources for integrating and implementing Skyflow.
 
-  > **Note:** If you haven't configured `SKYFLOW_VAULT_ID` and `SKYFLOW_VAULT_URL`, you may see an error from the Runtime MCP server on startup. This is expected—the Runtime MCP is optional. To enable it, create a Detect vault in Skyflow and configure these environment variables.
+- **Runtime MCP** (`skyflow-runtime-mcp` plugin, `https://www.pii-mcp.dev`) - Wraps the Skyflow Detect APIs for de-identifying and re-identifying PII in unstructured text. Use this when you need to remove, redact, or tokenize sensitive data on demand.
+
+  > **Note:** Because the Runtime MCP is a separate, optional plugin, developer-only users never see its startup error—simply don't install `skyflow-runtime-mcp`. If you do install it without configuring `SKYFLOW_VAULT_ID` and `SKYFLOW_VAULT_URL`, you may see an error from the server on startup. To enable it, create a Detect vault in Skyflow and configure these environment variables.
 
 ## Skills
 
@@ -132,6 +145,18 @@ The **call-rest-apis** skill provides expertise on Skyflow REST APIs including m
 ### Migrate SDK V1 to V2
 
 The **migrate-sdk-v1-to-v2** skill guides you through migrating from Skyflow V1 SDKs to V2 SDKs. It covers authentication changes, client initialization updates, and request/response structure changes with SDK-specific migration patterns for Node.js, Python, Java, and Go. The skill includes V1 identification patterns, breaking changes documentation, a migration workflow, before/after code examples for common patterns, a troubleshooting guide, and test strategies.
+
+## Upgrading
+
+Earlier versions bundled the MCP servers inside the `skyflow` plugin. They now ship as the separate `skyflow-developer-mcp` and `skyflow-runtime-mcp` plugins. If you installed `skyflow` before this change, updating it **removes** the MCP servers from your environment—you must install the MCP plugins separately to get those tools back:
+
+```sh
+/plugin marketplace update skyflow-marketplace
+/plugin install skyflow-developer-mcp@skyflow-marketplace
+/plugin install skyflow-runtime-mcp@skyflow-marketplace   # optional
+```
+
+Your existing environment variables are unchanged; the MCP plugins read the same `SKYFLOW_*` variables you already configured.
 
 ## Troubleshooting
 

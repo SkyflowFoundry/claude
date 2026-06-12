@@ -1,7 +1,7 @@
 {
   "name": "skyflow",
-  "description": "Skyflow developer plugin for Claude Code",
-  "version": "0.3.0",
+  "description": "Skyflow skills for Claude Code: vault creation, REST API guidance, SDK migration, and implementation planning.",
+  "version": "0.4.0",
   "author": {
     "name": "Joseph McCarron",
     "email": "joe@skyflow.com",

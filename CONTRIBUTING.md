@@ -9,19 +9,30 @@ This repository is organized as a Claude Code plugin marketplace:
 ```
 /
 ├── .claude-plugin/
-│   └── marketplace.json      # Marketplace configuration
-└── skyflow-plugin/           # Main Skyflow plugin
+│   └── marketplace.json                  # Marketplace configuration (lists all plugins)
+├── skyflow-plugin/                       # Skills plugin (no MCP servers)
+│   ├── .claude-plugin/
+│   │   └── plugin.json                   # Plugin metadata
+│   └── skills/                           # Agent skills
+│       ├── call-rest-apis/
+│       │   └── SKILL.md
+│       ├── create-vault/
+│       │   └── SKILL.md
+│       ├── migrate-sdk-v1-to-v2/
+│       │   └── SKILL.md
+│       └── plan-skyflow-implementation/
+│           └── SKILL.md
+├── skyflow-developer-mcp-plugin/         # Developer MCP server plugin
+│   ├── .claude-plugin/
+│   │   └── plugin.json
+│   └── .mcp.json                         # Developer MCP server config
+└── skyflow-runtime-mcp-plugin/           # Runtime MCP server plugin (optional)
     ├── .claude-plugin/
-    │   └── plugin.json       # Plugin metadata
-    ├── .mcp.json             # MCP server configuration
-    ├── commands/             # Custom slash commands
-    │   └── hello.md
-    ├── skills/               # Agent skills
-    │   └── chat-message-anonymization-v0/
-    │       └── skill.md
-    ├── agents/               # Custom agents (optional)
-    └── hooks/                # Event handlers (optional)
+    │   └── plugin.json
+    └── .mcp.json                         # Runtime MCP server config
 ```
+
+The skills and the MCP servers are split into separate plugins so each can be installed and versioned independently.
 
 ## Marketplace Configuration
 
@@ -29,22 +40,29 @@ The `.claude-plugin/marketplace.json` file at the root defines the marketplace a
 
 - `name`: The marketplace identifier
 - `owner`: Marketplace owner information
-- `plugins`: Array of plugin definitions with name, source path, and description
+- `plugins`: Array of plugin definitions with name, source path, and description. The marketplace currently lists three plugins: `skyflow` (skills), `skyflow-developer-mcp`, and `skyflow-runtime-mcp`.
+
+A plugin's `name` must match the `name` in its own `.claude-plugin/plugin.json`, and `source` is a path relative to the repository root (e.g. `./skyflow-developer-mcp-plugin`).
 
 ## Plugin Structure
 
-Each plugin (e.g., `skyflow-plugin/`) contains:
+This marketplace uses two kinds of plugin:
+
+**Skills plugin (`skyflow-plugin/`):**
 
 - `.claude-plugin/plugin.json`: Plugin metadata (name, version, author, description)
-- `.mcp.json`: MCP server configuration with endpoints and authentication
-- `commands/`: Markdown files defining custom slash commands
-- `skills/`: Agent skills with `skill.md` files
-- `agents/`: Custom agent definitions (optional)
-- `hooks/`: Event handlers via `hooks.json` (optional)
+- `skills/`: Agent skills, each in its own directory with a `SKILL.md` file
+
+**MCP server plugins (`skyflow-developer-mcp-plugin/`, `skyflow-runtime-mcp-plugin/`):**
+
+- `.claude-plugin/plugin.json`: Plugin metadata
+- `.mcp.json`: A single MCP server's configuration (endpoint and authentication)
+
+A plugin only requires `.claude-plugin/plugin.json`; a root-level `.mcp.json` is auto-discovered, so MCP-only plugins need no extra wiring. (`commands/`, `agents/`, and `hooks/` are also supported by Claude Code but are not currently used in this repo.)
 
 ## MCP Server Configuration
 
-The `.mcp.json` file in the plugin directory configures the MCP servers:
+Each MCP plugin contains a `.mcp.json` at its root defining one server. For example, `skyflow-developer-mcp-plugin/.mcp.json`:
 
 ```json
 {
@@ -54,7 +72,14 @@ The `.mcp.json` file in the plugin directory configures the MCP servers:
     "headers": {
       "Authorization": "Bearer ${SKYFLOW_BEARER_TOKEN}"
     }
-  },
+  }
+}
+```
+
+and `skyflow-runtime-mcp-plugin/.mcp.json`:
+
+```json
+{
   "skyflow-runtime-mcp": {
     "type": "http",
     "url": "https://www.pii-mcp.dev/mcp?vaultId=${SKYFLOW_VAULT_ID}&vaultUrl=${SKYFLOW_VAULT_URL}",
@@ -65,11 +90,7 @@ The `.mcp.json` file in the plugin directory configures the MCP servers:
 }
 ```
 
-## Adding New Commands
-
-1. Create a new `.md` file in `skyflow-plugin/commands/`
-2. The filename becomes the command name (e.g., `hello.md` → `/hello`)
-3. Follow the existing command format
+The `${...}` placeholders are substituted from the user's shell environment when the server starts.
 
 ## Adding New Skills
 

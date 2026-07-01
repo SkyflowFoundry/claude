@@ -1,0 +1,9 @@
+{
+  "skyflow-developer-mcp": {
+    "type": "http",
+    "url": "https://skyflow-mcp.dev/mcp?accountId=${SKYFLOW_ACCOUNT_ID}",
+    "headers": {
+      "Authorization": "Bearer ${SKYFLOW_BEARER_TOKEN}"
+    }
+  }
+}

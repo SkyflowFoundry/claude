@@ -1,7 +1,7 @@
 {
   "name": "skyflow-skills",
-  "description": "Skyflow skills for Claude Code: vault creation, REST API guidance, SDK migration, and implementation planning.",
-  "version": "0.4.0",
+  "description": "Skyflow skills for Claude Code: vault creation, REST API guidance, SDK migration, implementation planning, and SDK quickstarts.",
+  "version": "0.5.0",
   "author": {
     "name": "Joseph McCarron",
     "email": "joe@skyflow.com",

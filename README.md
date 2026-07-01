@@ -17,7 +17,7 @@ A Claude Code plugin marketplace that enables Skyflow's data privacy and protect
 
 | Plugin | What it does | Environment variables | Docs |
 | ------ | ------------ | --------------------- | ---- |
-| `skyflow-skills` | Guided Skyflow workflows (vault creation, REST API guidance, SDK migration, implementation planning) | None | [README](skyflow-skills-plugin/README.md) |
+| `skyflow-skills` | Guided Skyflow workflows (vault creation, REST API guidance, SDK migration, implementation planning, SDK quickstarts) | None | [README](skyflow-skills-plugin/README.md) |
 | `skyflow-developer-mcp` | Developer MCP server — access to Skyflow documentation, skills, and integration resources | `SKYFLOW_BEARER_TOKEN`, `SKYFLOW_ACCOUNT_ID` | [README](skyflow-developer-mcp-plugin/README.md) |
 | `skyflow-runtime-mcp` | Runtime MCP server (optional) — on-demand de-identification of PII in text via the Detect APIs | `SKYFLOW_BEARER_TOKEN`, `SKYFLOW_ACCOUNT_ID`, `SKYFLOW_VAULT_ID`, `SKYFLOW_VAULT_URL` | [README](skyflow-runtime-mcp-plugin/README.md) |
 

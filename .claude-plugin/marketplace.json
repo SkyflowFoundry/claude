@@ -7,7 +7,7 @@
     {
       "name": "skyflow-skills",
       "source": "./skyflow-skills-plugin",
-      "description": "Skyflow skills for Claude Code: vault creation, REST API guidance, SDK migration, and implementation planning."
+      "description": "Skyflow skills for Claude Code: vault creation, REST API guidance, SDK migration, implementation planning, and SDK quickstarts."
     },
     {
       "name": "skyflow-developer-mcp",

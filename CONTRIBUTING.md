@@ -22,7 +22,11 @@ This repository is organized as a Claude Code plugin marketplace:
 │       │   └── SKILL.md
 │       ├── migrate-sdk-v1-to-v2/
 │       │   └── SKILL.md
-│       └── plan-skyflow-implementation/
+│       ├── plan-skyflow-implementation/
+│       │   └── SKILL.md
+│       ├── quickstart-js-browser/
+│       │   └── SKILL.md
+│       └── quickstart-node/
 │           └── SKILL.md
 ├── skyflow-developer-mcp-plugin/         # Developer MCP server plugin
 │   ├── .claude-plugin/

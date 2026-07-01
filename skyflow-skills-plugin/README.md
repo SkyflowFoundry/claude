@@ -32,6 +32,8 @@ Each skill is available as a slash command in the form `/skyflow-skills:<skill-n
 | Create Vault | `/skyflow-skills:create-vault` |
 | Call REST APIs | `/skyflow-skills:call-rest-apis` |
 | Migrate SDK V1 to V2 | `/skyflow-skills:migrate-sdk-v1-to-v2` |
+| Quickstart: Node.js | `/skyflow-skills:quickstart-node` |
+| Quickstart: JS Browser (Elements) | `/skyflow-skills:quickstart-js-browser` |
 
 ### Plan Skyflow Implementation
 
@@ -56,6 +58,18 @@ The **call-rest-apis** skill provides expertise on Skyflow REST APIs including m
 **Slash command:** `/skyflow-skills:migrate-sdk-v1-to-v2`
 
 The **migrate-sdk-v1-to-v2** skill guides you through migrating from Skyflow V1 SDKs to V2 SDKs. It covers authentication changes, client initialization updates, and request/response structure changes with SDK-specific migration patterns for Node.js, Python, Java, and Go. The skill includes V1 identification patterns, breaking changes documentation, a migration workflow, before/after code examples for common patterns, a troubleshooting guide, and test strategies.
+
+### Quickstart: Node.js
+
+**Slash command:** `/skyflow-skills:quickstart-node`
+
+The **quickstart-node** skill sets up a new Node.js project with TypeScript, ES modules, and the `skyflow-node` SDK. It covers project initialization, TypeScript configuration, and package scripts, with optional steps for ESLint, Prettier, and CSpell.
+
+### Quickstart: JS Browser (Elements)
+
+**Slash command:** `/skyflow-skills:quickstart-js-browser`
+
+The **quickstart-js-browser** skill sets up a standalone front-end project using Vite and the `skyflow-js` SDK to collect sensitive data with Skyflow Elements (secure, iframe-based input fields). It covers project scaffolding, Vite/TypeScript configuration, mounting Collect elements, handling validation and collect events, production hardening (token endpoints, env modes), and a troubleshooting guide.
 
 ## Learn More
 

@@ -2,11 +2,20 @@
 
 The Detect API automatically identifies and redacts PII in text and documents using ML-based entity detection.
 
-**Base URL**: `https://{clusterID}.vault.skyflowapis.com/v1/detect`
+**Base URL**: `https://{clusterID}.vault.skyflowapis.com`
 
 **Authentication**: Bearer token required
 
 **OpenAPI Spec**: See [detect.openapi.json](detect.openapi.json) for complete request/response schemas
+
+## API Versions
+
+The Detect API has two versions:
+
+- **v1** (`/v1/detect/...`) — Generally available. Uses `snake_case` fields and a per-request `vault_id` plus inline options.
+- **v2** (`/v2/detect/...`) — **In beta and feature-flagged.** Uses `camelCase` fields and a reusable Detect **configuration** (via `configurationId` or an inline `configuration` object). See [V2 Endpoints (beta)](#v2-endpoints-beta) below.
+
+Both versions cover the same operations (de-identify/re-identify strings and files, guardrails, and run status). Use v1 unless you specifically need the v2 configuration-based workflow.
 
 ---
 
@@ -145,6 +154,287 @@ curl -X GET "https://$CLUSTER_ID.vault.skyflowapis.com/v1/detect/runs/abc-123-de
 - `masking_method`: `REDACT`, `MASK`, or `REPLACE` (default: `REDACT`)
 - `output_processed_image`: Return redacted file (default: `true`)
 - `output_ocr_text`: Return extracted text (default: `false`)
+
+---
+
+# V2 Endpoints (beta)
+
+> **Note**: The v2 API is **in beta and feature-flagged**. Endpoints, fields, and behavior are subject to change. Contact Skyflow to have v2 enabled for your account.
+
+The v2 API keeps the same set of operations as v1 but changes the request/response shape:
+
+- Fields use **`camelCase`** (`processedText`, `entityType`, `startIndex`, `runId`) instead of v1's `snake_case`.
+- De-identify operations reference a reusable **Detect configuration** — pass either a `configurationId` (ID of a saved configuration) **or** an inline `configuration` object. Only one is required.
+- File operations describe the input with `dataSource` + `value` + `dataFormat` instead of a nested `file` object.
+- Enum values (status, output type) are **UPPERCASE** (`SUCCESS`, `IN_PROGRESS`, `FAILED`, `BASE64`, `SKYFLOW_ID`, `PRESIGNED_URL`).
+- Responses include a `metrics` object (size, word/character count, pages, slides, duration).
+
+| Operation | Method | Endpoint | Operation ID |
+| --- | --- | --- | --- |
+| De-identify String | POST | `/v2/detect/deidentify/string` | `deidentify_string_v2` |
+| De-identify File | POST | `/v2/detect/deidentify/file` | `deidentify_file_v2` |
+| Re-identify String | POST | `/v2/detect/reidentify/string` | `reidentify_string_v2` |
+| Re-identify File | POST | `/v2/detect/reidentify/file` | `reidentify_file_v2` |
+| Check Guardrails | POST | `/v2/detect/guardrails` | `check_guardrails_v2` |
+| Get Detect Run | GET | `/v2/detect/runs/{runId}` | `get_run_v2` |
+
+---
+
+## DEIDENTIFY STRING (v2)
+
+**Endpoint**: `POST /v2/detect/deidentify/string`
+**Operation**: `deidentify_string_v2`
+
+Provide either `configurationId` or an inline `configuration` — only one is required.
+
+```bash
+curl -X POST "https://$CLUSTER_ID.vault.skyflowapis.com/v2/detect/deidentify/string" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "My name is John Doe, and my email is johndoe@acme.com.",
+    "configurationId": "'"$CONFIGURATION_ID"'"
+  }'
+```
+
+**Request fields**:
+- `text` (required): Text to de-identify.
+- `configurationId` (required unless `configuration` is provided): ID of the Detect configuration to use.
+- `configuration` (required unless `configurationId` is provided): Inline Detect configuration object (see [Configurations](#configurations-v2)).
+
+**Response**:
+```json
+{
+  "processedText": "My name is [NAME_1] and my email is [EMAIL_ADDRESS_1].",
+  "entities": [
+    {
+      "token": "NAME_1",
+      "value": "John Doe",
+      "location": {
+        "startIndex": 11,
+        "endIndex": 19,
+        "startIndexProcessed": 11,
+        "endIndexProcessed": 19
+      },
+      "entityType": "NAME",
+      "entityScores": { "NAME": 0.9152 }
+    },
+    {
+      "token": "EMAIL_ADDRESS_1",
+      "value": "johndoe@acme.com",
+      "location": {
+        "startIndex": 36,
+        "endIndex": 52,
+        "startIndexProcessed": 36,
+        "endIndexProcessed": 53
+      },
+      "entityType": "EMAIL_ADDRESS",
+      "entityScores": { "EMAIL_ADDRESS": 0.8955 }
+    }
+  ],
+  "metrics": { "size": 0.05, "wordCount": 10, "characterCount": 53 }
+}
+```
+
+---
+
+## DEIDENTIFY FILE (v2)
+
+**Endpoint**: `POST /v2/detect/deidentify/file`
+**Operation**: `deidentify_file_v2`
+
+Async operation — returns a `runId`. Poll `GET /v2/detect/runs/{runId}` for the result.
+
+```bash
+curl -X POST "https://$CLUSTER_ID.vault.skyflowapis.com/v2/detect/deidentify/file" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "dataSource": "BASE64",
+    "value": "'"$BASE64_DATA"'",
+    "dataFormat": "pdf",
+    "configurationId": "'"$CONFIGURATION_ID"'"
+  }'
+```
+
+**Request fields**:
+- `dataSource` (required): `BASE64` (base64-encoded file string), `SKYFLOW_ID` (reference a file by vault ID), or `PRESIGNED_URL` (S3 presigned URL of the input file).
+- `value` (required): File data corresponding to the `dataSource` type.
+- `dataFormat` (required): Input file format. One of `mp3`, `wav`, `pdf`, `txt`, `csv`, `json`, `jpg`, `jpeg`, `tif`, `tiff`, `png`, `bmp`, `xls`, `xlsx`, `doc`, `docx`, `ppt`, `pptx`, `xml`, `dcm`, `jsonl`, `zip`, `gif`.
+- `configurationId` (required unless `configuration` is provided): ID of the Detect configuration to use.
+- `configuration` (required unless `configurationId` is provided): Inline Detect configuration object.
+
+**Response**:
+```json
+{ "runId": "$RUN_ID" }
+```
+
+---
+
+## GET DETECT RUN (v2)
+
+**Endpoint**: `GET /v2/detect/runs/{runId}`
+**Operation**: `get_run_v2`
+
+Poll for the status and output of an async file operation. Requires the `vaultId` query parameter.
+
+```bash
+curl -X GET "https://$CLUSTER_ID.vault.skyflowapis.com/v2/detect/runs/$RUN_ID?vaultId=$VAULT_ID" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+**Response**:
+```json
+{
+  "status": "SUCCESS",
+  "outputType": "PRESIGNED_URL",
+  "output": [
+    { "processedFile": "$REDACTED_TEXT_URL", "processedFileType": "REDACTED_TEXT" },
+    { "processedFile": "$ENTITIES_URL", "processedFileType": "ENTITIES" }
+  ],
+  "message": "De-identification completed successfully."
+}
+```
+
+- `status`: `UNKNOWN`, `FAILED`, `SUCCESS`, or `IN_PROGRESS`.
+- `outputType`: `BASE64`, `SKYFLOW_ID`, or `PRESIGNED_URL`.
+- `output[]`: Each entry has `processedFile`, `processedFileType`, and optional `processedFileExtension`.
+
+---
+
+## REIDENTIFY STRING (v2)
+
+**Endpoint**: `POST /v2/detect/reidentify/string`
+**Operation**: `reidentify_string_v2`
+
+```bash
+curl -X POST "https://$CLUSTER_ID.vault.skyflowapis.com/v2/detect/reidentify/string" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "vaultId": "'"$VAULT_ID"'",
+    "text": "My name is [NAME_1], and my email is [EMAIL_ADDRESS_1]."
+  }'
+```
+
+**Request fields**:
+- `vaultId` (required): ID of the vault used for de-identification.
+- `text` (required): Text to re-identify.
+- `redactionLevel` (optional): Array of replacement patterns applied to entity types during re-identification.
+
+**Response**:
+```json
+{ "processedText": "My name is John Doe, and my email is johndoe@acme.com." }
+```
+
+---
+
+## REIDENTIFY FILE (v2)
+
+**Endpoint**: `POST /v2/detect/reidentify/file`
+**Operation**: `reidentify_file_v2`
+
+```bash
+curl -X POST "https://$CLUSTER_ID.vault.skyflowapis.com/v2/detect/reidentify/file" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "dataSource": "BASE64",
+    "value": "'"$BASE64_DATA"'",
+    "dataFormat": "txt",
+    "vaultId": "'"$VAULT_ID"'"
+  }'
+```
+
+**Request fields**:
+- `dataSource` (required): `BASE64`, `SKYFLOW_ID`, or `PRESIGNED_URL`.
+- `value` (required): File data corresponding to the `dataSource` type.
+- `dataFormat` (required): Input file format (same set as De-identify File).
+- `vaultId` (required): ID of the vault used for de-identification.
+- `redactionLevel` (optional): Array of replacement patterns applied to entity types during re-identification.
+
+**Response**:
+```json
+{
+  "status": "SUCCESS",
+  "outputType": "BASE64",
+  "output": [
+    {
+      "processedFile": "$PROCESSED_FILE",
+      "processedFileType": "REIDENTIFIED_FILE",
+      "processedFileExtension": "txt"
+    }
+  ]
+}
+```
+
+---
+
+## CHECK GUARDRAILS (v2)
+
+**Endpoint**: `POST /v2/detect/guardrails`
+**Operation**: `check_guardrails_v2`
+
+Checks text for toxicity and denied topics to preserve safety and compliance with usage policies.
+
+```bash
+curl -X POST "https://$CLUSTER_ID.vault.skyflowapis.com/v2/detect/guardrails" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "vaultId": "'"$VAULT_ID"'",
+    "text": "I love to play cricket.",
+    "checkToxicity": true,
+    "denyTopics": ["sports"]
+  }'
+```
+
+**Request fields**:
+- `vaultId` (required): ID of the vault.
+- `text` (required): Text to check against guardrails (max 500,000 characters).
+- `checkToxicity` (optional, default `true`): If `true`, checks for toxicity.
+- `denyTopics` (optional): List of topics to deny (max 100 items, each up to 60 characters).
+
+**Response**:
+```json
+{
+  "text": "I love to play cricket.",
+  "toxic": false,
+  "deniedTopic": true,
+  "validation": "FAILED"
+}
+```
+
+- `validation`: `PASSED` or `FAILED`.
+
+> **Beta caveat**: The v2 guardrails **schema** uses `camelCase` (`checkToxicity`, `denyTopics`, `deniedTopic`) and uppercase `validation` values, as documented above. Some examples in the beta OpenAPI spec still show `snake_case` (`check_toxicity`, `deny_topics`, `denied_topic`) and lowercase `validation`. If a request fails, confirm the expected casing with your Skyflow contact until the beta spec is finalized.
+
+---
+
+## Configurations (v2)
+
+De-identify operations in v2 use a reusable **Detect configuration** instead of passing options on every request. Reference a saved configuration by `configurationId`, or send an inline `configuration` object.
+
+A configuration is bound to a vault and can describe detection settings and file/media handling. Minimal inline example:
+
+```json
+{
+  "configuration": {
+    "name": "my-detect-config",
+    "vaultId": "$VAULT_ID",
+    "detect": { }
+  }
+}
+```
+
+Key fields:
+- `vaultId` (required): ID of the vault the configuration applies to.
+- `name`, `description`: Human-readable identifiers.
+- `detect`: Detection and de-identification settings.
+- `fileMapping`: Mappings for source and de-identified file locations.
+- `media`: Media (audio/document/image) handling options.
+
+See `DetectConfigV2` in [detect.openapi.json](detect.openapi.json) for the complete configuration schema.
 
 ---
 

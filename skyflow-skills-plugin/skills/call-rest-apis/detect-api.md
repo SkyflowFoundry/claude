@@ -407,6 +407,8 @@ curl -X POST "https://$CLUSTER_ID.vault.skyflowapis.com/v2/detect/guardrails" \
 
 - `validation`: `PASSED` or `FAILED`.
 
+> **Beta caveat**: The v2 guardrails **schema** uses `camelCase` (`checkToxicity`, `denyTopics`, `deniedTopic`) and uppercase `validation` values, as documented above. Some examples in the beta OpenAPI spec still show `snake_case` (`check_toxicity`, `deny_topics`, `denied_topic`) and lowercase `validation`. If a request fails, confirm the expected casing with your Skyflow contact until the beta spec is finalized.
+
 ---
 
 ## Configurations (v2)

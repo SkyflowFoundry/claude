@@ -198,6 +198,34 @@ After creating a new skill, add it to the Skills section in the main [README.md]
 2. Write a paragraph describing what the skill does and its key features
 3. The table of contents will be updated automatically if using a markdown formatter
 
+## Packaging and Releasing Skills
+
+Skills are distributed two ways from a single source of truth (the directories under `skyflow-skills-plugin/skills/`):
+
+1. **Plugin** — installed via the marketplace (`/plugin install skyflow-skills@skyflow-marketplace`).
+2. **Standalone zips** — one portable `.zip` per skill, published as GitHub Release assets for use in other projects or harnesses.
+
+The zips are build artifacts. They are **not** committed to the repo (`dist/` is gitignored), so the plugin/marketplace install is never affected.
+
+### CI workflows
+
+- **`.github/workflows/validate-skills.yml`** — runs on pull requests that touch skills. It checks every `SKILL.md` has valid frontmatter (`name` matches the directory, lowercase-hyphen, ≤64 chars; `description` present, ≤1024 chars).
+- **`.github/workflows/package-skills.yml`** — runs on a pushed version tag (`v*`) or manual dispatch. It validates, zips each skill into `dist/<skill>.zip`, generates `dist/SHA256SUMS.txt`, and attaches everything to the matching GitHub Release.
+
+### Cutting a release
+
+1. Bump `version` in `skyflow-skills-plugin/.claude-plugin/plugin.json`.
+2. Tag and push: `git tag v0.6.0 && git push origin v0.6.0`. The package workflow creates the release and uploads the zips automatically.
+
+Alternatively, trigger the **Package skills** workflow manually (Actions tab → *Run workflow*); it defaults the tag to `v<plugin.json version>`.
+
+### Building locally
+
+```sh
+python3 .github/scripts/validate-skills.py   # validate frontmatter
+bash   .github/scripts/package-skills.sh      # build dist/*.zip + SHA256SUMS.txt
+```
+
 ## Learn More
 
 For complete documentation on Claude Code plugins, see the [Claude Code Plugins documentation](https://code.claude.com/docs/en/plugins).

@@ -7,7 +7,7 @@
       "name": "Proprietary",
       "url": "https://docs.skyflow.com"
     },
-    "version": "2026.04"
+    "version": "2026.06"
   },
   "servers": [
     {
@@ -15,7 +15,7 @@
       "description": "Production",
       "variables": {
         "identifier": {
-          "default": "{{vault_uri}}",
+          "default": "{{vaultUri}}",
           "description": "The unique identifier for the vault."
         }
       }
@@ -25,7 +25,7 @@
       "description": "Sandbox",
       "variables": {
         "identifier": {
-          "default": "{{vault_uri}}",
+          "default": "{{vaultUri}}",
           "description": "The unique identifier for the vault."
         }
       }
@@ -39,16 +39,27 @@
     "/v1/detect/deidentify/file": {
       "post": {
         "tags": [
-          "Files"
+          "Files V1"
         ],
         "summary": "De-identify File",
-        "description": "De-identifies sensitive data from a file. This operation includes options applicable to all supported file types.<br/><br/>For more specific options, see the category-specific operations (like <a href='#deidentify_document'>De-identify Document</a>) and the file type-specific opertions (like <a href='#deidentify_pdf'>De-identify PDF</a>).",
+        "description": "De-identifies sensitive data from a file. This operation includes options applicable to all supported file types.<br/><br/>For more specific options, see the category-specific operations (like <a href='#deidentify_document'>De-identify Document</a>) and the file type-specific opertions (like <a href='#deidentify_pdf'>De-identify PDF</a>).<br/><br/><b>Note</b>:<br/> Layout may vary with token-based redaction for MS Office files (PPT, DOCX, and XLS) and PDFs when token-based PDF processing is selected.",
         "operationId": "deidentify_file",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/DeidentifyFileRequest_deidentify_file"
+              },
+              "examples": {
+                "Placeholders": {
+                  "value": {
+                    "file": {
+                      "base64": "$BASE64_DATA",
+                      "data_format": "txt"
+                    },
+                    "vault_id": "$VAULT_ID"
+                  }
+                }
               }
             }
           },
@@ -61,6 +72,13 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DeidentifyFileResponse"
+                },
+                "examples": {
+                  "Placeholders": {
+                    "value": {
+                      "run_id": "8e1f02be-95f1-4868-af33-3c8419bd0d73"
+                    }
+                  }
                 }
               }
             },
@@ -83,6 +101,27 @@
         "security": [
           {
             "Bearer": []
+          }
+        ],
+        "x-examples": [
+          {
+            "name": "Placeholders",
+            "request": {
+              "body": {
+                "file": {
+                  "base64": "$BASE64_DATA",
+                  "data_format": "txt"
+                },
+                "vault_id": "$VAULT_ID"
+              }
+            },
+            "response": {
+              "200": {
+                "body": {
+                  "run_id": "8e1f02be-95f1-4868-af33-3c8419bd0d73"
+                }
+              }
+            }
           }
         ],
         "x-fern-audiences": [
@@ -93,7 +132,7 @@
     "/v1/detect/deidentify/file/audio": {
       "post": {
         "tags": [
-          "Files"
+          "Files V1"
         ],
         "summary": "De-identify Audio",
         "description": "De-identifies sensitive data from an audio file. This operation includes options applicable to all supported audio file types.<br/><br/>For broader file type support, see <a href='#deidentify_file'>De-identify File</a>.",
@@ -103,6 +142,17 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/DeidentifyFileAudioRequest_deidentify_audio"
+              },
+              "examples": {
+                "Placeholders": {
+                  "value": {
+                    "file": {
+                      "base64": "$BASE64_DATA",
+                      "data_format": "mp3"
+                    },
+                    "vault_id": "$VAULT_ID"
+                  }
+                }
               }
             }
           },
@@ -115,6 +165,13 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DeidentifyFileResponse"
+                },
+                "examples": {
+                  "Placeholders": {
+                    "value": {
+                      "run_id": "8e1f02be-95f1-4868-af33-3c8419bd0d73"
+                    }
+                  }
                 }
               }
             },
@@ -137,6 +194,27 @@
         "security": [
           {
             "Bearer": []
+          }
+        ],
+        "x-examples": [
+          {
+            "name": "Placeholders",
+            "request": {
+              "body": {
+                "file": {
+                  "base64": "$BASE64_DATA",
+                  "data_format": "mp3"
+                },
+                "vault_id": "$VAULT_ID"
+              }
+            },
+            "response": {
+              "200": {
+                "body": {
+                  "run_id": "8e1f02be-95f1-4868-af33-3c8419bd0d73"
+                }
+              }
+            }
           }
         ],
         "x-fern-audiences": [
@@ -147,7 +225,7 @@
     "/v1/detect/deidentify/file/document": {
       "post": {
         "tags": [
-          "Files"
+          "Files V1"
         ],
         "summary": "De-identify Document",
         "description": "De-identifies sensitive data from a document file. This operation includes options applicable to all supported document file types.<br/><br/>For more specific options, see the file type-specific opertions (like <a href='#deidentify_pdf'>De-identify PDF</a>) where they're available. For broader file type support, see <a href='#deidentify_file'>De-identify File</a>.",
@@ -157,6 +235,17 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/DeidentifyFileRequest_deidentify_document"
+              },
+              "examples": {
+                "Placeholders": {
+                  "value": {
+                    "file": {
+                      "base64": "$BASE64_DATA",
+                      "data_format": "docx"
+                    },
+                    "vault_id": "$VAULT_ID"
+                  }
+                }
               }
             }
           },
@@ -169,6 +258,13 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DeidentifyFileResponse"
+                },
+                "examples": {
+                  "Placeholders": {
+                    "value": {
+                      "run_id": "8e1f02be-95f1-4868-af33-3c8419bd0d73"
+                    }
+                  }
                 }
               }
             },
@@ -191,6 +287,27 @@
         "security": [
           {
             "Bearer": []
+          }
+        ],
+        "x-examples": [
+          {
+            "name": "Placeholders",
+            "request": {
+              "body": {
+                "file": {
+                  "base64": "$BASE64_DATA",
+                  "data_format": "docx"
+                },
+                "vault_id": "$VAULT_ID"
+              }
+            },
+            "response": {
+              "200": {
+                "body": {
+                  "run_id": "8e1f02be-95f1-4868-af33-3c8419bd0d73"
+                }
+              }
+            }
           }
         ],
         "x-fern-audiences": [
@@ -201,7 +318,7 @@
     "/v1/detect/deidentify/file/document/pdf": {
       "post": {
         "tags": [
-          "Files"
+          "Files V1"
         ],
         "summary": "De-identify PDF",
         "description": "De-identifies sensitive data from a PDF file. This operation includes options specific to PDF files.<br/><br/>For broader file type support, see <a href='#deidentify_document'>De-identify Document</a> and <a href='#deidentify_file'>De-identify File</a>.",
@@ -211,6 +328,17 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/DeidentifyFileDocumentPdfRequest_deidentify_pdf"
+              },
+              "examples": {
+                "Placeholders": {
+                  "value": {
+                    "file": {
+                      "base64": "$BASE64_DATA",
+                      "data_format": "pdf"
+                    },
+                    "vault_id": "$VAULT_ID"
+                  }
+                }
               }
             }
           },
@@ -223,6 +351,13 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DeidentifyFileResponse"
+                },
+                "examples": {
+                  "Placeholders": {
+                    "value": {
+                      "run_id": "8e1f02be-95f1-4868-af33-3c8419bd0d73"
+                    }
+                  }
                 }
               }
             },
@@ -245,6 +380,27 @@
         "security": [
           {
             "Bearer": []
+          }
+        ],
+        "x-examples": [
+          {
+            "name": "Placeholders",
+            "request": {
+              "body": {
+                "file": {
+                  "base64": "$BASE64_DATA",
+                  "data_format": "pdf"
+                },
+                "vault_id": "$VAULT_ID"
+              }
+            },
+            "response": {
+              "200": {
+                "body": {
+                  "run_id": "8e1f02be-95f1-4868-af33-3c8419bd0d73"
+                }
+              }
+            }
           }
         ],
         "x-fern-audiences": [
@@ -255,7 +411,7 @@
     "/v1/detect/deidentify/file/image": {
       "post": {
         "tags": [
-          "Files"
+          "Files V1"
         ],
         "summary": "De-identify Image",
         "description": "De-identifies sensitive data from an image file. This operation includes options applicable to all supported image file types.<br/><br/>For broader file type support, see <a href='#deidentify_file'>De-identify File</a>.",
@@ -265,6 +421,17 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/DeidentifyFileImageRequest_deidentify_image"
+              },
+              "examples": {
+                "Placeholders": {
+                  "value": {
+                    "file": {
+                      "base64": "$BASE64_DATA",
+                      "data_format": "jpg"
+                    },
+                    "vault_id": "$VAULT_ID"
+                  }
+                }
               }
             }
           },
@@ -277,6 +444,13 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DeidentifyFileResponse"
+                },
+                "examples": {
+                  "Placeholders": {
+                    "value": {
+                      "run_id": "8e1f02be-95f1-4868-af33-3c8419bd0d73"
+                    }
+                  }
                 }
               }
             },
@@ -299,6 +473,27 @@
         "security": [
           {
             "Bearer": []
+          }
+        ],
+        "x-examples": [
+          {
+            "name": "Placeholders",
+            "request": {
+              "body": {
+                "file": {
+                  "base64": "$BASE64_DATA",
+                  "data_format": "jpg"
+                },
+                "vault_id": "$VAULT_ID"
+              }
+            },
+            "response": {
+              "200": {
+                "body": {
+                  "run_id": "8e1f02be-95f1-4868-af33-3c8419bd0d73"
+                }
+              }
+            }
           }
         ],
         "x-fern-audiences": [
@@ -309,7 +504,7 @@
     "/v1/detect/deidentify/file/presentation": {
       "post": {
         "tags": [
-          "Files"
+          "Files V1"
         ],
         "summary": "De-identify Presentation",
         "description": "De-identifies sensitive data from a presentation file. This operation includes options applicable to all supported presentation file types.<br/><br/>For broader file type support, see <a href='#deidentify_file'>De-identify File</a>.",
@@ -319,6 +514,17 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/DeidentifyFileRequest_deidentify_presentation"
+              },
+              "examples": {
+                "Placeholders": {
+                  "value": {
+                    "file": {
+                      "base64": "$BASE64_DATA",
+                      "data_format": "pptx"
+                    },
+                    "vault_id": "$VAULT_ID"
+                  }
+                }
               }
             }
           },
@@ -331,6 +537,13 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DeidentifyFileResponse"
+                },
+                "examples": {
+                  "Placeholders": {
+                    "value": {
+                      "run_id": "8e1f02be-95f1-4868-af33-3c8419bd0d73"
+                    }
+                  }
                 }
               }
             },
@@ -353,6 +566,27 @@
         "security": [
           {
             "Bearer": []
+          }
+        ],
+        "x-examples": [
+          {
+            "name": "Placeholders",
+            "request": {
+              "body": {
+                "file": {
+                  "base64": "$BASE64_DATA",
+                  "data_format": "pptx"
+                },
+                "vault_id": "$VAULT_ID"
+              }
+            },
+            "response": {
+              "200": {
+                "body": {
+                  "run_id": "8e1f02be-95f1-4868-af33-3c8419bd0d73"
+                }
+              }
+            }
           }
         ],
         "x-fern-audiences": [
@@ -363,7 +597,7 @@
     "/v1/detect/deidentify/file/spreadsheet": {
       "post": {
         "tags": [
-          "Files"
+          "Files V1"
         ],
         "summary": "De-identify Spreadsheet",
         "description": "De-identifies sensitive data from a spreadsheet file. This operation includes options applicable to all supported spreadsheet file types.<br/><br/>For broader file type support, see <a href='#deidentify_file'>De-identify File</a>.",
@@ -373,6 +607,17 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/DeidentifyFileRequest_deidentify_spreadsheet"
+              },
+              "examples": {
+                "Placeholders": {
+                  "value": {
+                    "file": {
+                      "base64": "$BASE64_DATA",
+                      "data_format": "csv"
+                    },
+                    "vault_id": "$VAULT_ID"
+                  }
+                }
               }
             }
           },
@@ -385,6 +630,13 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DeidentifyFileResponse"
+                },
+                "examples": {
+                  "Placeholders": {
+                    "value": {
+                      "run_id": "8e1f02be-95f1-4868-af33-3c8419bd0d73"
+                    }
+                  }
                 }
               }
             },
@@ -407,6 +659,27 @@
         "security": [
           {
             "Bearer": []
+          }
+        ],
+        "x-examples": [
+          {
+            "name": "Placeholders",
+            "request": {
+              "body": {
+                "file": {
+                  "base64": "$BASE64_DATA",
+                  "data_format": "csv"
+                },
+                "vault_id": "$VAULT_ID"
+              }
+            },
+            "response": {
+              "200": {
+                "body": {
+                  "run_id": "8e1f02be-95f1-4868-af33-3c8419bd0d73"
+                }
+              }
+            }
           }
         ],
         "x-fern-audiences": [
@@ -417,7 +690,7 @@
     "/v1/detect/deidentify/file/structured_text": {
       "post": {
         "tags": [
-          "Files"
+          "Files V1"
         ],
         "summary": "De-identify Structured Text",
         "description": "De-identifies sensitive data from a structured text file. This operation includes options applicable to all supported structured text file types.<br/><br/>For broader file type support, see <a href='#deidentify_file'>De-identify File</a>.",
@@ -427,6 +700,17 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/DeidentifyFileRequest_deidentify_structured_text"
+              },
+              "examples": {
+                "Placeholders": {
+                  "value": {
+                    "file": {
+                      "base64": "$BASE64_DATA",
+                      "data_format": "json"
+                    },
+                    "vault_id": "$VAULT_ID"
+                  }
+                }
               }
             }
           },
@@ -439,6 +723,13 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DeidentifyFileResponse"
+                },
+                "examples": {
+                  "Placeholders": {
+                    "value": {
+                      "run_id": "8e1f02be-95f1-4868-af33-3c8419bd0d73"
+                    }
+                  }
                 }
               }
             },
@@ -461,6 +752,27 @@
         "security": [
           {
             "Bearer": []
+          }
+        ],
+        "x-examples": [
+          {
+            "name": "Placeholders",
+            "request": {
+              "body": {
+                "file": {
+                  "base64": "$BASE64_DATA",
+                  "data_format": "json"
+                },
+                "vault_id": "$VAULT_ID"
+              }
+            },
+            "response": {
+              "200": {
+                "body": {
+                  "run_id": "8e1f02be-95f1-4868-af33-3c8419bd0d73"
+                }
+              }
+            }
           }
         ],
         "x-fern-audiences": [
@@ -471,7 +783,7 @@
     "/v1/detect/deidentify/file/text": {
       "post": {
         "tags": [
-          "Files"
+          "Files V1"
         ],
         "summary": "De-identify Text",
         "description": "De-identifies sensitive data from a text file. This operation includes options applicable to all supported image text types.<br/><br/>For broader file type support, see <a href='#deidentify_file'>De-identify File</a>.",
@@ -481,6 +793,17 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/DeidentifyFileRequest_deidentify_text"
+              },
+              "examples": {
+                "Placeholders": {
+                  "value": {
+                    "file": {
+                      "base64": "$BASE64_DATA",
+                      "data_format": "txt"
+                    },
+                    "vault_id": "$VAULT_ID"
+                  }
+                }
               }
             }
           },
@@ -493,6 +816,13 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DeidentifyFileResponse"
+                },
+                "examples": {
+                  "Placeholders": {
+                    "value": {
+                      "run_id": "8e1f02be-95f1-4868-af33-3c8419bd0d73"
+                    }
+                  }
                 }
               }
             },
@@ -517,6 +847,27 @@
             "Bearer": []
           }
         ],
+        "x-examples": [
+          {
+            "name": "Placeholders",
+            "request": {
+              "body": {
+                "file": {
+                  "base64": "$BASE64_DATA",
+                  "data_format": "txt"
+                },
+                "vault_id": "$VAULT_ID"
+              }
+            },
+            "response": {
+              "200": {
+                "body": {
+                  "run_id": "8e1f02be-95f1-4868-af33-3c8419bd0d73"
+                }
+              }
+            }
+          }
+        ],
         "x-fern-audiences": [
           "external"
         ]
@@ -525,7 +876,7 @@
     "/v1/detect/deidentify/string": {
       "post": {
         "tags": [
-          "Strings"
+          "Strings V1"
         ],
         "summary": "De-identify String",
         "description": "De-identifies sensitive data from a string.",
@@ -535,6 +886,14 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/DeidentifyStringRequest"
+              },
+              "examples": {
+                "Placeholders": {
+                  "value": {
+                    "vault_id": "$VAULT_ID",
+                    "text": "My name is John Doe, and my email is johndoe@acme.com."
+                  }
+                }
               }
             }
           },
@@ -547,6 +906,47 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DeidentifyStringResponse"
+                },
+                "examples": {
+                  "Placeholders": {
+                    "value": {
+                      "processed_text": "My name is [NAME_1] and my email is [EMAIL_ADDRESS_1].",
+                      "word_count": 10,
+                      "character_count": 53,
+                      "entities": [
+                        {
+                          "token": "NAME_1",
+                          "value": "John Doe",
+                          "location": {
+                            "start_index": 11,
+                            "end_index": 19,
+                            "start_index_processed": 11,
+                            "end_index_processed": 19
+                          },
+                          "entity_type": "NAME",
+                          "entity_scores": {
+                            "NAME": 0.9152,
+                            "NAME_FAMILY": 0.4583,
+                            "NAME_GIVEN": 0.4457
+                          }
+                        },
+                        {
+                          "token": "EMAIL_ADDRESS_1",
+                          "value": "johndoe@acme.com",
+                          "location": {
+                            "start_index": 36,
+                            "end_index": 52,
+                            "start_index_processed": 36,
+                            "end_index_processed": 53
+                          },
+                          "entity_type": "EMAIL_ADDRESS",
+                          "entity_scores": {
+                            "EMAIL_ADDRESS": 0.8955
+                          }
+                        }
+                      ]
+                    }
+                  }
                 }
               }
             },
@@ -571,6 +971,58 @@
             "Bearer": []
           }
         ],
+        "x-examples": [
+          {
+            "name": "Placeholders",
+            "request": {
+              "body": {
+                "vault_id": "$VAULT_ID",
+                "text": "My name is John Doe, and my email is johndoe@acme.com."
+              }
+            },
+            "response": {
+              "200": {
+                "body": {
+                  "processed_text": "My name is [NAME_1] and my email is [EMAIL_ADDRESS_1].",
+                  "word_count": 10,
+                  "character_count": 53,
+                  "entities": [
+                    {
+                      "token": "NAME_1",
+                      "value": "John Doe",
+                      "location": {
+                        "start_index": 11,
+                        "end_index": 19,
+                        "start_index_processed": 11,
+                        "end_index_processed": 19
+                      },
+                      "entity_type": "NAME",
+                      "entity_scores": {
+                        "NAME": 0.9152,
+                        "NAME_FAMILY": 0.4583,
+                        "NAME_GIVEN": 0.4457
+                      }
+                    },
+                    {
+                      "token": "EMAIL_ADDRESS_1",
+                      "value": "johndoe@acme.com",
+                      "location": {
+                        "start_index": 36,
+                        "end_index": 52,
+                        "start_index_processed": 36,
+                        "end_index_processed": 53
+                      },
+                      "entity_type": "EMAIL_ADDRESS",
+                      "entity_scores": {
+                        "EMAIL_ADDRESS": 0.8955
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ],
         "x-fern-audiences": [
           "external"
         ]
@@ -579,7 +1031,7 @@
     "/v1/detect/guardrails": {
       "post": {
         "tags": [
-          "Guardrails"
+          "Guardrails V1"
         ],
         "summary": "Check Guardrails",
         "description": "Preserve safety and compliance with usage policies.",
@@ -680,7 +1132,7 @@
     "/v1/detect/reidentify/file": {
       "post": {
         "tags": [
-          "Files"
+          "Files V1"
         ],
         "summary": "Re-identify File",
         "description": "Re-identifies tokens in a file.",
@@ -690,6 +1142,17 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ReidentifyFileRequest_reidentify_file"
+              },
+              "examples": {
+                "Placeholders": {
+                  "value": {
+                    "file": {
+                      "base64": "$BASE64_DATA",
+                      "data_format": "txt"
+                    },
+                    "vault_id": "$VAULT_ID"
+                  }
+                }
               }
             }
           },
@@ -702,6 +1165,19 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ReidentifyFileResponse"
+                },
+                "examples": {
+                  "Placeholders": {
+                    "value": {
+                      "status": "success",
+                      "output_type": "BASE64",
+                      "output": {
+                        "processed_file": "$PROCESSED_FILE",
+                        "processed_file_type": "reidentified_file",
+                        "processed_file_extension": "txt"
+                      }
+                    }
+                  }
                 }
               }
             },
@@ -726,6 +1202,33 @@
             "Bearer": []
           }
         ],
+        "x-examples": [
+          {
+            "name": "Placeholders",
+            "request": {
+              "body": {
+                "file": {
+                  "base64": "$BASE64_DATA",
+                  "data_format": "txt"
+                },
+                "vault_id": "$VAULT_ID"
+              }
+            },
+            "response": {
+              "200": {
+                "body": {
+                  "status": "success",
+                  "output_type": "BASE64",
+                  "output": {
+                    "processed_file": "$PROCESSED_FILE",
+                    "processed_file_type": "reidentified_file",
+                    "processed_file_extension": "txt"
+                  }
+                }
+              }
+            }
+          }
+        ],
         "x-fern-audiences": [
           "external"
         ]
@@ -734,7 +1237,7 @@
     "/v1/detect/reidentify/string": {
       "post": {
         "tags": [
-          "Strings"
+          "Strings V1"
         ],
         "summary": "Re-identify String",
         "description": "Re-identifies tokens in a string.",
@@ -744,6 +1247,14 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ReidentifyStringRequest"
+              },
+              "examples": {
+                "Placeholders": {
+                  "value": {
+                    "text": "My name is [NAME_1], and my email is [EMAIL_1].",
+                    "vault_id": "$VAULT_ID"
+                  }
+                }
               }
             }
           },
@@ -756,6 +1267,13 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/IdentifyResponse"
+                },
+                "examples": {
+                  "Placeholders": {
+                    "value": {
+                      "text": "My name is John Doe, and my email is johndoe@acme.com"
+                    }
+                  }
                 }
               }
             },
@@ -780,6 +1298,24 @@
             "Bearer": []
           }
         ],
+        "x-examples": [
+          {
+            "name": "Placeholders",
+            "request": {
+              "body": {
+                "text": "My name is [NAME_1], and my email is [EMAIL_1].",
+                "vault_id": "$VAULT_ID"
+              }
+            },
+            "response": {
+              "200": {
+                "body": {
+                  "text": "My name is John Doe, and my email is johndoe@acme.com"
+                }
+              }
+            }
+          }
+        ],
         "x-fern-audiences": [
           "external"
         ]
@@ -788,7 +1324,7 @@
     "/v1/detect/runs/{run_id}": {
       "get": {
         "tags": [
-          "Files"
+          "Files V1"
         ],
         "summary": "Get Detect Run",
         "description": "Returns the status of a detect run.",
@@ -818,6 +1354,25 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DetectRunsResponse"
+                },
+                "examples": {
+                  "Placeholders": {
+                    "value": {
+                      "status": "success",
+                      "output_type": "efs_path",
+                      "output": [
+                        {
+                          "processed_file": "$REDACTED_TEXT_URL",
+                          "processed_file_type": "redacted_text"
+                        },
+                        {
+                          "processed_file": "$ENTITIES_URL",
+                          "processed_file_type": "entities"
+                        }
+                      ],
+                      "message": "De-identification completed successfully."
+                    }
+                  }
                 }
               }
             },
@@ -848,6 +1403,686 @@
         "x-required-query-parameters": [
           "vault_id"
         ],
+        "x-examples": [
+          {
+            "name": "Placeholders",
+            "response": {
+              "200": {
+                "body": {
+                  "status": "success",
+                  "output_type": "efs_path",
+                  "output": [
+                    {
+                      "processed_file": "$REDACTED_TEXT_URL",
+                      "processed_file_type": "redacted_text"
+                    },
+                    {
+                      "processed_file": "$ENTITIES_URL",
+                      "processed_file_type": "entities"
+                    }
+                  ],
+                  "message": "De-identification completed successfully."
+                }
+              }
+            }
+          }
+        ],
+        "x-fern-audiences": [
+          "external"
+        ]
+      }
+    },
+    "/v2/detect/deidentify/file": {
+      "post": {
+        "tags": [
+          "Files V2"
+        ],
+        "summary": "De-identify File V2",
+        "description": "De-identifies sensitive data from a file.<br/><br/><b>Note</b>:\n- Layout may vary with token-based redaction for MS Office files (PPT, DOCX, and XLS) and PDFs when token-based PDF processing is selected.\n- V2 API is in beta and feature-flagged.",
+        "operationId": "deidentify_file_v2",
+        "requestBody": {
+          "description": "Request to de-identify a file. Provide either `configurationId` or `configuration` — only one is required.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeidentifyFileRequestV2"
+              },
+              "examples": {
+                "Placeholders": {
+                  "value": {
+                    "dataSource": "BASE64",
+                    "value": "$BASE64_DATA",
+                    "dataFormat": "pdf",
+                    "configurationId": "$CONFIGURATION_ID"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeidentifyFileResponseV2"
+                },
+                "examples": {
+                  "Placeholders": {
+                    "value": {
+                      "runId": "$RUN_ID"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/x-request-id"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-examples": [
+          {
+            "name": "Placeholders",
+            "request": {
+              "body": {
+                "dataSource": "BASE64",
+                "value": "$BASE64_DATA",
+                "dataFormat": "pdf",
+                "configurationId": "$CONFIGURATION_ID"
+              }
+            },
+            "response": {
+              "200": {
+                "body": {
+                  "runId": "$RUN_ID"
+                }
+              }
+            }
+          }
+        ],
+        "x-fern-audiences": [
+          "external"
+        ]
+      }
+    },
+    "/v2/detect/deidentify/string": {
+      "post": {
+        "tags": [
+          "Strings V2"
+        ],
+        "summary": "De-identify String V2",
+        "description": "De-identifies sensitive data from a string.<br/><br/><b>Note</b>: V2 API is in beta and feature-flagged.",
+        "operationId": "deidentify_string_v2",
+        "requestBody": {
+          "description": "Request to de-identify a string. Provide either `configurationId` or `configuration` — only one is required.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeidentifyStringRequestV2"
+              },
+              "examples": {
+                "Placeholders": {
+                  "value": {
+                    "text": "My name is John Doe, and my email is johndoe@acme.com.",
+                    "configurationId": "$CONFIGURATION_ID"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeidentifyStringResponseV2"
+                },
+                "examples": {
+                  "Placeholders": {
+                    "value": {
+                      "processedText": "My name is [NAME_1] and my email is [EMAIL_ADDRESS_1].",
+                      "entities": [
+                        {
+                          "token": "NAME_1",
+                          "value": "John Doe",
+                          "location": {
+                            "startIndex": 11,
+                            "endIndex": 19,
+                            "startIndexProcessed": 11,
+                            "endIndexProcessed": 19
+                          },
+                          "entityType": "NAME",
+                          "entityScores": {
+                            "NAME": 0.9152
+                          }
+                        },
+                        {
+                          "token": "EMAIL_ADDRESS_1",
+                          "value": "johndoe@acme.com",
+                          "location": {
+                            "startIndex": 36,
+                            "endIndex": 52,
+                            "startIndexProcessed": 36,
+                            "endIndexProcessed": 53
+                          },
+                          "entityType": "EMAIL_ADDRESS",
+                          "entityScores": {
+                            "EMAIL_ADDRESS": 0.8955
+                          }
+                        }
+                      ],
+                      "metrics": {
+                        "size": 0.05,
+                        "wordCount": 10,
+                        "characterCount": 53
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/x-request-id"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-examples": [
+          {
+            "name": "Placeholders",
+            "request": {
+              "body": {
+                "text": "My name is John Doe, and my email is johndoe@acme.com.",
+                "configurationId": "$CONFIGURATION_ID"
+              }
+            },
+            "response": {
+              "200": {
+                "body": {
+                  "processedText": "My name is [NAME_1] and my email is [EMAIL_ADDRESS_1].",
+                  "entities": [
+                    {
+                      "token": "NAME_1",
+                      "value": "John Doe",
+                      "location": {
+                        "startIndex": 11,
+                        "endIndex": 19,
+                        "startIndexProcessed": 11,
+                        "endIndexProcessed": 19
+                      },
+                      "entityType": "NAME",
+                      "entityScores": {
+                        "NAME": 0.9152
+                      }
+                    },
+                    {
+                      "token": "EMAIL_ADDRESS_1",
+                      "value": "johndoe@acme.com",
+                      "location": {
+                        "startIndex": 36,
+                        "endIndex": 52,
+                        "startIndexProcessed": 36,
+                        "endIndexProcessed": 53
+                      },
+                      "entityType": "EMAIL_ADDRESS",
+                      "entityScores": {
+                        "EMAIL_ADDRESS": 0.8955
+                      }
+                    }
+                  ],
+                  "metrics": {
+                    "size": 0.05,
+                    "wordCount": 10,
+                    "characterCount": 53
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "x-fern-audiences": [
+          "external"
+        ]
+      }
+    },
+    "/v2/detect/guardrails": {
+      "post": {
+        "tags": [
+          "Guardrails V2"
+        ],
+        "summary": "Check Guardrails V2",
+        "description": "Preserve safety and compliance with usage policies.<br/><br/><b>Note</b>: V2 API is in beta and feature-flagged.",
+        "operationId": "check_guardrails_v2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DetectGuardrailsRequestV2"
+              },
+              "examples": {
+                "Placeholders": {
+                  "value": {
+                    "vault_id": "$VAULT_ID",
+                    "text": "I love to play cricket.",
+                    "check_toxicity": true,
+                    "deny_topics": [
+                      "sports"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetectGuardrailsResponseV2"
+                },
+                "examples": {
+                  "Placeholders": {
+                    "value": {
+                      "text": "I love to play cricket.",
+                      "toxic": false,
+                      "denied_topic": true,
+                      "validation": "failed"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/x-request-id"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-examples": [
+          {
+            "name": "Placeholders",
+            "request": {
+              "body": {
+                "vault_id": "$VAULT_ID",
+                "text": "I love to play cricket.",
+                "check_toxicity": true,
+                "deny_topics": [
+                  "sports"
+                ]
+              }
+            },
+            "response": {
+              "200": {
+                "body": {
+                  "text": "I love to play cricket.",
+                  "toxic": false,
+                  "denied_topic": true,
+                  "validation": "failed"
+                }
+              }
+            }
+          }
+        ],
+        "x-fern-audiences": [
+          "external"
+        ]
+      }
+    },
+    "/v2/detect/reidentify/file": {
+      "post": {
+        "tags": [
+          "Files V2"
+        ],
+        "summary": "Re-identify File V2",
+        "description": "Re-identifies tokens in a file.<br/><br/><b>Note</b>: V2 API is in beta and feature-flagged.",
+        "operationId": "reidentify_file_v2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReidentifyFileRequestV2"
+              },
+              "examples": {
+                "Placeholders": {
+                  "value": {
+                    "dataSource": "BASE64",
+                    "value": "$BASE64_DATA",
+                    "dataFormat": "txt",
+                    "vaultId": "$VAULT_ID"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReidentifyFileResponseV2"
+                },
+                "examples": {
+                  "Placeholders": {
+                    "value": {
+                      "status": "SUCCESS",
+                      "outputType": "BASE64",
+                      "output": [
+                        {
+                          "processedFile": "$PROCESSED_FILE",
+                          "processedFileType": "REIDENTIFIED_FILE",
+                          "processedFileExtension": "txt"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/x-request-id"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-examples": [
+          {
+            "name": "Placeholders",
+            "request": {
+              "body": {
+                "dataSource": "BASE64",
+                "value": "$BASE64_DATA",
+                "dataFormat": "txt",
+                "vaultId": "$VAULT_ID"
+              }
+            },
+            "response": {
+              "200": {
+                "body": {
+                  "status": "SUCCESS",
+                  "outputType": "BASE64",
+                  "output": [
+                    {
+                      "processedFile": "$PROCESSED_FILE",
+                      "processedFileType": "REIDENTIFIED_FILE",
+                      "processedFileExtension": "txt"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "x-fern-audiences": [
+          "external"
+        ]
+      }
+    },
+    "/v2/detect/reidentify/string": {
+      "post": {
+        "tags": [
+          "Strings V2"
+        ],
+        "summary": "Re-identify String V2",
+        "description": "Re-identifies tokens in a string.<br/><br/><b>Note</b>: V2 API is in beta and feature-flagged.",
+        "operationId": "reidentify_string_v2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReidentifyStringRequestV2"
+              },
+              "examples": {
+                "Placeholders": {
+                  "value": {
+                    "vaultId": "$VAULT_ID",
+                    "text": "My name is [NAME_1], and my email is [EMAIL_ADDRESS_1]."
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReidentifyStringResponseV2"
+                },
+                "examples": {
+                  "Placeholders": {
+                    "value": {
+                      "processedText": "My name is John Doe, and my email is johndoe@acme.com."
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/x-request-id"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-examples": [
+          {
+            "name": "Placeholders",
+            "request": {
+              "body": {
+                "vaultId": "$VAULT_ID",
+                "text": "My name is [NAME_1], and my email is [EMAIL_ADDRESS_1]."
+              }
+            },
+            "response": {
+              "200": {
+                "body": {
+                  "processedText": "My name is John Doe, and my email is johndoe@acme.com."
+                }
+              }
+            }
+          }
+        ],
+        "x-fern-audiences": [
+          "external"
+        ]
+      }
+    },
+    "/v2/detect/runs/{runId}": {
+      "get": {
+        "tags": [
+          "Files V2"
+        ],
+        "summary": "Get Detect Run V2",
+        "description": "Returns the status of a detect run.<br/><br/><b>Note</b>: V2 API is in beta and feature-flagged.",
+        "operationId": "get_run_v2",
+        "parameters": [
+          {
+            "name": "runId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vaultId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetectRunsResponseV2"
+                },
+                "examples": {
+                  "Placeholders": {
+                    "value": {
+                      "status": "SUCCESS",
+                      "outputType": "PRESIGNED_URL",
+                      "output": [
+                        {
+                          "processedFile": "$REDACTED_TEXT_URL",
+                          "processedFileType": "REDACTED_TEXT"
+                        },
+                        {
+                          "processedFile": "$ENTITIES_URL",
+                          "processedFileType": "ENTITIES"
+                        }
+                      ],
+                      "message": "De-identification completed successfully."
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/x-request-id"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-external-query-parameters": [
+          "vaultId"
+        ],
+        "x-required-query-parameters": [
+          "vaultId"
+        ],
+        "x-examples": [
+          {
+            "name": "Placeholders",
+            "response": {
+              "200": {
+                "body": {
+                  "status": "SUCCESS",
+                  "outputType": "PRESIGNED_URL",
+                  "output": [
+                    {
+                      "processedFile": "$REDACTED_TEXT_URL",
+                      "processedFileType": "REDACTED_TEXT"
+                    },
+                    {
+                      "processedFile": "$ENTITIES_URL",
+                      "processedFileType": "ENTITIES"
+                    }
+                  ],
+                  "message": "De-identification completed successfully."
+                }
+              }
+            }
+          }
+        ],
         "x-fern-audiences": [
           "external"
         ]
@@ -856,6 +2091,74 @@
   },
   "components": {
     "schemas": {
+      "AudioV2": {
+        "type": "object",
+        "properties": {
+          "outputProcessedAudio": {
+            "type": "boolean",
+            "default": true,
+            "description": "If `true`, includes processed audio file in the response."
+          },
+          "outputTranscription": {
+            "enum": [
+              "NONE",
+              "TRANSCRIPTION",
+              "MEDICAL_TRANSCRIPTION",
+              "DIARIZED_TRANSCRIPTION",
+              "MEDICAL_DIARIZED_TRANSCRIPTION"
+            ],
+            "type": "string",
+            "default": "NONE",
+            "description": "Transcription type to include in the response.",
+            "format": "enum"
+          },
+          "bleep": {
+            "$ref": "#/components/schemas/AudioV2_Bleep"
+          }
+        },
+        "description": "Audio detection and deidentification configuration.",
+        "x-visibility": [
+          "external"
+        ]
+      },
+      "AudioV2_Bleep": {
+        "type": "object",
+        "properties": {
+          "startPadding": {
+            "maximum": 20,
+            "type": "number",
+            "default": 0.5,
+            "description": "Padding added to the beginning of a bleep, in seconds. Range: 0–20. Defaults to 0.5.",
+            "format": "float"
+          },
+          "stopPadding": {
+            "maximum": 20,
+            "type": "number",
+            "default": 0.2,
+            "description": "Padding added to the end of a bleep, in seconds. Range: 0–20. Defaults to 0.2.",
+            "format": "float"
+          },
+          "frequency": {
+            "maximum": 20000,
+            "minimum": 20,
+            "type": "integer",
+            "default": 600,
+            "description": "Frequency of the sine wave used for the bleep sound, in Hz.",
+            "format": "int32"
+          },
+          "gain": {
+            "minimum": -60,
+            "type": "integer",
+            "default": -3,
+            "description": "Relative loudness of the bleep. Positive values increase loudness and negative values decrease it.",
+            "format": "int32"
+          }
+        },
+        "description": "Configuration for the bleep sound used to mask detected entities in audio.",
+        "x-visibility": [
+          "external"
+        ]
+      },
       "DeidentifiedFileOutput": {
         "type": "object",
         "properties": {
@@ -913,6 +2216,72 @@
           "external"
         ]
       },
+      "DeidentifyFileRequestV2": {
+        "required": [
+          "dataSource",
+          "value",
+          "configurationId",
+          "dataFormat"
+        ],
+        "type": "object",
+        "properties": {
+          "dataSource": {
+            "enum": [
+              "BASE64",
+              "SKYFLOW_ID",
+              "PRESIGNED_URL"
+            ],
+            "type": "string",
+            "description": "Data source of the input file. `BASE64`: Base64-encoded file string. `SKYFLOW_ID`: Reference file by vault ID. `PRESIGNED_URL`: S3 presigned URL of input file.",
+            "format": "enum"
+          },
+          "value": {
+            "type": "string",
+            "description": "File data corresponding to the specified `dataSource` type."
+          },
+          "dataFormat": {
+            "enum": [
+              "mp3",
+              "wav",
+              "pdf",
+              "txt",
+              "csv",
+              "json",
+              "jpg",
+              "jpeg",
+              "tif",
+              "tiff",
+              "png",
+              "bmp",
+              "xls",
+              "xlsx",
+              "doc",
+              "docx",
+              "ppt",
+              "pptx",
+              "xml",
+              "dcm",
+              "jsonl",
+              "zip",
+              "gif"
+            ],
+            "type": "string",
+            "description": "Format of the input file.",
+            "format": "enum"
+          },
+          "configurationId": {
+            "type": "string",
+            "description": "ID of the Detect configuration to use for de-identification."
+          },
+          "configuration": {
+            "$ref": "#/components/schemas/DetectConfigV2"
+          }
+        },
+        "description": "De-identifies sensitive data in a file. Provide either `configurationId` or `configuration` — only one is required.",
+        "x-visibility": [
+          "external"
+        ]
+      },
       "DeidentifyFileResponse": {
         "type": "object",
         "properties": {
@@ -922,6 +2291,16 @@
           }
         },
         "description": "Response to deidentify a file."
+      },
+      "DeidentifyFileResponseV2": {
+        "type": "object",
+        "properties": {
+          "runId": {
+            "type": "string",
+            "description": "Run ID of the deidentification request."
+          }
+        },
+        "description": "Response containing the run ID for tracking the async deidentification job."
       },
       "DeidentifyStringRequest": {
         "example": {
@@ -1040,7 +2419,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict_regex` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict_regex` pattern only matches a substring of it, the `restrict_regex` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings."
+            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict_regex` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict_regex` pattern only matches a substring of it, the `restrict_regex` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings. <b>Note</b>: Vault tokens are currently not supported."
           },
           "transformations": {
             "$ref": "#/components/schemas/Transformations"
@@ -1051,6 +2430,30 @@
           }
         },
         "description": "String Request to deidentify a string."
+      },
+      "DeidentifyStringRequestV2": {
+        "required": [
+          "text",
+          "configurationId"
+        ],
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Text to deidentify."
+          },
+          "configurationId": {
+            "type": "string",
+            "description": "ID of the Detect configuration to use for de-identification."
+          },
+          "configuration": {
+            "$ref": "#/components/schemas/DetectConfigV2"
+          }
+        },
+        "description": "De-identifies sensitive data in a string. Provide either `configurationId` or `configuration` — only one is required.",
+        "x-visibility": [
+          "external"
+        ]
       },
       "DeidentifyStringResponse": {
         "example": {
@@ -1297,6 +2700,202 @@
         },
         "description": "Response to deidentify a string."
       },
+      "DeidentifyStringResponseV2": {
+        "type": "object",
+        "properties": {
+          "processedText": {
+            "type": "string",
+            "description": "Deidentified text with sensitive entities replaced."
+          },
+          "entities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DeidentifyStringResponseV2_DetectedEntity"
+            },
+            "description": "Detected entities."
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/Metrics"
+          }
+        },
+        "description": "Response containing the deidentified string and detected entity metadata."
+      },
+      "DeidentifyStringResponseV2_DetectedEntity": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "Processed text of the entity."
+          },
+          "value": {
+            "type": "string",
+            "description": "Original text of the entity."
+          },
+          "location": {
+            "$ref": "#/components/schemas/DeidentifyStringResponseV2_EntityLocation"
+          },
+          "entityType": {
+            "type": "string",
+            "description": "Highest-rated label."
+          },
+          "entityScores": {
+            "type": "object",
+            "additionalProperties": {
+              "maximum": 1,
+              "type": "number"
+            },
+            "description": "Labels and their scores."
+          }
+        },
+        "description": "Detected entities for String"
+      },
+      "DeidentifyStringResponseV2_EntityLocation": {
+        "type": "object",
+        "properties": {
+          "startIndex": {
+            "maximum": 1000000000,
+            "type": "integer",
+            "description": "Index of the first character of the string in the original text.",
+            "format": "int32"
+          },
+          "endIndex": {
+            "maximum": 1000000000,
+            "type": "integer",
+            "description": "Index of the last character of the string in the original text.",
+            "format": "int32"
+          },
+          "startIndexProcessed": {
+            "maximum": 1000000000,
+            "type": "integer",
+            "description": "Index of the first character of the string in the processed text.",
+            "format": "int32"
+          },
+          "endIndexProcessed": {
+            "maximum": 1000000000,
+            "type": "integer",
+            "description": "Index of the last character of the string in the processed text.",
+            "format": "int32"
+          }
+        },
+        "description": "Locations of an entity in the text.",
+        "x-visibility": [
+          "external"
+        ]
+      },
+      "Detect": {
+        "type": "object",
+        "properties": {
+          "entities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Detect_Entity"
+            },
+            "description": "Entities and their deidentification settings."
+          },
+          "objectEntities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Detect_ObjectEntity"
+            },
+            "description": "Object entities and their deidentification settings."
+          },
+          "restrict": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `skip` and `restrict`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict` pattern only matches a substring of it, the `restrict` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings. <b>Note</b>: Vault tokens are currently not supported."
+          },
+          "skip": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Regular expressions to display in plaintext. Entities appear in plaintext if an expression matches either the entirety of a detected entity or a substring of it. Expressions don't match across entity boundaries. If a string or entity matches both `skip` and `restrict`, the entity is displayed in plaintext."
+          },
+          "customTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Detect_CustomTypes"
+            },
+            "description": "Custom entity type definitions."
+          },
+          "returnEntities": {
+            "enum": [
+              "EXCLUDE_SENSITIVE_DATA",
+              "ALL",
+              "NONE"
+            ],
+            "type": "string",
+            "default": "EXCLUDE_SENSITIVE_DATA",
+            "description": "Controls which entities are returned in the response.",
+            "format": "enum"
+          }
+        },
+        "description": "Entity detection and deidentification settings.",
+        "x-visibility": [
+          "external"
+        ]
+      },
+      "DetectConfigV2": {
+        "required": [
+          "vaultId"
+        ],
+        "type": "object",
+        "properties": {
+          "ID": {
+            "readOnly": true,
+            "type": "string",
+            "description": "ID of the configuration."
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the configuration."
+          },
+          "namespace": {
+            "readOnly": true,
+            "type": "string",
+            "description": "Namespace of the configuration."
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the configuration."
+          },
+          "vaultId": {
+            "type": "string",
+            "description": "ID of the vault."
+          },
+          "vaultType": {
+            "readOnly": true,
+            "enum": [
+              "NONE",
+              "PRIVACYDB",
+              "FLOWDB",
+              "FLOWDB_SCHEMALESS"
+            ],
+            "type": "string",
+            "description": "Type of the vault.",
+            "format": "enum"
+          },
+          "detect": {
+            "$ref": "#/components/schemas/Detect"
+          },
+          "fileMapping": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileMapping"
+            },
+            "description": "Mappings for source and deidentified file locations."
+          },
+          "media": {
+            "$ref": "#/components/schemas/Media"
+          }
+        },
+        "description": "Configuration for detecting and deidentifying entities in a vault.",
+        "x-visibility": [
+          "external"
+        ]
+      },
       "DetectGuardrailsRequest": {
         "required": [
           "vault_id",
@@ -1329,6 +2928,39 @@
           }
         }
       },
+      "DetectGuardrailsRequestV2": {
+        "required": [
+          "vaultId",
+          "text"
+        ],
+        "type": "object",
+        "properties": {
+          "text": {
+            "maxLength": 500000,
+            "type": "string",
+            "description": "Text to check against guardrails."
+          },
+          "checkToxicity": {
+            "type": "boolean",
+            "default": true,
+            "description": "If `true`, checks for toxicity in the text."
+          },
+          "denyTopics": {
+            "maxItems": 100,
+            "type": "array",
+            "items": {
+              "maxLength": 60,
+              "type": "string"
+            },
+            "description": "List of topics to deny."
+          },
+          "vaultId": {
+            "type": "string",
+            "description": "ID of the vault."
+          }
+        },
+        "description": "Request Object for detect guardrails"
+      },
       "DetectGuardrailsResponse": {
         "required": [
           "text",
@@ -1359,6 +2991,38 @@
             "format": "enum"
           }
         }
+      },
+      "DetectGuardrailsResponseV2": {
+        "required": [
+          "text",
+          "validation"
+        ],
+        "type": "object",
+        "properties": {
+          "text": {
+            "maxLength": 500000,
+            "type": "string",
+            "description": "Text that was checked against guardrails."
+          },
+          "toxic": {
+            "type": "boolean",
+            "description": "Whether the text is toxic."
+          },
+          "deniedTopic": {
+            "type": "boolean",
+            "description": "Whether the text included a denied topic."
+          },
+          "validation": {
+            "enum": [
+              "FAILED",
+              "PASSED"
+            ],
+            "type": "string",
+            "description": "Whether the text passed validation.",
+            "format": "enum"
+          }
+        },
+        "description": "Response object for detect guardrails"
       },
       "DetectRunsResponse": {
         "type": "object",
@@ -1421,6 +3085,258 @@
         },
         "description": "Response to get the status of a file deidentification request."
       },
+      "DetectRunsResponseV2": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "UNKNOWN",
+              "FAILED",
+              "SUCCESS",
+              "IN_PROGRESS"
+            ],
+            "type": "string",
+            "description": "Status of the detect run.",
+            "format": "enum"
+          },
+          "outputType": {
+            "enum": [
+              "BASE64",
+              "SKYFLOW_ID",
+              "PRESIGNED_URL"
+            ],
+            "type": "string",
+            "description": "Data source of the output file. `BASE64`: Base64-encoded file string. `SKYFLOW_ID`: Reference file by vault ID. `PRESIGNED_URL`: S3 presigned URL of input file.",
+            "format": "enum"
+          },
+          "output": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileOutput"
+            },
+            "description": "Details of output files."
+          },
+          "message": {
+            "type": "string",
+            "description": "Status details about the Detect run."
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/Metrics"
+          }
+        },
+        "description": "Response containing the status and output of a v2 detect run."
+      },
+      "Detect_CustomTypes": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Label of the custom type. <b>Note</b>: Vault tokens are currently not supported."
+          },
+          "match": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Regular expressions to replace with '[<customType.label>]' enclosed in square brackets. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be redacted. Expressions don't match across entity boundaries. If a string or entity matches both `skip` and `customType.label`, the entity is displayed in plaintext. If a string is detected as an entity and a `customType.match` pattern matches the entire detected entity, the entity is replaced with '[<customType.label>]'. If a string is detected as an entity but a `customType.match` pattern only matches a substring of it, the `customType.match` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings."
+          }
+        },
+        "description": "Custom entity type defined by a label and a list of match values."
+      },
+      "Detect_Entity": {
+        "type": "object",
+        "properties": {
+          "entityType": {
+            "enum": [
+              "NONE",
+              "BANK_ACCOUNT",
+              "CREDIT_CARD",
+              "CREDIT_CARD_EXPIRATION",
+              "CVV",
+              "DATE",
+              "DATE_INTERVAL",
+              "DOB",
+              "DRIVER_LICENSE",
+              "EMAIL_ADDRESS",
+              "HEALTHCARE_NUMBER",
+              "IP_ADDRESS",
+              "LOCATION",
+              "NAME",
+              "NUMERICAL_PII",
+              "PHONE_NUMBER",
+              "SSN",
+              "URL",
+              "VEHICLE_ID",
+              "MEDICAL_CODE",
+              "NAME_FAMILY",
+              "NAME_GIVEN",
+              "ACCOUNT_NUMBER",
+              "EVENT",
+              "FILENAME",
+              "GENDER",
+              "LANGUAGE",
+              "LOCATION_ADDRESS",
+              "LOCATION_CITY",
+              "LOCATION_COORDINATE",
+              "LOCATION_COUNTRY",
+              "LOCATION_STATE",
+              "LOCATION_ZIP",
+              "MARITAL_STATUS",
+              "MONEY",
+              "NAME_MEDICAL_PROFESSIONAL",
+              "OCCUPATION",
+              "ORGANIZATION",
+              "ORGANIZATION_MEDICAL_FACILITY",
+              "ORIGIN",
+              "PASSPORT_NUMBER",
+              "PASSWORD",
+              "PHYSICAL_ATTRIBUTE",
+              "POLITICAL_AFFILIATION",
+              "RELIGION",
+              "TIME",
+              "USERNAME",
+              "ZODIAC_SIGN",
+              "BLOOD_TYPE",
+              "CONDITION",
+              "DOSE",
+              "DRUG",
+              "INJURY",
+              "MEDICAL_PROCESS",
+              "STATISTICS",
+              "ROUTING_NUMBER",
+              "CORPORATE_ACTION",
+              "FINANCIAL_METRIC",
+              "PRODUCT",
+              "TREND",
+              "DURATION",
+              "LOCATION_ADDRESS_STREET",
+              "AGE",
+              "SEXUALITY",
+              "EFFECT",
+              "PROJECT",
+              "ORGANIZATION_ID",
+              "DAY",
+              "MONTH",
+              "YEAR",
+              "ALL"
+            ],
+            "type": "string",
+            "default": "ALL",
+            "description": "Type of entity to detect.",
+            "format": "enum"
+          },
+          "deidentificationType": {
+            "enum": [
+              "UNKNOWN",
+              "ENTITY_UNIQUE_COUNTER",
+              "ENTITY_ONLY",
+              "VAULT_TOKEN"
+            ],
+            "type": "string",
+            "default": "ENTITY_UNIQUE_COUNTER",
+            "description": "Type of deidentification to apply.",
+            "format": "enum"
+          },
+          "destination": {
+            "type": "string",
+            "description": "Target destination of the entity to be stored in vault."
+          },
+          "transformation": {
+            "$ref": "#/components/schemas/Entity_Transformation"
+          }
+        },
+        "description": "Entity detection and deidentification configuration."
+      },
+      "Detect_ObjectEntity": {
+        "type": "object",
+        "properties": {
+          "entityType": {
+            "enum": [
+              "NONE",
+              "FACE",
+              "LICENSE_PLATE",
+              "LOGO",
+              "SIGNATURE",
+              "ALL"
+            ],
+            "type": "string",
+            "default": "ALL",
+            "description": "Type of entity to detect.",
+            "format": "enum"
+          },
+          "deidentificationType": {
+            "enum": [
+              "UNKNOWN",
+              "REDACT",
+              "UNREDACT"
+            ],
+            "type": "string",
+            "default": "UNREDACT",
+            "description": "Type of deidentification to apply.",
+            "format": "enum"
+          }
+        },
+        "description": "Object entity detection and deidentification configuration (e.g. faces, license plates)."
+      },
+      "DocumentV2": {
+        "type": "object",
+        "properties": {
+          "pdf": {
+            "$ref": "#/components/schemas/DocumentV2_Pdf"
+          }
+        },
+        "description": "Document detection and deidentification configuration.",
+        "x-visibility": [
+          "external"
+        ]
+      },
+      "DocumentV2_Pdf": {
+        "type": "object",
+        "properties": {
+          "processingMode": {
+            "enum": [
+              "NONE",
+              "OCR",
+              "TEXT_LAYER"
+            ],
+            "type": "string",
+            "default": "TEXT_LAYER",
+            "description": "Processing mode of the PDF file.",
+            "format": "enum"
+          },
+          "density": {
+            "maximum": 1000,
+            "type": "integer",
+            "default": 200,
+            "description": "Pixel density at which to process the PDF file.",
+            "format": "int32"
+          },
+          "maxResolution": {
+            "maximum": 3000,
+            "minimum": 72,
+            "type": "integer",
+            "default": 3000,
+            "description": "Max resolution at which to process the PDF file.",
+            "format": "int32"
+          }
+        },
+        "description": "Advanced options for processing PDF documents.",
+        "x-visibility": [
+          "external"
+        ]
+      },
+      "Entity_Transformation": {
+        "type": "object",
+        "properties": {
+          "shiftDates": {
+            "$ref": "#/components/schemas/Transformation_ShiftDates"
+          }
+        },
+        "description": "Optional transformations to apply to detected entity values.",
+        "x-visibility": [
+          "external"
+        ]
+      },
       "FileData": {
         "required": [
           "base64",
@@ -1471,6 +3387,66 @@
         "x-visibility": [
           "external"
         ]
+      },
+      "FileMapping": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": "Location of the source file."
+          },
+          "destination": {
+            "type": "string",
+            "description": "Location of the target file."
+          }
+        },
+        "description": "Source and destination file paths for a deidentification job."
+      },
+      "FileOutput": {
+        "type": "object",
+        "properties": {
+          "processedFile": {
+            "type": "string",
+            "description": "Value of the processed file."
+          },
+          "processedFileType": {
+            "enum": [],
+            "type": "string",
+            "description": "Type of the processed file.",
+            "format": "enum"
+          },
+          "processedFileExtension": {
+            "enum": [
+              "mp3",
+              "wav",
+              "pdf",
+              "txt",
+              "csv",
+              "json",
+              "jpg",
+              "jpeg",
+              "tif",
+              "tiff",
+              "png",
+              "bmp",
+              "xls",
+              "xlsx",
+              "doc",
+              "docx",
+              "ppt",
+              "pptx",
+              "xml",
+              "dcm",
+              "jsonl",
+              "zip",
+              "gif"
+            ],
+            "type": "string",
+            "description": "Processed file extension.",
+            "format": "enum"
+          }
+        },
+        "description": "Represents a single processed output file along with its type and format."
       },
       "Format": {
         "type": "object",
@@ -1737,6 +3713,36 @@
         },
         "description": "Response after identifying text."
       },
+      "ImageV2": {
+        "type": "object",
+        "properties": {
+          "outputProcessedImage": {
+            "type": "boolean",
+            "default": true,
+            "description": "If `true`, includes processed image in the output."
+          },
+          "outputOcrText": {
+            "type": "boolean",
+            "default": false,
+            "description": "If `true`, includes text detected by OCR in the response."
+          },
+          "maskingMethod": {
+            "enum": [
+              "NONE",
+              "BLUR",
+              "BLACKBOX"
+            ],
+            "type": "string",
+            "default": "BLACKBOX",
+            "description": "Method to mask the entities in the image.",
+            "format": "enum"
+          }
+        },
+        "description": "Image detection and deidentification configuration.",
+        "x-visibility": [
+          "external"
+        ]
+      },
       "Locations": {
         "type": "object",
         "properties": {
@@ -1769,6 +3775,77 @@
         "x-visibility": [
           "external"
         ]
+      },
+      "Media": {
+        "type": "object",
+        "properties": {
+          "audio": {
+            "$ref": "#/components/schemas/AudioV2"
+          },
+          "document": {
+            "$ref": "#/components/schemas/DocumentV2"
+          },
+          "image": {
+            "$ref": "#/components/schemas/ImageV2"
+          }
+        },
+        "description": "Media-specific detection and deidentification configuration.",
+        "x-visibility": [
+          "external"
+        ]
+      },
+      "Metrics": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "number",
+            "description": "Size of the input text(KB).",
+            "format": "float"
+          },
+          "wordCount": {
+            "type": "integer",
+            "description": "Total number of words processed.",
+            "format": "int32"
+          },
+          "characterCount": {
+            "type": "integer",
+            "description": "Total number of characters processed.",
+            "format": "int32"
+          },
+          "slides": {
+            "type": "integer",
+            "description": "Total number of slides processed.",
+            "format": "int32"
+          },
+          "pages": {
+            "type": "integer",
+            "description": "Total number of pages processed.",
+            "format": "int32"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Total duration processed(seconds).",
+            "format": "float"
+          }
+        },
+        "description": "Performance metrics for the detection and deidentification operation.",
+        "x-visibility": [
+          "external"
+        ]
+      },
+      "RedactionLevel": {
+        "type": "object",
+        "properties": {
+          "replacePattern": {
+            "type": "string",
+            "description": "Redaction method to apply. For PDB vaults: `MASKED`, `REDACTED`, or `PLAINTEXT`. For FlowDB vaults: the name of the redaction pattern configured in the vault (e.g., `Mask1`)."
+          },
+          "source": {
+            "type": "string",
+            "description": "Identifies the entity to redact. For PDB vaults: entity name in uppercase (e.g., `SSN`, `NAME`). For FlowDB vaults: token group name (e.g., `tokenGroup1`)."
+          }
+        },
+        "description": "Specifies a replacement pattern and the entity types it applies to during reidentification."
       },
       "ReidentifiedFileOutput": {
         "type": "object",
@@ -1820,6 +3897,76 @@
           "external"
         ]
       },
+      "ReidentifyFileRequestV2": {
+        "required": [
+          "dataSource",
+          "value",
+          "vaultId",
+          "dataFormat"
+        ],
+        "type": "object",
+        "properties": {
+          "dataSource": {
+            "enum": [
+              "BASE64",
+              "SKYFLOW_ID",
+              "PRESIGNED_URL"
+            ],
+            "type": "string",
+            "description": "Data source of the input file. `BASE64`: Base64-encoded file string. `SKYFLOW_ID`: Reference file by vault ID. `PRESIGNED_URL`: S3 presigned URL of input file.",
+            "format": "enum"
+          },
+          "value": {
+            "type": "string",
+            "description": "File data corresponding to the specified `dataSource` type."
+          },
+          "dataFormat": {
+            "enum": [
+              "mp3",
+              "wav",
+              "pdf",
+              "txt",
+              "csv",
+              "json",
+              "jpg",
+              "jpeg",
+              "tif",
+              "tiff",
+              "png",
+              "bmp",
+              "xls",
+              "xlsx",
+              "doc",
+              "docx",
+              "ppt",
+              "pptx",
+              "xml",
+              "dcm",
+              "jsonl",
+              "zip",
+              "gif"
+            ],
+            "type": "string",
+            "description": "Format of the input file.",
+            "format": "enum"
+          },
+          "vaultId": {
+            "type": "string",
+            "description": "ID of the vault used for de-identification."
+          },
+          "redactionLevel": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RedactionLevel"
+            },
+            "description": "Replacement patterns applied to entity types during re-identification."
+          }
+        },
+        "description": "Request to reidentify tokens in a file back to their original values.",
+        "x-visibility": [
+          "external"
+        ]
+      },
       "ReidentifyFileResponse": {
         "type": "object",
         "properties": {
@@ -1849,6 +3996,43 @@
         },
         "description": "Response to get the status & response of a file re-identification request."
       },
+      "ReidentifyFileResponseV2": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "UNKNOWN",
+              "FAILED",
+              "SUCCESS",
+              "IN_PROGRESS"
+            ],
+            "type": "string",
+            "description": "Status of the reidentification request.",
+            "format": "enum"
+          },
+          "outputType": {
+            "enum": [
+              "BASE64",
+              "SKYFLOW_ID",
+              "PRESIGNED_URL"
+            ],
+            "type": "string",
+            "description": "Data source of the output file. `BASE64`: Base64-encoded file string. `SKYFLOW_ID`: Reference file by vault ID. `PRESIGNED_URL`: S3 presigned URL of input file.",
+            "format": "enum"
+          },
+          "output": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileOutput"
+            },
+            "description": "Details of output files"
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/Metrics"
+          }
+        },
+        "description": "Response containing the status and output of a file reidentification job."
+      },
       "ReidentifyStringRequest": {
         "type": "object",
         "properties": {
@@ -1865,6 +4049,47 @@
           }
         },
         "description": "Request to re-identify string."
+      },
+      "ReidentifyStringRequestV2": {
+        "required": [
+          "text",
+          "vaultId"
+        ],
+        "type": "object",
+        "properties": {
+          "vaultId": {
+            "type": "string",
+            "description": "ID of the vault used for de-identification."
+          },
+          "text": {
+            "type": "string",
+            "description": "Text to reidentify."
+          },
+          "redactionLevel": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RedactionLevel"
+            },
+            "description": "Replacement patterns applied to entity types during re-identification."
+          }
+        },
+        "description": "Request to reidentify tokens in a string back to their original values.",
+        "x-visibility": [
+          "external"
+        ]
+      },
+      "ReidentifyStringResponseV2": {
+        "type": "object",
+        "properties": {
+          "processedText": {
+            "type": "string",
+            "description": "Reidentified text."
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/Metrics"
+          }
+        },
+        "description": "Response containing the reidentified string with tokens replaced by original values."
       },
       "ShiftDates": {
         "type": "object",
@@ -2186,6 +4411,25 @@
           }
         },
         "description": "Mapping of token types to detected entities.",
+        "x-visibility": [
+          "external"
+        ]
+      },
+      "Transformation_ShiftDates": {
+        "type": "object",
+        "properties": {
+          "minDays": {
+            "type": "integer",
+            "description": "Minimum number of days to shift dates.",
+            "format": "int32"
+          },
+          "maxDays": {
+            "type": "integer",
+            "description": "Maximum number of days to shift dates.",
+            "format": "int32"
+          }
+        },
+        "description": "Shifts detected date values by a random number of days within the given range.",
         "x-visibility": [
           "external"
         ]
@@ -4140,7 +6384,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict_regex` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict_regex` pattern only matches a substring of it, the `restrict_regex` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings."
+            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict_regex` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict_regex` pattern only matches a substring of it, the `restrict_regex` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings. <b>Note</b>: Vault tokens are currently not supported."
           },
           "transformations": {
             "$ref": "#/components/schemas/Transformations"
@@ -4262,7 +6506,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict_regex` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict_regex` pattern only matches a substring of it, the `restrict_regex` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings."
+            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict_regex` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict_regex` pattern only matches a substring of it, the `restrict_regex` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings. <b>Note</b>: Vault tokens are currently not supported."
           },
           "transformations": {
             "$ref": "#/components/schemas/Transformations"
@@ -4401,7 +6645,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict_regex` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict_regex` pattern only matches a substring of it, the `restrict_regex` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings."
+            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict_regex` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict_regex` pattern only matches a substring of it, the `restrict_regex` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings. <b>Note</b>: Vault tokens are currently not supported."
           },
           "transformations": {
             "$ref": "#/components/schemas/Transformations"
@@ -4538,7 +6782,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict_regex` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict_regex` pattern only matches a substring of it, the `restrict_regex` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings."
+            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict_regex` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict_regex` pattern only matches a substring of it, the `restrict_regex` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings. <b>Note</b>: Vault tokens are currently not supported."
           },
           "transformations": {
             "$ref": "#/components/schemas/Transformations"
@@ -4660,7 +6904,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict_regex` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict_regex` pattern only matches a substring of it, the `restrict_regex` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings."
+            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict_regex` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict_regex` pattern only matches a substring of it, the `restrict_regex` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings. <b>Note</b>: Vault tokens are currently not supported."
           },
           "transformations": {
             "$ref": "#/components/schemas/Transformations"
@@ -4782,7 +7026,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict_regex` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict_regex` pattern only matches a substring of it, the `restrict_regex` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings."
+            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict_regex` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict_regex` pattern only matches a substring of it, the `restrict_regex` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings. <b>Note</b>: Vault tokens are currently not supported."
           },
           "transformations": {
             "$ref": "#/components/schemas/Transformations"
@@ -4904,7 +7148,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict_regex` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict_regex` pattern only matches a substring of it, the `restrict_regex` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings."
+            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict_regex` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict_regex` pattern only matches a substring of it, the `restrict_regex` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings. <b>Note</b>: Vault tokens are currently not supported."
           },
           "transformations": {
             "$ref": "#/components/schemas/Transformations"
@@ -5026,7 +7270,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict_regex` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict_regex` pattern only matches a substring of it, the `restrict_regex` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings."
+            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict_regex` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict_regex` pattern only matches a substring of it, the `restrict_regex` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings. <b>Note</b>: Vault tokens are currently not supported."
           },
           "transformations": {
             "$ref": "#/components/schemas/Transformations"
@@ -5168,7 +7412,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict_regex` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict_regex` pattern only matches a substring of it, the `restrict_regex` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings."
+            "description": "Regular expressions to replace with '[RESTRICTED]'. Expressions must match the entirety of a detected entity, not just a substring, for the entity to be restricted. Expressions don't match across entity boundaries. If a string or entity matches both `allow_regex` and `restrict_regex`, the entity is displayed in plaintext. If a string is detected as an entity and a `restrict_regex` pattern matches the entire detected entity, the entity is replaced with '[RESTRICTED]'. If a string is detected as an entity but a `restrict_regex` pattern only matches a substring of it, the `restrict_regex` pattern is ignored, and the entity is processed according to the specified tokenization and transformation settings. <b>Note</b>: Vault tokens are currently not supported."
           },
           "transformations": {
             "$ref": "#/components/schemas/Transformations"

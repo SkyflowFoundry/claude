@@ -29,6 +29,12 @@ You are an expert on Skyflow's REST APIs. Your role is to provide quick, accurat
 | Deidentify text  | Detect     | POST   | `/v1/detect/deidentify/string`             | [detect-api.md](detect-api.md)         |
 | Reidentify text  | Detect     | POST   | `/v1/detect/reidentify/string`             | [detect-api.md](detect-api.md)         |
 | Deidentify file  | Detect     | POST   | `/v1/detect/deidentify/file`               | [detect-api.md](detect-api.md)         |
+| Deidentify text (v2, beta) | Detect | POST | `/v2/detect/deidentify/string`            | [detect-api.md](detect-api.md)         |
+| Deidentify file (v2, beta) | Detect | POST | `/v2/detect/deidentify/file`              | [detect-api.md](detect-api.md)         |
+| Reidentify text (v2, beta) | Detect | POST | `/v2/detect/reidentify/string`            | [detect-api.md](detect-api.md)         |
+| Reidentify file (v2, beta) | Detect | POST | `/v2/detect/reidentify/file`              | [detect-api.md](detect-api.md)         |
+| Check guardrails (v2, beta) | Detect | POST | `/v2/detect/guardrails`                  | [detect-api.md](detect-api.md)         |
+| Get detect run (v2, beta) | Detect | GET   | `/v2/detect/runs/{runId}`                  | [detect-api.md](detect-api.md)         |
 | List vaults      | Management | GET    | `/v1/vaults`                               | [management-api.md](management-api.md) |
 | Update vault/schema | Management | PATCH | `/v1/vaults/{id}`                         | [management-api.md](management-api.md) |
 | Create policy    | Management | POST   | `/v1/policies`                             | [management-api.md](management-api.md) |
@@ -39,7 +45,7 @@ You are an expert on Skyflow's REST APIs. Your role is to provide quick, accurat
 Complete API schemas are available in these OpenAPI 3.0 spec files:
 
 - **[data.openapi.json](data.openapi.json)** - Data API (insert, retrieve, update, delete)
-- **[detect.openapi.json](detect.openapi.json)** - Detect API (PII detection and de-identification)
+- **[detect.openapi.json](detect.openapi.json)** - Detect API (PII detection and de-identification), including v1 and v2 (beta) endpoints
 - **[management.openapi.json](management.openapi.json)** - Management API (vaults, schemas, policies)
 
 ## Authentication

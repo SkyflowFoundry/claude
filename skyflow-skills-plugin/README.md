@@ -51,7 +51,7 @@ The **create-vault** skill guides you through creating Skyflow vaults programmat
 
 **Slash command:** `/skyflow-skills:call-rest-apis`
 
-The **call-rest-apis** skill provides expertise on Skyflow REST APIs including management APIs, data APIs, and detect APIs. It covers API endpoints, request/response formats, authentication methods, and code examples. The skill includes an API quick reference table, OpenAPI specifications for data, detect, and management APIs, authentication guidance for bearer tokens and service accounts, error handling patterns, rate limiting information, and links to SDK documentation.
+The **call-rest-apis** skill provides expertise on Skyflow REST APIs including management APIs, data APIs, detect APIs, and the Flow Vault API. It covers API endpoints, request/response formats, authentication methods, and code examples. The skill includes an API quick reference table, OpenAPI specifications for data, detect, management, and Flow Vault APIs, authentication guidance for bearer tokens and service accounts, error handling patterns, rate limiting information, and links to SDK documentation.
 
 ### Migrate SDK V1 to V2
 

@@ -9,8 +9,9 @@ Locate the OpenAPI spec for the API you're documenting:
 | API Guide           | OpenAPI Spec              |
 | ------------------- | ------------------------- |
 | `management-api.md` | `management.openapi.json` |
-| `vault-api.md`      | `data.openapi.json`       |
+| `data-api.md`       | `data.openapi.json`       |
 | `detect-api.md`     | `detect.openapi.json`     |
+| `flow-vault-api.md` | `flow-vault.openapi.json` |
 
 ## 2. Find the Operation
 

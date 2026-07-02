@@ -1,6 +1,6 @@
 ---
 name: call-rest-apis
-description: Call the Skyflow REST APIs - including management APIs, data APIs, and detect APIs.
+description: Call the Skyflow REST APIs - including management APIs, data APIs, detect APIs, and the Flow Vault API.
 ---
 
 # Skyflow REST APIs
@@ -39,6 +39,18 @@ You are an expert on Skyflow's REST APIs. Your role is to provide quick, accurat
 | Update vault/schema | Management | PATCH | `/v1/vaults/{id}`                         | [management-api.md](management-api.md) |
 | Create policy    | Management | POST   | `/v1/policies`                             | [management-api.md](management-api.md) |
 | Get audit events | Management | GET    | `/v1/audit/events`                         | [management-api.md](management-api.md) |
+| Create vault (V2) | Flow Vault | POST  | `/v2/vaults`                               | [flow-vault-api.md](flow-vault-api.md) |
+| List vaults (V2) | Flow Vault | GET    | `/v2/vaults`                               | [flow-vault-api.md](flow-vault-api.md) |
+| Insert records   | Flow Vault | POST   | `/v2/records/insert`                       | [flow-vault-api.md](flow-vault-api.md) |
+| Get records      | Flow Vault | POST   | `/v2/records/get`                          | [flow-vault-api.md](flow-vault-api.md) |
+| Update records   | Flow Vault | POST   | `/v2/records/update`                       | [flow-vault-api.md](flow-vault-api.md) |
+| Delete records   | Flow Vault | POST   | `/v2/records/delete`                       | [flow-vault-api.md](flow-vault-api.md) |
+| Query data       | Flow Vault | POST   | `/v2/query`                                | [flow-vault-api.md](flow-vault-api.md) |
+| Get tokens       | Flow Vault | POST   | `/v2/records/getTokens`                    | [flow-vault-api.md](flow-vault-api.md) |
+| Detokenize       | Flow Vault | POST   | `/v2/tokens/detokenize`                    | [flow-vault-api.md](flow-vault-api.md) |
+| Create policy (V1) | Flow Vault | POST | `/v1/policies`                             | [flow-vault-api.md](flow-vault-api.md) |
+| Create role (V1) | Flow Vault | POST   | `/v1/roles`                                | [flow-vault-api.md](flow-vault-api.md) |
+| Create service account (V1) | Flow Vault | POST | `/v1/serviceAccounts`             | [flow-vault-api.md](flow-vault-api.md) |
 
 ## OpenAPI Specifications
 
@@ -47,6 +59,7 @@ Complete API schemas are available in these OpenAPI 3.0 spec files:
 - **[data.openapi.json](data.openapi.json)** - Data API (insert, retrieve, update, delete)
 - **[detect.openapi.json](detect.openapi.json)** - Detect API (PII detection and de-identification), including v1 and v2 (beta) endpoints
 - **[management.openapi.json](management.openapi.json)** - Management API (vaults, schemas, policies)
+- **[flow-vault.openapi.json](flow-vault.openapi.json)** - Flow Vault API (V2 vault management, records, query, and tokens; V1 policies, roles, service accounts, users, workspaces, and authentication)
 
 ## Authentication
 
@@ -81,6 +94,8 @@ Include in all requests:
 ```
 Authorization: Bearer {accessToken}
 ```
+
+> **Flow Vault**: The Flow Vault API additionally requires an `X-SKYFLOW-ACCOUNT-ID` header on every request and uses distinct base URLs (a `skyvault` domain for records, query, and tokens). See [flow-vault-api.md](flow-vault-api.md) for details.
 
 ## Error Handling
 
@@ -129,8 +144,8 @@ For language-specific SDKs with additional features:
 
 When helping users with API operations:
 
-1. **Identify the API** - Data, Detect, or Management
-2. **Link to the detailed doc** - data-api.md, detect-api.md, or management-api.md
+1. **Identify the API** - Data, Detect, Management, or Flow Vault
+2. **Link to the detailed doc** - data-api.md, detect-api.md, management-api.md, or flow-vault-api.md
 3. **Show the endpoint** - HTTP method and URL pattern
 4. **Provide a curl example** - Complete, copy-pastable command
 5. **Explain key parameters** - Required fields and common options

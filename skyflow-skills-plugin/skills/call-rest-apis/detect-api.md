@@ -438,6 +438,96 @@ See `DetectConfigV2` in [detect.openapi.json](detect.openapi.json) for the compl
 
 ---
 
+# Migrating from v1 to v2
+
+> **Note**: v2 is **in beta and feature-flagged**. Keep v1 in place until v2 is enabled for your account and validated against your workloads. The two versions can run side by side — migrate one operation at a time.
+
+## Endpoint mapping
+
+| Operation | v1 | v2 |
+| --- | --- | --- |
+| De-identify string | `POST /v1/detect/deidentify/string` | `POST /v2/detect/deidentify/string` |
+| De-identify file | `POST /v1/detect/deidentify/file` | `POST /v2/detect/deidentify/file` |
+| Re-identify string | `POST /v1/detect/reidentify/string` | `POST /v2/detect/reidentify/string` |
+| Re-identify file | `POST /v1/detect/reidentify/file` | `POST /v2/detect/reidentify/file` |
+| Check guardrails | `POST /v1/detect/guardrails` | `POST /v2/detect/guardrails` |
+| Get detect run | `GET /v1/detect/runs/{run_id}` | `GET /v2/detect/runs/{runId}` |
+
+The v1 category- and type-specific de-identify file endpoints (`/v1/detect/deidentify/file/document`, `/file/image`, `/file/audio`, `/file/document/pdf`, etc.) are **consolidated** in v2: use the single `POST /v2/detect/deidentify/file` and drive file-type behavior through the Detect **configuration** (`media` / `fileMapping`) instead.
+
+## What changes
+
+1. **Options move into a configuration.** v1 passes `vault_id` plus inline options on every request. v2 replaces this with a reusable Detect configuration — send a `configurationId` **or** an inline `configuration` object. (Re-identify and guardrails still take `vaultId` directly.)
+2. **Fields are `camelCase`.** All request/response fields switch from `snake_case` to `camelCase`.
+3. **File inputs are flattened.** The nested `file: { base64, data_format }` object becomes three top-level fields: `dataSource` (`BASE64` \| `SKYFLOW_ID` \| `PRESIGNED_URL`), `value`, and `dataFormat`.
+4. **Enum values are UPPERCASE.** `status` (`SUCCESS`, `IN_PROGRESS`, `FAILED`, `UNKNOWN`), `outputType`, and processed-file types are uppercase in v2. Note `outputType` **replaces** v1's `efs_path` with `PRESIGNED_URL`.
+5. **New `metrics` object.** String responses now return `metrics` (`size`, `wordCount`, `characterCount`, and for files `pages`/`slides`/`duration`). In v1, `word_count`/`character_count` were top-level fields.
+6. **A couple of response shapes changed** (see the field reference below) — notably re-identify string's output field and re-identify file's `output` container.
+
+## Field name reference
+
+Common renames (v1 → v2):
+
+| v1 (`snake_case`) | v2 (`camelCase`) |
+| --- | --- |
+| `vault_id` | `vaultId` (or a `configurationId` for de-identify) |
+| `processed_text` | `processedText` |
+| `entity_type` | `entityType` |
+| `entity_scores` | `entityScores` |
+| `start_index` / `end_index` | `startIndex` / `endIndex` |
+| `start_index_processed` / `end_index_processed` | `startIndexProcessed` / `endIndexProcessed` |
+| `word_count` / `character_count` (top-level) | `metrics.wordCount` / `metrics.characterCount` |
+| `run_id` | `runId` |
+| `output_type` | `outputType` |
+| `processed_file` / `processed_file_type` | `processedFile` / `processedFileType` |
+| `processed_file_extension` | `processedFileExtension` |
+| `check_toxicity` / `deny_topics` / `denied_topic` | `checkToxicity` / `denyTopics` / `deniedTopic` (see guardrails caveat) |
+
+Shape changes to watch for:
+- **Re-identify string** — the result field is renamed from `text` (v1) to `processedText` (v2).
+- **Re-identify file** — `output` changes from a single object (v1) to an **array** of file outputs (v2).
+- **Processed-file types** — lowercase in v1 (`redacted_text`, `entities`, `reidentified_file`) become uppercase in v2 (`REDACTED_TEXT`, `ENTITIES`, `REIDENTIFIED_FILE`).
+
+## Before / after example
+
+De-identify a string.
+
+**v1**:
+```bash
+curl -X POST "https://$CLUSTER_ID.vault.skyflowapis.com/v1/detect/deidentify/string" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "vault_id": "'"$VAULT_ID"'",
+    "text": "My name is John Doe, and my email is johndoe@acme.com."
+  }'
+# -> { "processed_text": "...", "word_count": 10, "character_count": 53, "entities": [...] }
+```
+
+**v2**:
+```bash
+curl -X POST "https://$CLUSTER_ID.vault.skyflowapis.com/v2/detect/deidentify/string" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "configurationId": "'"$CONFIGURATION_ID"'",
+    "text": "My name is John Doe, and my email is johndoe@acme.com."
+  }'
+# -> { "processedText": "...", "entities": [...], "metrics": { "wordCount": 10, "characterCount": 53 } }
+```
+
+## Migration checklist
+
+- [ ] Confirm v2 is enabled for your account (beta / feature-flagged).
+- [ ] Create a Detect **configuration** (capturing your v1 inline options) and note its `configurationId`, or build an inline `configuration`.
+- [ ] Point requests at `/v2/detect/...`.
+- [ ] Rename request fields to `camelCase`; flatten file inputs to `dataSource`/`value`/`dataFormat`.
+- [ ] Update response parsing: `camelCase` fields, `metrics` object, uppercase enums, re-identify field/shape changes.
+- [ ] For guardrails, verify field casing against the live endpoint (see the [beta caveat](#check-guardrails-v2)).
+- [ ] Run v1 and v2 in parallel and diff outputs before cutting over.
+
+---
+
 ## Supported Entity Types
 
 | Category | Entity Types |

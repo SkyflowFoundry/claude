@@ -15,33 +15,30 @@ import re
 import sys
 from pathlib import Path
 
+import yaml
+
 SKILLS_DIR = Path("skyflow-skills-plugin/skills")
+FRONTMATTER_RE = re.compile(r"^---\r?\n(.*?)\r?\n---\r?\n", re.DOTALL)
 NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 NAME_MAX = 64
 DESC_MAX = 1024
 
 
-def parse_frontmatter(text: str) -> dict[str, str] | None:
-    """Extract the leading --- fenced block into a flat key->value dict.
+def parse_frontmatter(text: str) -> dict | None:
+    """Parse the leading --- fenced YAML block into a dict.
 
-    Handles simple single-line values, optionally quoted. Returns None if no
-    frontmatter block is found.
+    Uses a full YAML parser so multi-line values (block scalars, quoted
+    strings spanning lines) are handled correctly. Returns None if there is
+    no frontmatter block or it is not a YAML mapping.
     """
-    lines = text.splitlines()
-    if not lines or lines[0].strip() != "---":
+    m = FRONTMATTER_RE.match(text)
+    if not m:
         return None
-    fm: dict[str, str] = {}
-    for line in lines[1:]:
-        if line.strip() == "---":
-            return fm
-        m = re.match(r"^([A-Za-z0-9_-]+):\s*(.*)$", line)
-        if m:
-            key, val = m.group(1), m.group(2).strip()
-            if len(val) >= 2 and val[0] == val[-1] and val[0] in "\"'":
-                val = val[1:-1]
-            fm[key] = val
-    # Reached EOF without a closing fence.
-    return None
+    try:
+        data = yaml.safe_load(m.group(1))
+    except yaml.YAMLError:
+        return None
+    return data if isinstance(data, dict) else None
 
 
 def validate_skill(skill_dir: Path) -> list[str]:
@@ -52,10 +49,10 @@ def validate_skill(skill_dir: Path) -> list[str]:
 
     fm = parse_frontmatter(skill_md.read_text(encoding="utf-8"))
     if fm is None:
-        return [f"{skill_dir.name}: SKILL.md has no valid --- frontmatter block"]
+        return [f"{skill_dir.name}: SKILL.md has no valid --- YAML frontmatter block"]
 
-    name = fm.get("name", "")
-    if not name:
+    name = fm.get("name")
+    if not name or not isinstance(name, str):
         errors.append(f"{skill_dir.name}: frontmatter missing `name`")
     else:
         if name != skill_dir.name:
@@ -69,8 +66,8 @@ def validate_skill(skill_dir: Path) -> list[str]:
                 f"{skill_dir.name}: name `{name}` must be lowercase letters, digits, and hyphens"
             )
 
-    desc = fm.get("description", "")
-    if not desc:
+    desc = fm.get("description")
+    if not desc or not isinstance(desc, str) or not desc.strip():
         errors.append(f"{skill_dir.name}: frontmatter missing `description`")
     elif len(desc) > DESC_MAX:
         errors.append(

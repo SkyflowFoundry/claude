@@ -8,6 +8,7 @@ A Claude Code plugin marketplace that enables Skyflow's data privacy and protect
 - [Claude Code Plugins for Skyflow](#claude-code-plugins-for-skyflow)
   - [Plugins](#plugins)
   - [Quick Start](#quick-start)
+  - [Standalone Skill Downloads](#standalone-skill-downloads)
   - [Environment Variables Reference](#environment-variables-reference)
   - [Upgrading](#upgrading)
   - [Learn More](#learn-more)
@@ -63,6 +64,24 @@ Most users want `skyflow-skills` plus `skyflow-developer-mcp`. Add `skyflow-runt
 
    - [skyflow-developer-mcp setup](skyflow-developer-mcp-plugin/README.md#set-up-environment-variables)
    - [skyflow-runtime-mcp setup](skyflow-runtime-mcp-plugin/README.md#set-up-environment-variables)
+
+## Standalone Skill Downloads
+
+The `skyflow-skills` plugin is the easiest way to get the skills in Claude Code. If you instead want a single skill as a portable file — to drop into another project, share, or use with a different Agent Skills-compatible harness — each skill is also published as a standalone `.zip` on the [Releases page](https://github.com/SkyflowFoundry/claude/releases/latest).
+
+Each archive unzips to a self-contained skill folder (`<skill-name>/SKILL.md` plus its resources). To install one manually:
+
+```sh
+# Download the latest build of a skill (stable URL always points at the newest release)
+curl -L -O https://github.com/SkyflowFoundry/claude/releases/latest/download/create-vault.zip
+
+# Unzip into your user skills directory (or a project's .claude/skills/)
+unzip create-vault.zip -d ~/.claude/skills/
+```
+
+Available skills: `call-rest-apis`, `create-vault`, `migrate-sdk-v1-to-v2`, `plan-skyflow-implementation`, `quickstart-js-browser`, `quickstart-node`. A `SHA256SUMS.txt` is attached to each release so you can verify downloads.
+
+> These zips are build artifacts generated from the same skills in this repo — the plugin and the standalone downloads are always in sync.
 
 ## Environment Variables Reference
 

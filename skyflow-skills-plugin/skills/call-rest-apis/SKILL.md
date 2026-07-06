@@ -40,6 +40,8 @@ You are an expert on Skyflow's REST APIs. Your role is to provide quick, accurat
 | Create policy    | Management | POST   | `/v1/policies`                             | [management-api.md](management-api.md) |
 | Get audit events | Management | GET    | `/v1/audit/events`                         | [management-api.md](management-api.md) |
 
+> **Migrating the Detect API from v1 to v2?** See [Migrating from v1 to v2](detect-api.md#migrating-from-v1-to-v2) in the Detect guide for endpoint mapping, field renames, and a migration checklist.
+
 ## OpenAPI Specifications
 
 Complete API schemas are available in these OpenAPI 3.0 spec files:

@@ -28,12 +28,19 @@ Each skill is available as a slash command in the form `/skyflow-skills:<skill-n
 
 | Skill | Slash command |
 | ----- | ------------- |
+| Get Started with Skyflow | `/skyflow-skills:get-started` |
 | Plan Skyflow Implementation | `/skyflow-skills:plan-skyflow-implementation` |
 | Create Vault | `/skyflow-skills:create-vault` |
 | Call REST APIs | `/skyflow-skills:call-rest-apis` |
 | Migrate SDK V1 to V2 | `/skyflow-skills:migrate-sdk-v1-to-v2` |
 | Quickstart: Node.js | `/skyflow-skills:quickstart-node` |
 | Quickstart: JS Browser (Elements) | `/skyflow-skills:quickstart-js-browser` |
+
+### Get Started with Skyflow
+
+**Slash command:** `/skyflow-skills:get-started`
+
+The **get-started** skill is the front door for a new Skyflow integration or POC. It orients new users and agents, then hands off to the right skill. It walks through four quick decisions — checking whether you have an account and whether it's a trial, sandbox, or production account (which drives the base URLs and how carefully to handle data), getting an API bearer token into your environment securely (never into the chat or logs), clarifying your goal (explore, plan, POC, or production-ready), and picking a working mode (educational/collaborative or get-it-done) — then routes you to the appropriate skill, API, SDK, and docs. Supporting references cover the account-type/base-URL matrix and secure credential setup.
 
 ### Plan Skyflow Implementation
 

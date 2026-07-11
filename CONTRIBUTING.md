@@ -20,6 +20,8 @@ This repository is organized as a Claude Code plugin marketplace:
 │       │   └── SKILL.md
 │       ├── create-vault/
 │       │   └── SKILL.md
+│       ├── get-started/
+│       │   └── SKILL.md
 │       ├── migrate-sdk-v1-to-v2/
 │       │   └── SKILL.md
 │       ├── plan-skyflow-implementation/

@@ -1,38 +1,21 @@
 # Contributing to Claude for Skyflow
 
-This guide is for developers who want to contribute to or extend this plugin.
+This guide is for developers who want to contribute to or extend the Skyflow MCP plugins.
+
+> **Contributing a skill?** The Skyflow skills live in a separate repository, [`SkyflowFoundry/skyflow-skills`](https://github.com/SkyflowFoundry/skyflow-skills). Open skill changes there, not here.
 
 ## Repository Structure
 
-This repository is organized as a Claude Code plugin marketplace:
+This repository is a Claude Code plugin marketplace that publishes the Skyflow MCP server plugins:
 
 ```
 /
 ├── README.md                             # Marketplace overview
 ├── .claude-plugin/
-│   └── marketplace.json                  # Marketplace configuration (lists all plugins)
-├── skyflow-skills-plugin/                # Skills plugin (no MCP servers)
-│   ├── .claude-plugin/
-│   │   └── plugin.json                   # Plugin metadata
-│   ├── README.md                         # Plugin docs
-│   └── skills/                           # Agent skills
-│       ├── call-rest-apis/
-│       │   └── SKILL.md
-│       ├── create-vault/
-│       │   └── SKILL.md
-│       ├── get-started/
-│       │   └── SKILL.md
-│       ├── migrate-sdk-v1-to-v2/
-│       │   └── SKILL.md
-│       ├── plan-skyflow-implementation/
-│       │   └── SKILL.md
-│       ├── quickstart-js-browser/
-│       │   └── SKILL.md
-│       └── quickstart-node/
-│           └── SKILL.md
+│   └── marketplace.json                  # Marketplace configuration (lists the MCP plugins)
 ├── skyflow-developer-mcp-plugin/         # Developer MCP server plugin
 │   ├── .claude-plugin/
-│   │   └── plugin.json
+│   │   └── plugin.json                   # Plugin metadata
 │   ├── README.md                         # Plugin docs
 │   └── .mcp.json                         # Developer MCP server config
 └── skyflow-runtime-mcp-plugin/           # Runtime MCP server plugin (optional)
@@ -42,30 +25,24 @@ This repository is organized as a Claude Code plugin marketplace:
     └── .mcp.json                         # Runtime MCP server config
 ```
 
-The skills and the MCP servers are split into separate plugins so each can be installed and versioned independently.
+The skills and the MCP servers are maintained as separate marketplaces so each can be reviewed, authorized, and versioned independently. The skills-only marketplace is [`SkyflowFoundry/skyflow-skills`](https://github.com/SkyflowFoundry/skyflow-skills).
 
 ## Marketplace Configuration
 
 The `.claude-plugin/marketplace.json` file at the root defines the marketplace and lists available plugins:
 
-- `name`: The marketplace identifier
+- `name`: The marketplace identifier (`skyflow-marketplace`)
 - `owner`: Marketplace owner information
-- `plugins`: Array of plugin definitions with name, source path, and description. The marketplace currently lists three plugins: `skyflow-skills`, `skyflow-developer-mcp`, and `skyflow-runtime-mcp`.
+- `plugins`: Array of plugin definitions with name, source path, and description. This marketplace lists two plugins: `skyflow-developer-mcp` and `skyflow-runtime-mcp`.
+- `renames`: Migration map for plugins that were renamed or removed. `skyflow-skills` is mapped to `null` because it moved to the [`SkyflowFoundry/skyflow-skills`](https://github.com/SkyflowFoundry/skyflow-skills) marketplace; existing users get an automatic "removed from this marketplace" notice and can reinstall it from the skills marketplace.
 
 A plugin's `name` must match the `name` in its own `.claude-plugin/plugin.json`, and `source` is a path relative to the repository root (e.g. `./skyflow-developer-mcp-plugin`).
 
 ## Plugin Structure
 
-This marketplace uses two kinds of plugin:
-
-**Skills plugin (`skyflow-skills-plugin/`):**
+Both plugins in this marketplace are MCP server plugins:
 
 - `.claude-plugin/plugin.json`: Plugin metadata (name, version, author, description)
-- `skills/`: Agent skills, each in its own directory with a `SKILL.md` file
-
-**MCP server plugins (`skyflow-developer-mcp-plugin/`, `skyflow-runtime-mcp-plugin/`):**
-
-- `.claude-plugin/plugin.json`: Plugin metadata
 - `.mcp.json`: A single MCP server's configuration (endpoint and authentication)
 
 Each plugin also carries its own `README.md` at its root documenting installation and configuration; the root [README.md](README.md) is a marketplace overview that links to them.
@@ -104,129 +81,14 @@ and `skyflow-runtime-mcp-plugin/.mcp.json`:
 
 The `${...}` placeholders are substituted from the user's shell environment when the server starts.
 
-## Adding New Skills
+## Adding a new MCP server plugin
 
-Skills are guided workflows that help Claude assist users with Skyflow tasks. They provide structured documentation, examples, and references that Claude can use when helping users implement features.
-
-### Skill Directory Structure
-
-Create a new directory in `skyflow-skills-plugin/skills/` with the following structure:
-
-```
-skyflow-skills-plugin/skills/your-skill-name/
-├── SKILL.md                    # Main skill file (required)
-├── supporting-doc.md           # Additional documentation (optional)
-├── samples/                    # Sample files (optional)
-│   ├── example-1.json
-│   └── example-2.json
-└── schemas/                    # Validation schemas (optional)
-    └── schema.json
-```
-
-### SKILL.md Format
-
-The main skill file must include a YAML frontmatter header followed by the skill content:
-
-```markdown
----
-name: your-skill-name
-description: Brief description of what the skill helps users accomplish.
----
-
-# Skill Title
-
-Overview paragraph explaining the purpose.
-
-## Prerequisites
-## Step 1: First Step
-## Step 2: Second Step
-...
-## Troubleshooting
-## Related Documentation
-```
-
-### Best Practices
-
-#### Structure and Organization
-
-- Keep the skill name lowercase with hyphens (e.g., `create-vault`, `detect-pii`)
-- Start with an Overview section explaining what the skill accomplishes
-- Include a Prerequisites section with required accounts, tokens, and tools
-- Use numbered steps for the main workflow
-- End with Troubleshooting and Related Documentation sections
-
-#### API-First Approach
-
-- Prefer API examples over Studio UI instructions where possible
-- Include complete, copy-pastable curl commands with environment variables
-- Document required environment variables at the start
-- Note explicitly when Studio UI is required for certain operations
-
-#### Documentation Quality
-
-- Use tables for reference information (data types, tag values, templates)
-- Include realistic examples showing complete configurations
-- Link to supporting documentation files for detailed references
-- Keep the main SKILL.md scannable; put comprehensive details in supporting docs
-
-#### Supporting Files
-
-- Place sample schemas/configs in a `samples/` or descriptive subdirectory
-- Include validation schemas (JSONSchema) when applicable
-- Use relative links to reference supporting files from SKILL.md
-- Provide samples for common use cases (e.g., quickstart, payment, PII)
-
-#### Example Field Configuration
-
-When documenting configurable options, show a complete example:
-
-```json
-{
-  "name": "email",
-  "datatype": "DT_STRING",
-  "tags": [
-    { "name": "skyflow.options.default_token_policy", "values": ["DETERMINISTIC_UUID"] },
-    { "name": "skyflow.options.default_dlp_policy", "values": ["MASK"] },
-    { "name": "skyflow.validation.regular_exp", "values": ["^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"] }
-  ]
-}
-```
-
-### Updating the README
-
-After creating a new skill, add it to the Skills section in the main [README.md](README.md):
-
-1. Add a subsection under `## Skills` with the skill name as a heading
-2. Write a paragraph describing what the skill does and its key features
-3. The table of contents will be updated automatically if using a markdown formatter
-
-## Packaging and Releasing Skills
-
-Skills are distributed two ways from a single source of truth (the directories under `skyflow-skills-plugin/skills/`):
-
-1. **Plugin** — installed via the marketplace (`/plugin install skyflow-skills@skyflow-marketplace`).
-2. **Standalone zips** — one portable `.zip` per skill, published as GitHub Release assets for use in other projects or harnesses.
-
-The zips are build artifacts. They are **not** committed to the repo (`dist/` is gitignored), so the plugin/marketplace install is never affected.
-
-### CI workflows
-
-- **`.github/workflows/validate-skills.yml`** — runs on pull requests that touch skills. It checks every `SKILL.md` has valid frontmatter (`name` matches the directory, lowercase-hyphen, ≤64 chars; `description` present, ≤1024 chars).
-- **`.github/workflows/package-skills.yml`** — runs on a pushed version tag (`v*`) or manual dispatch. It validates, zips each skill into `dist/<skill>.zip`, generates `dist/SHA256SUMS.txt`, and attaches everything to the matching GitHub Release.
-
-### Cutting a release
-
-1. Bump `version` in `skyflow-skills-plugin/.claude-plugin/plugin.json`.
-2. Tag and push: `git tag v0.6.0 && git push origin v0.6.0`. The package workflow creates the release and uploads the zips automatically.
-
-Alternatively, trigger the **Package skills** workflow manually (Actions tab → *Run workflow*); it defaults the tag to `v<plugin.json version>`.
-
-### Building locally
-
-```sh
-python3 .github/scripts/validate-skills.py   # validate frontmatter
-bash   .github/scripts/package-skills.sh      # build dist/*.zip + SHA256SUMS.txt
-```
+1. Create a new `<name>-plugin/` directory at the repository root.
+2. Add `.claude-plugin/plugin.json` with the plugin metadata (`name`, `description`, `version`, `author`).
+3. Add a root-level `.mcp.json` defining the single server (see above). Reference secrets through `${...}` environment placeholders — never commit tokens.
+4. Add a `README.md` documenting installation and environment variables.
+5. Add an entry to `.claude-plugin/marketplace.json` with the plugin `name`, `source` (e.g. `./<name>-plugin`), and `description`.
+6. Validate with `claude plugin validate .` (or `/plugin validate .` inside Claude Code).
 
 ## Learn More
 

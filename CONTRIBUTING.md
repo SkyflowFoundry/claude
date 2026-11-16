@@ -80,15 +80,12 @@ Each MCP plugin contains a `.mcp.json` at its root defining one server. For exam
 {
   "skyflow-developer-mcp": {
     "type": "http",
-    "url": "https://mcp.skyflow.com",
-    "oauth": {
-      "callbackPort": 8788
-    }
+    "url": "https://mcp.skyflow.com"
   }
 }
 ```
 
-The Developer MCP server uses OAuth so it needs no headers. The fixed `callbackPort` keeps Claude Code's redirect URL at `http://localhost:8788/callback` so users can register that one URL under **AI Controls** in Skyflow.
+The Developer MCP server uses OAuth so it needs no headers.
 
 and `skyflow-runtime-mcp-plugin/.mcp.json`:
 

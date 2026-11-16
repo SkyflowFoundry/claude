@@ -13,7 +13,7 @@ Enable the MCP server in your Skyflow account first because sign-in fails until 
 1. Sign in to Skyflow.
 2. Open **AI Controls** in the left nav.
 3. Enable the MCP server if it is not already enabled.
-4. Add `http://localhost:8788/callback` as a redirect URL. The plugin fixes Claude Code's OAuth callback to port 8788 so this URL stays the same.
+4. Add `https://claude.ai/api/mcp/auth_callback` and `https://claude.com/api/mcp/auth_callback` as redirect URLs.
 
 ## Install
 
@@ -49,8 +49,6 @@ You can keep the environment variables if the `skyflow-runtime-mcp` plugin uses 
 
 ## Troubleshooting
 
-**Sign-in fails with a redirect URI error:** Check that `http://localhost:8788/callback` is listed under **AI Controls** in Skyflow.
-
-**Sign-in fails because port 8788 is in use:** Close the program that is using port 8788 and try again.
+**Sign-in fails with a redirect URI error:** Check that both Claude redirect URLs are listed under **AI Controls** in Skyflow.
 
 **Sign-in fails before the browser opens:** Check that the MCP server is enabled under **AI Controls** in Skyflow.

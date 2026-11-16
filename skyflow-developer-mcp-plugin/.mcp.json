@@ -1,9 +1,6 @@
 {
   "skyflow-developer-mcp": {
     "type": "http",
-    "url": "https://mcp.skyflow.com",
-    "oauth": {
-      "callbackPort": 8788
-    }
+    "url": "https://mcp.skyflow.com"
   }
 }

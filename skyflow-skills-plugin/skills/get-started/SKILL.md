@@ -123,7 +123,7 @@ Match the goal to the skill and load it. All skills below ship in this same `sky
 
 The skills work standalone. For live access, pair with:
 
-- **skyflow-developer-mcp** — Skyflow docs, skills, and integration resources on demand. Most users want this. Reads `SKYFLOW_BEARER_TOKEN` and `SKYFLOW_ACCOUNT_ID` (the same vars from Step 2).
+- **skyflow-developer-mcp** — Skyflow docs, skills, and integration resources on demand. Most users want this. It connects to `https://mcp.skyflow.com` and signs in with OAuth instead of environment variables. The user must first enable the MCP server under **AI Controls** in Skyflow and add `https://claude.ai/api/mcp/auth_callback` and `https://claude.com/api/mcp/auth_callback` as redirect URLs.
 - **skyflow-runtime-mcp** — on-demand de-identification of PII in text via the Detect APIs. Add only if you need it.
 
 Install: `/plugin marketplace add SkyflowFoundry/claude` then `/plugin install skyflow-developer-mcp@skyflow-marketplace`.

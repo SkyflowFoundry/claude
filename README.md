@@ -19,7 +19,7 @@ A Claude Code plugin marketplace that enables Skyflow's data privacy and protect
 | Plugin | What it does | Environment variables | Docs |
 | ------ | ------------ | --------------------- | ---- |
 | `skyflow-skills` | Guided Skyflow workflows (getting started, vault creation, REST API guidance, SDK migration, implementation planning, SDK quickstarts) | None | [README](skyflow-skills-plugin/README.md) |
-| `skyflow-developer-mcp` | Developer MCP server — access to Skyflow documentation, skills, and integration resources | `SKYFLOW_BEARER_TOKEN`, `SKYFLOW_ACCOUNT_ID` | [README](skyflow-developer-mcp-plugin/README.md) |
+| `skyflow-developer-mcp` | Developer MCP server at `mcp.skyflow.com` — access to Skyflow documentation, skills, and integration resources. You sign in with OAuth. | None | [README](skyflow-developer-mcp-plugin/README.md) |
 | `skyflow-runtime-mcp` | Runtime MCP server (optional) — on-demand de-identification of PII in text via the Detect APIs | `SKYFLOW_BEARER_TOKEN`, `SKYFLOW_ACCOUNT_ID`, `SKYFLOW_VAULT_ID`, `SKYFLOW_VAULT_URL` | [README](skyflow-runtime-mcp-plugin/README.md) |
 
 Most users want `skyflow-skills` plus `skyflow-developer-mcp`. Add `skyflow-runtime-mcp` only if you need on-demand de-identification.
@@ -60,10 +60,10 @@ Most users want `skyflow-skills` plus `skyflow-developer-mcp`. Add `skyflow-runt
    /plugin install skyflow-runtime-mcp@skyflow-marketplace
    ```
 
-4. Set up environment variables for the MCP plugins, then restart Claude Code. The `skyflow-skills` plugin needs none; the MCP plugins read the `SKYFLOW_*` variables described in their READMEs:
+4. Set up the MCP plugins you installed, then restart Claude Code. The `skyflow-skills` plugin needs no setup.
 
-   - [skyflow-developer-mcp setup](skyflow-developer-mcp-plugin/README.md#set-up-environment-variables)
-   - [skyflow-runtime-mcp setup](skyflow-runtime-mcp-plugin/README.md#set-up-environment-variables)
+   - [skyflow-developer-mcp setup](skyflow-developer-mcp-plugin/README.md#before-you-install): enable the MCP server under **AI Controls** in Skyflow and sign in with `/mcp`.
+   - [skyflow-runtime-mcp setup](skyflow-runtime-mcp-plugin/README.md#set-up-environment-variables): set the `SKYFLOW_*` variables in its README.
 
 ## Standalone Skill Downloads
 
@@ -85,12 +85,12 @@ Available skills: `call-rest-apis`, `create-vault`, `get-started`, `migrate-sdk-
 
 ## Environment Variables Reference
 
-These variables are read by the MCP plugins. See each plugin's README for step-by-step setup.
+These variables are read by the `skyflow-runtime-mcp` plugin. The `skyflow-developer-mcp` plugin signs in with OAuth and reads none of them. See each plugin's README for step-by-step setup.
 
 | Variable               | Description                                                                       | Required by |
 | ---------------------- | --------------------------------------------------------------------------------- | ----------- |
-| `SKYFLOW_BEARER_TOKEN` | A Skyflow API key (recommended), personal access token, or generated bearer token | `skyflow-developer-mcp`, `skyflow-runtime-mcp` |
-| `SKYFLOW_ACCOUNT_ID`   | Your Skyflow account identifier                                                   | `skyflow-developer-mcp`, `skyflow-runtime-mcp` |
+| `SKYFLOW_BEARER_TOKEN` | A Skyflow API key (recommended), personal access token, or generated bearer token | `skyflow-runtime-mcp` |
+| `SKYFLOW_ACCOUNT_ID`   | Your Skyflow account identifier                                                   | `skyflow-runtime-mcp` |
 | `SKYFLOW_VAULT_ID`     | Your Detect vault identifier                                                      | `skyflow-runtime-mcp` |
 | `SKYFLOW_VAULT_URL`    | Your vault URL endpoint                                                           | `skyflow-runtime-mcp` |
 
@@ -108,7 +108,9 @@ Earlier versions shipped a single `skyflow` plugin that bundled both the skills 
 /plugin install skyflow-runtime-mcp@skyflow-marketplace   # optional
 ```
 
-Your existing environment variables are unchanged; the MCP plugins read the same `SKYFLOW_*` variables you already configured.
+The `skyflow-runtime-mcp` plugin reads the same `SKYFLOW_*` variables you already configured.
+
+Version 0.2 of `skyflow-developer-mcp` moved from the earlier proof-of-concept server to `https://mcp.skyflow.com` and signs in with OAuth. See its [upgrade steps](skyflow-developer-mcp-plugin/README.md#upgrading-from-version-01).
 
 ## Learn More
 

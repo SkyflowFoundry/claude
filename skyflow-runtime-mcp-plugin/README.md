@@ -33,7 +33,7 @@ After installing, set the environment variables below and restart Claude Code.
 | `SKYFLOW_VAULT_ID`     | Your Detect vault identifier                                                      | Yes      |
 | `SKYFLOW_VAULT_URL`    | Your vault URL endpoint                                                           | Yes      |
 
-`SKYFLOW_BEARER_TOKEN` and `SKYFLOW_ACCOUNT_ID` are shared with the [`skyflow-developer-mcp`](../skyflow-developer-mcp-plugin/README.md) plugin; if you already configured those, you only need to add `SKYFLOW_VAULT_ID` and `SKYFLOW_VAULT_URL`.
+If you configured `SKYFLOW_BEARER_TOKEN` and `SKYFLOW_ACCOUNT_ID` for an earlier version of the [`skyflow-developer-mcp`](../skyflow-developer-mcp-plugin/README.md) plugin then you only need to add `SKYFLOW_VAULT_ID` and `SKYFLOW_VAULT_URL`.
 
 **Note:** The Runtime MCP server requires that your bearer token has 'Vault Owner' access to a Detect vault (a vault created with the detect template).
 

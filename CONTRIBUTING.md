@@ -80,13 +80,12 @@ Each MCP plugin contains a `.mcp.json` at its root defining one server. For exam
 {
   "skyflow-developer-mcp": {
     "type": "http",
-    "url": "https://skyflow-mcp.dev/mcp?accountId=${SKYFLOW_ACCOUNT_ID}",
-    "headers": {
-      "Authorization": "Bearer ${SKYFLOW_BEARER_TOKEN}"
-    }
+    "url": "https://mcp.skyflow.com"
   }
 }
 ```
+
+The Developer MCP server uses OAuth so it needs no headers.
 
 and `skyflow-runtime-mcp-plugin/.mcp.json`:
 
@@ -102,7 +101,7 @@ and `skyflow-runtime-mcp-plugin/.mcp.json`:
 }
 ```
 
-The `${...}` placeholders are substituted from the user's shell environment when the server starts.
+The `${...}` placeholders in the Runtime MCP config are substituted from the user's shell environment when the server starts.
 
 ## Adding New Skills
 

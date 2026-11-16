@@ -1,8 +1,19 @@
 # Skyflow Developer MCP
 
-The Developer MCP server (`https://skyflow-mcp.dev`) for Claude Code. It provides access to Skyflow developer documentation, skills, and helpful resources for people integrating or implementing Skyflow. This is all most users need to get started.
+The Skyflow Developer MCP server (`https://mcp.skyflow.com`) for Claude Code. It provides access to Skyflow developer documentation, skills, and helpful resources for people integrating or implementing Skyflow. This is all most users need to get started.
+
+The server uses OAuth so you sign in with your own Skyflow account. The plugin needs no environment variables and stores no credentials.
 
 Part of the [Skyflow marketplace](../README.md).
+
+## Before you install
+
+Enable the MCP server in your Skyflow account first because sign-in fails until you do.
+
+1. Sign in to Skyflow.
+2. Open **AI Controls** in the left nav.
+3. Enable the MCP server if it is not already enabled.
+4. Add `http://localhost:8788/callback` as a redirect URL. The plugin fixes Claude Code's OAuth callback to port 8788 so this URL stays the same.
 
 ## Install
 
@@ -18,48 +29,28 @@ Install the plugin:
 /plugin install skyflow-developer-mcp@skyflow-marketplace
 ```
 
-After installing, set the environment variables below and restart Claude Code.
+## Sign in
 
-## Environment Variables
+1. Run `/mcp` in Claude Code.
+2. Select `skyflow-developer-mcp` and choose to authenticate.
+3. Sign in to Skyflow in the browser that opens.
 
-| Variable               | Description                                                                       | Required |
-| ---------------------- | --------------------------------------------------------------------------------- | -------- |
-| `SKYFLOW_BEARER_TOKEN` | A Skyflow API key (recommended), personal access token, or generated bearer token | Yes      |
-| `SKYFLOW_ACCOUNT_ID`   | Your Skyflow account identifier                                                   | Yes      |
+If the browser shows a connection error after you sign in then paste the full URL from the browser's address bar into the prompt in Claude Code.
 
-To obtain your bearer token and account ID, see the [Skyflow API Authentication documentation](https://docs.skyflow.com/docs/fundamentals/api-authentication). The bearer token can be a Skyflow API key (recommended for long-lived access), personal access token, or generated bearer token.
+## Upgrading from version 0.1
 
-## Set Up Environment Variables
+Version 0.1 pointed at the earlier proof-of-concept server and read `SKYFLOW_BEARER_TOKEN` and `SKYFLOW_ACCOUNT_ID`. Version 0.2 signs in with OAuth instead.
 
-> **Note:** These instructions are for macOS. Windows and Linux users may need to adjust the shell configuration file and commands accordingly.
+1. Run `/plugin marketplace update skyflow-marketplace` and then update the plugin.
+2. Complete the steps in [Before you install](#before-you-install).
+3. Sign in with `/mcp`.
 
-### Add the environment variables
-
-Run these commands in Terminal, replacing the placeholder values with your actual Skyflow credentials:
-
-```bash
-echo 'export SKYFLOW_BEARER_TOKEN="your-token-here"' >> ~/.zshrc
-echo 'export SKYFLOW_ACCOUNT_ID="your-account-id-here"' >> ~/.zshrc
-```
-
-### Apply the changes
-
-**Quit Terminal completely** (Cmd + Q), then reopen it.
-
-### Verify your setup
-
-Run this command to confirm your environment variables are set (it checks that the value is present without printing the secret):
-
-```bash
-[ -n "$SKYFLOW_BEARER_TOKEN" ] && echo "SKYFLOW_BEARER_TOKEN is set" || echo "SKYFLOW_BEARER_TOKEN is not set"
-```
-
-If it prints `SKYFLOW_BEARER_TOKEN is set`, you're ready to restart Claude Code. If it prints `SKYFLOW_BEARER_TOKEN is not set`, revisit the steps above.
+You can keep the environment variables if the `skyflow-runtime-mcp` plugin uses them.
 
 ## Troubleshooting
 
-**"Environment variable not set" errors:**
+**Sign-in fails with a redirect URI error:** Check that `http://localhost:8788/callback` is listed under **AI Controls** in Skyflow.
 
-- Make sure you ran the `echo` commands to add the variables to `~/.zshrc`.
-- Make sure you quit and reopened Terminal (not just opened a new tab).
-- Make sure you restarted Claude Code.
+**Sign-in fails because port 8788 is in use:** Close the program that is using port 8788 and try again.
+
+**Sign-in fails before the browser opens:** Check that the MCP server is enabled under **AI Controls** in Skyflow.
